@@ -1,0 +1,124 @@
+
+/*===================================================================================*/
+/*  Sliders
+/*===================================================================================*/
+
+.home-v1-slider,
+.home-v2-slider,
+.home-v3-slider {
+	background-color: #f9f9f9;
+	width: 100vw;
+	position: relative;
+	margin-#{$start}: -50vw;
+	#{$start}: 50%;
+	margin-bottom: 3em;
+	height: 485px;
+
+	.item {
+		height: 485px;
+	}
+
+	.owl-dots {
+		position: absolute;
+		bottom: 20px;
+		display: block;
+		text-align: center;
+		width: 100%;
+	}
+}
+
+.hero-action-btn a {
+	color:#333e48;
+	font-weight:100;
+}
+
+
+.home-v2-slider {
+	#{$start}: 33.33%;
+}
+
+
+.hero-1 {
+	font-size: 4.125em;
+	color: #333e48;
+	font-weight: 300;
+	line-height: 0.788em;
+	margin-bottom: 10px;
+	text-transform: uppercase;
+}
+
+.hero-2 {
+	font-size: 3.000em;
+	color: #333e48;
+	font-weight: 300;
+	line-height: 1.000em;
+	margin-bottom: 30px;
+	text-transform: uppercase;
+}
+.hero-v2 {
+	font-size: 4.143em !important;
+}
+
+.hero-subtitle {
+	font-size: 0.938em;
+	font-weight: 800;
+	line-height: 1.467em;
+	margin-bottom: 40px;
+	text-transform: uppercase;
+}
+
+.hero-subtitle-v2 {
+	font-weight: 600;
+	color: #34bcec ;
+	font-size: 1.125em;
+	line-height: 1.222em;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+}
+
+.hero-action-btn {
+	color: #333e48 !important;
+	font-size: 1.286em !important;
+	@extend .btn;
+	padding: 0.611em 3.172em !important;
+	border-radius: 0.714em !important;
+	line-height: 1.3em !important;
+}
+
+.image {
+	position: absolute;
+	right: 0;
+	overflow: hidden;
+	height: 485px;
+}
+
+.hero-v2-price {
+	font-weight: 300;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+
+	span {
+		font-size: 3.500em;
+		line-height: 0.929em;
+		font-weight: 700;
+	}
+}
+
+#owl-main {
+    .item {
+        background-position: center 55%;
+        background-size: cover;
+        height:  485px;
+        width: 100%;
+
+        .container {
+            display: table;
+            height: inherit;
+            width: 100%;
+        }
+        .caption {
+            padding-top:85px;
+            display: table-cell;
+        }
+    }
+}

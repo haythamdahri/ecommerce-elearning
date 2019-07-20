@@ -1,0 +1,88 @@
+/*===================================================================================*/
+/* Product Card
+/*===================================================================================*/
+
+.products {
+	.product-card {
+		@include make-col();
+
+		.wp-post-image {
+			position: static;
+		}
+	}
+}
+
+.columns-2 {
+	.products {
+		.product-card {
+			@include media-breakpoint-up(md) {
+				@include make-col-span(6);
+			}
+		}
+	}
+}
+
+.columns-3 {
+	.products {
+		.product-card {
+			@include media-breakpoint-up(md) {
+				@include make-col-span(4);
+			}
+
+			@include make-action-buttons-float();
+		}
+	}
+}
+
+.products {
+	.product.product-card {
+		margin-bottom: 0;
+
+		.product-inner {
+			padding: 1.786em 1.429em;
+		}
+
+		.media-left {
+			padding-#{$end}: 0;
+			width: 42.35%;
+		}
+
+		h3 {
+			margin-bottom: 1.6em;
+		}
+
+		.media-body {
+			padding-#{$start}: 1.929em;
+			overflow: visible;
+			vertical-align: middle;
+
+			.hover-area {
+				display: block;
+				visibility: hidden;
+				opacity: 0;
+				padding-top: 0.214em;
+				border-top: 1px solid #eaeaea;
+				//transform: translateY(40%);
+				//transition: all 0.2s ease 0s;
+
+				.action-buttons > div {
+					margin-#{$end}: 15px;
+				}
+
+				.action-buttons > a {
+					margin-#{$start}: 15px;
+				}
+			}
+		}
+
+		&:hover .media-body .hover-area {
+			visibility: visible;
+			//transform: translateY(4%);
+			opacity: 1;
+		}
+
+		.media-object {
+			max-width: none;
+		}
+	}
+}

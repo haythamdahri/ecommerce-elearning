@@ -1,0 +1,168 @@
+{% extends "ecommerce/base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block content %}
+    <div id="content" class="site-content" tabindex="-1">
+                <div class="container">
+
+                    <nav class="woocommerce-breadcrumb" ><a href="{% url 'ecommerce:home' %}">Acceuil</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Mon Compte</nav><!-- .woocommerce-breadcrumb -->
+
+                    <div class="content-area">
+                        <main id="main" class="site-main">
+
+                    {% include 'ecommerce/messages.html' %}
+
+                            <article id="post-8" class="hentry">
+
+                                <div class="entry-content">
+                                    <div class="woocommerce">
+                                        <div class="customer-login-form">
+                                            <span class="or-text">Ou</span>
+
+                                            <div class="col2-set" id="customer_login">
+
+
+                                                <div class="col-1">
+
+
+                                                    <h2>CONNEXION</h2>
+
+                                                    <form method="post" class="login" action="{% url 'ecommerce:login' %}">
+                                                        {% csrf_token %}
+
+                                                        <p class="before-login-text">Bienvenue! Connecter avec votre compte</p>
+
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Email: <span class="required">*</span></label>
+                                                            {% render_field LoginForm.email %}
+
+                                                        </p>
+
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="password">Mot de passe: <span class="required">*</span></label>
+                                                            {% render_field LoginForm.password %}
+
+                                                        </p>
+
+                                                        <p class="form-row">
+                                                            <button class="button" type="submit"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
+                                                        </p>
+
+                                                        <p class="lost_password"><a href="{% url 'ecommerce:password_reset' %}">Mot de passe oublié?</a></p>
+
+                                                    </form>
+
+
+                                                </div><!-- .col-1 -->
+
+                                                <div class="col-2">
+
+                                                    <h2>CREER UN COMPTE</h2>
+
+                                                    <form method="post" class="register" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+
+
+                                                        <p class="before-register-text">Créer votre compte</p>
+
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Username<span class="required">*</span></label>
+                                                            {% if SignUpForm.username.errors %}
+                                                                {% render_field SignUpForm.username style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field SignUpForm.username %}
+                                                            {% endif %}
+                                                            {% for error in SignUpForm.username.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Nom<span class="required">*</span></label>
+                                                            {% if SignUpForm.first_name.errors %}
+                                                                {% render_field SignUpForm.first_name style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field SignUpForm.first_name %}
+                                                            {% endif %}
+                                                            {% for error in SignUpForm.first_name.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Prenom<span class="required">*</span></label>
+                                                            {% if SignUpForm.last_name.errors %}
+                                                                {% render_field SignUpForm.last_name style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field SignUpForm.last_name %}
+                                                            {% endif %}
+                                                            {% for error in SignUpForm.last_name.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Adresse email<span class="required">*</span></label>
+                                                            {% if SignUpForm.email.errors %}
+                                                                {% render_field SignUpForm.email style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field SignUpForm.email %}
+                                                            {% endif %}
+                                                            {% for error in SignUpForm.email.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Mot de passe<span class="required">*</span></label>
+                                                            {% if SignUpForm.password.errors %}
+                                                                {% render_field SignUpForm.password style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field SignUpForm.password %}
+                                                            {% endif %}
+                                                            {% for error in SignUpForm.password.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+
+                                                        <p class="form-row">
+                                                            <button class="button" type="submit"><i class="fas fa-user-plus"></i> S'inscrir</button>
+                                                        </p>
+
+                                                        <div class="register-benefits">
+                                                            <h3>Inscrivez-vous aujourd'hui et vous pourrez :</h3>
+                                                            <ul>
+                                                                <li>Acheter des produits de promo</li>
+                                                                <li>Suivri des commandes</li>
+                                                                <li>Garder l'historique des achats</li>
+                                                            </ul>
+                                                        </div>
+
+                                                    </form>
+
+                                                </div><!-- .col-2 -->
+
+                                            </div><!-- .col2-set -->
+
+                                        </div><!-- /.customer-login-form -->
+                                    </div><!-- .woocommerce -->
+                                </div><!-- .entry-content -->
+
+                            </article><!-- #post-## -->
+
+                        </main><!-- #main -->
+                    </div><!-- #primary -->
+
+                </div><!-- .col-full -->
+            </div><!-- #content -->
+{% endblock %}

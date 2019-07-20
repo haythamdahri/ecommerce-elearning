@@ -1,0 +1,157 @@
+/*===================================================================================*/
+/*  TABLE-CART
+/*===================================================================================*/
+table.cart {
+	@include make-table();
+
+	thead {
+		th {
+			font-size: 1em;
+			line-height: 1.714em;
+			color: #747474;
+			border-bottom: 1px solid #ddd;
+			border-top: none;
+			font-weight: normal;
+		}
+	}
+
+	td {
+		vertical-align: middle;
+		font-size: 1.214em;
+		line-height: 1.147em;
+	}
+
+	tbody {
+		tr.cart_item {
+
+			&:first-child {
+				td {
+					padding-top: 2.059em;
+				}
+			}
+
+			td {
+				border-top: none;
+				padding-top: 1.029em;
+				padding-bottom: 1.029em;
+			}
+		}
+	}
+
+	.product-remove {
+		a{
+			color: #a7a7a7;
+			font-size: 1.5em;
+
+			@include hover-focus {
+				text-decoration: none;
+				color: #ee0000;
+			}
+		}
+	}
+
+	.product-thumbnail {
+		width: 136px;
+
+		a {
+			display: block;
+		}
+
+		img {
+			@include img-fluid();
+			max-width: 100px;
+			margin: auto;
+			height: 92px;
+			width: auto;
+			border: 1px solid #ddd;
+			padding: 4px;
+		}
+	}
+
+	.product-name {
+		a {
+			color: #3e3e3e;
+
+			@include hover-focus {
+				color: #000;
+				text-decoration: none;
+			}
+		}
+	}
+
+	.product-quantity {
+		.quantity {
+			width: 5em;
+
+			&.buttons_added {
+				width: 8em;
+				font-size: 0.824em;
+
+				.minus, .plus {
+					bottom: 0.5em;
+				}
+			}
+		}
+
+		.input-text {
+			padding: 0.5em 1em;
+			border-radius: 1em;
+		}
+	}
+
+	.actions {
+		text-align: $end;
+		font-size: 1em;
+		padding-top: 5.714em;
+
+		.wc-proceed-to-checkout {
+			display: inline-block;
+			margin-#{$start}: 0.5em;
+
+			.checkout-button {
+				font-weight: bold;
+
+				&::after {
+					content: none;
+				}
+			}
+		}
+	}
+
+	.coupon {
+		font-size: 1em;
+		float: $start;
+		text-align: $start;
+
+		@include media-breakpoint-up(md) {
+			@include make-col-span(5);
+		}
+
+		label[for="coupon_code"] {
+			display: none;
+		}
+
+		.input-text {
+			@extend .form-control;
+			border: 1px solid #dddddd;
+			border-#{$end}: 0;
+			border-top-#{$end}-radius: 0;
+			border-bottom-#{$end}-radius: 0;
+			padding: 0.534em 1.8em;
+			width: 60%;
+		}
+
+		.button {
+			@extend .btn-secondary;
+			border-top-#{$start}-radius: 0;
+			border-bottom-#{$start}-radius: 0;
+			margin-#{$start}: -4px;
+			position: relative;
+			top: -1px;
+		}
+	}
+
+	input[name="update_cart"] {
+		@include button-variant( $color-body, #efecec, #efecec );
+	}
+}

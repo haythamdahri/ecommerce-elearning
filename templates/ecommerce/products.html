@@ -1,0 +1,854 @@
+{% extends 'ecommerce/base.html' %}
+{% load staticfiles %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block title %}PRODUITS{% endblock %}
+
+{% block content %}
+
+    <div id="content" class="site-content" tabindex="-1">
+        <div class="container">
+
+
+            <nav class="woocommerce-breadcrumb"><a href="{% url 'ecommerce:home' %}">Acceuil</a><span class="delimiter"><i
+                    class="fa fa-angle-right"></i></span><span
+                    class="font-weight-bold">{{ category.name|default:'Tous les produits' }}</span></nav>
+
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main">
+
+                    {# Display errors for users #}
+                    {% include 'ecommerce/messages.html' %}
+
+                    <header class="page-header">
+                        {% if category is None and brand is None and brand_error is None and category_error is None %}
+                            <h1 class="page-title"><span class="font-weight-bold">Tous les produits</span></h1>
+                        {% elif brand is not None %}
+                            <h1 class="page-title"><span class="font-weight-bold">Marque: </span><span
+                                    class="font-italic">{{ brand.name }}</span></h1>
+                        {% elif category is not None %}
+                            <h1 class="page-title"><span class="font-weight-bold">Categorie: </span><span
+                                    class="font-italic">{{ category.name }}</span></h1>
+                        {% elif category_error and not brand_error %}
+                            <div class="alert alert-warning" style="padding: 10px;font-size:12px;font-weight:bold;width: 100%;">
+                                <i class="fas fa-exclamation-triangle" ></i>&nbsp;&nbsp;Aucune catégorie trouvée!
+                            </div>
+                        {% elif brand_error and not category_error %}
+                            <div class="alert alert-warning" style="padding: 10px;font-size:12px;font-weight:bold;width: 100%;">
+                                <i class="fas fa-exclamation-triangle" ></i>&nbsp;&nbsp;Aucune marque trouvée!
+                            </div>
+                        {% endif %}
+                        <p class="woocommerce-result-count">Affichage
+                            {{ products.number }}&ndash;{{ products.paginator.num_pages }}
+                            sur {{ number_elements }} produits
+                            {% if sort_type is not None %}
+                                {% if sort_type == "popularity" %}
+                                    |<span class="font-weight-bold font-italic"><i class="fas fa-info"></i> TRI PAR: popularité</span>
+                                {% elif sort_type == "rating" %}
+                                    |<span class="font-weight-bold font-italic"><i class="fas fa-info"></i> TRI PAR: les plus évalués</span>
+                                {% elif sort_type == "date" %}
+                                    |<span class="font-weight-bold font-italic"><i class="fas fa-info"></i> TRI PAR: les plus nouveaux</span>
+                                {% elif sort_type == "price" %}
+                                    |<span class="font-weight-bold font-italic"><i class="fas fa-info"></i> TRI PAR: pri => élevé -> bas</span>
+                                {% elif sort_type == "price-desc" %}
+                                    |<span class="font-weight-bold font-italic"><i class="fas fa-info"></i> TRI PAR: pri => bas -> élévé</span>
+                                {% endif %}
+                            {% endif %}
+                        </p>
+                    </header>
+
+                    <div class="shop-control-bar">
+                        <ul class="shop-view-switcher nav nav-tabs" role="tablist">
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" title="Grid View"
+                                                    href="#grid"><i class="fa fa-th"></i></a></li>
+                            <li class="nav-item"><a class="nav-link " data-toggle="tab" title="Grid Extended View"
+                                                    href="#grid-extended"><i class="fa fa-align-justify"></i></a></li>
+                            <li class="nav-item"><a class="nav-link " data-toggle="tab" title="List View"
+                                                    href="#list-view"><i class="fa fa-list"></i></a></li>
+                            <li class="nav-item"><a class="nav-link " data-toggle="tab" title="List View Small"
+                                                    href="#list-view-small"><i class="fa fa-th-list"></i></a></li>
+                        </ul>
+                        <form class="woocommerce-ordering" method="get" action="
+                                {% if category is not None %}{{ category.get_absolute_url }}{% elif brand is not None %}{{ brand.get_absolute_url }}{% else %}{% url 'ecommerce:products' %}{% endif %}">
+                            <select onchange="this.form.submit()" name="sort_type" class="orderby">
+                                <option value="default_sort"
+                                        {% if sort_type is None or sort_type == 'default_sort' %}selected='selected'{% endif %}>
+                                    Tri par defaut
+                                </option>
+                                <option value="popularity"
+                                        {% if sort_type == 'popularity' %}selected='selected'{% endif %}>Tri par
+                                    popularité
+                                </option>
+                                <option value="rating" {% if sort_type == 'rating' %}selected='selected'{% endif %}>Tri
+                                    par les plus évalués
+                                </option>
+                                <option value="date" {% if sort_type == 'date' %}selected='selected'{% endif %}>Tri par
+                                    les plus nouveaux
+                                </option>
+                                <option value="price" {% if sort_type == 'price' %}selected='selected'{% endif %}>Tri
+                                    par pri : élevé -> bas
+                                </option>
+                                <option value="price-desc"
+                                        {% if sort_type == 'price-desc' %}selected='selected'{% endif %}>Tri par pri :
+                                    bas -> élévé
+                                </option>
+                            </select>
+                        </form>
+                        <nav class="electro-advanced-pagination">
+                            <form method="get" class="form-adv-pagination" action="" id="goto_form">
+                                {% if sort_type is not None %}
+                                    <input type="hidden" name="sort_type" value="{{ sort_type }}"
+                                           style="display: none;"/>
+                                {% endif %}
+                                {% if min_price is not None %}
+                                    {% render_field PriceFilterForm.min_price value=min_price style='display: none;' %}
+                                {% endif %}
+                                {% if max_price is not None %}
+                                    {% render_field PriceFilterForm.max_price value=max_price style='display: none;' %}
+                                {% endif %}
+                                {% render_field GoPageForm.page size=number_elements max=products.paginator.num_pages value=products.number %}
+                                <a type="submit" class="next page-numbers"
+                                   onclick='document.getElementById("goto_form").submit()' href="javascript:void(0)"/>&rarr;</a>
+                            </form>
+                            sur {{ products.paginator.num_pages }}
+                        </nav>
+                    </div>
+
+                    <div class="tab-content">
+
+                        <div role="tabpanel" class="tab-pane active" id="grid" aria-expanded="true">
+
+                            <ul class="products columns-3">
+                                {% for product in products %}
+                                    <li class="product {% if forloop.counter|divisibleby:'4' or forloop.counter|divisibleby:'7' or forloop.first %}first{% elif forloop.counter|divisibleby:'3' %}last{% endif %}">
+                                        <div class="product-outer">
+                                            <div class="product-inner">
+                                                {% if category is not None %}
+                                                    <span class="loop-product-categories"><a
+                                                            href="{{ category.get_absolute_url }}"
+                                                            rel="tag">{{ category.name }}</a></span>
+                                                {% else %}
+                                                    <span class="loop-product-categories">
+                                                        {% for category in product.categories.all %}
+                                                            <a href="{{ category.get_absolute_url }}"
+                                                               rel="tag">{{ category.name }}</a>
+                                                            {% if not forloop.last %}|{% endif %}
+                                                        {% endfor %}
+                                                    </span>
+                                                {% endif %}
+
+                                                <a href="{{ product.get_absolute_url }}">
+                                                    <h3>{{ product.name }}</h3></a>
+
+                                                <a href="{{ product.images.first.file.url }}"
+                                                   data-fancybox data-caption="{{ product.name }}">
+
+                                                    <div class="product-thumbnail">
+                                                        <img product="single-product"
+                                                             src="{{ product.images.first.file.url }}"
+                                                             alt="{{ product.name }}">
+                                                    </div>
+                                                </a>
+
+                                                <div class="price-add-to-cart">
+                                                        <span class="price">
+                                                            <span class="electro-price">
+                                                                {% if product.is_sale %}
+                                                                    <ins><span
+                                                                            class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                                    <del><span
+                                                                            class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                                                {% else %}
+                                                                    <span class="amount">{{ product.price.normalize }} Dhs</span>
+                                                                {% endif %}
+                                                            </span>
+                                                        </span>
+                                                    <a rel="nofollow" href="javascript:void(0)"
+                                                       onclick="add_to_cart(event, {{ product.id }}, '{{ product.stock_set.first.id }}')"
+                                                       class="button add_to_cart_button">Add to cart</a>
+                                                </div><!-- /.price-add-to-cart -->
+
+                                                <div class="hover-area">
+                                                    <div class="action-buttons">
+                                                        <a href="javascript:void(0)" rel="nofollow"
+                                                           onclick="add_to_wish_list(event, {{ product.id }})"
+                                                           class="add_to_wishlist"> Wishlist</a>
+                                                        <a href="javascript:void(0)"
+                                                           onclick="add_to_compare(event, {{ product.id }})"
+                                                           class="add-to-compare-link"> Comparer</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.product-inner -->
+                                        </div><!-- /.product-outer -->
+                                    </li>
+                                {% empty %}
+                                    <div class="alert alert-warning" style="text-align: center;padding: 10px;font-size:12px;font-weight:bold;width: 100%;">
+                                        <i class="fa fa-info-circle"></i>&nbsp;&nbsp;Aucun produit trouvé.
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="grid-extended" aria-expanded="true">
+
+                            <ul class="products columns-3">
+                                {% for product in products %}
+                                    <li class="product {% if forloop.counter|divisibleby:'4' or forloop.counter|divisibleby:'7' or forloop.first %}first{% elif forloop.counter|divisibleby:'3' %}last{% endif %}">
+                                        <div class="product-outer">
+                                            <div class="product-inner">
+                                                {% if category is not None %}
+                                                    <span class="loop-product-categories"><a
+                                                            href="{{ category.get_absolute_url }}"
+                                                            rel="tag">{{ category.name }}</a></span>
+                                                {% else %}
+                                                    <span class="loop-product-categories">
+                                                            {% for category in product.categories.all %}
+                                                                <a href="{{ category.get_absolute_url }}"
+                                                                   rel="tag">{{ category.name }}</a>
+                                                                {% if not forloop.last %}|{% endif %}
+                                                            {% endfor %}
+                                                        </span>
+                                                {% endif %}
+
+                                                <a href="{{ product.get_absolute_url }}">
+                                                    <h3>{{ product.name }}</h3></a>
+
+                                                <a href="{{ product.images.first.file.url }}"
+                                                   data-fancybox data-caption="{{ product.name }}">
+                                                    <div class="product-thumbnail">
+                                                        <img product="single-product"
+                                                             src="{{ product.images.first.file.url }}"
+                                                             style="width: 100%; height: auto;"
+                                                             alt="{{ product.name }}">
+                                                    </div>
+                                                </a>
+                                                <div class="product-rating">
+                                                    <div title="Evalué {{ product.rate|default:'0' }} sur 5"
+                                                         class="star-rating"><span style="width: {{ product.rating }}%"><strong
+                                                            class="rating">{{ product.rate|default:'0' }}</strong> sur 5</span>
+                                                    </div>
+                                                    ({{ product.rate|default:'0' }})
+                                                </div>
+
+                                                <div class="product-short-description">
+                                                    <ul>
+                                                        {% for specification in product.specification_set.all %}
+                                                            <li><span
+                                                                    class="a-list-item font-weight-bold">{{ specification.text }}</span>
+                                                            </li><br class="clearfix">
+                                                        {% empty %}
+                                                            <li><span class="a-list-item font-weight-bold">AUCUNE DESCRIPTION</span>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+
+
+
+                                                <div class="price-add-to-cart">
+                                                        <span class="price">
+                                                            <span class="electro-price">
+                                                                {% if product.is_sale %}
+                                                                    <ins><span
+                                                                            class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                                    <del><span
+                                                                            class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                                                {% else %}
+                                                                    <span class="amount">{{ product.price.normalize }} Dhs</span>
+                                                                {% endif %}
+                                                            </span>
+                                                        </span>
+                                                    <a rel="nofollow" href="javascript:void(0)"
+                                                       onclick="add_to_cart(event, {{ product.id }}, '{{ product.stock_set.first.id }}')"
+                                                       class="button add_to_cart_button">Add to cart</a>
+                                                </div><!-- /.price-add-to-cart -->
+
+                                                <div class="hover-area">
+                                                    <div class="action-buttons">
+                                                        <a href="javascript:void(0)" rel="nofollow"
+                                                           onclick="add_to_wish_list(event, {{ product.id }})"
+                                                           class="add_to_wishlist"> Wishlist</a>
+                                                        <a href="javascript:void(0)"
+                                                           onclick="add_to_compare(event, {{ product.id }})"
+                                                           class="add-to-compare-link"> Comparer</a>
+                                                    </div>
+                                                </div>
+                                            </div><!-- /.product-inner -->
+                                        </div><!-- /.product-outer -->
+                                    </li>
+                                {% empty %}
+                                    <div class="alert alert-warning" style="text-align: center;padding: 10px;font-size:12px;font-weight:bold;width: 100%;">
+                                        <i class="fa fa-info-circle"></i>&nbsp;&nbsp;Aucun produit trouvé.
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="list-view" aria-expanded="true">
+                            <ul class="products columns-3">
+                                {% for product in products %}
+                                    <li class="product list-view">
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <a href="{{ product.images.first.file.url }}"
+                                                   data-fancybox data-caption="{{ product.name }}">
+                                                    <img product="single-product" class="wp-post-image"
+                                                         src="{{ product.images.first.file.url }}"
+                                                         alt="{{ product.name }}">
+                                                </a>
+                                            </div>
+                                            <div class="media-body media-middle">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+
+                                                        {% if category is not None %}
+                                                            <span class="loop-product-categories"><a
+                                                                    href="{{ category.get_absolute_url }}"
+                                                                    rel="tag">{{ category.name }}</a></span>
+                                                        {% else %}
+                                                            <span class="loop-product-categories">
+                                                            {% for category in product.categories.all %}
+                                                                <a href="{{ category.get_absolute_url }}"
+                                                                   rel="tag">{{ category.name }}</a>
+                                                                {% if not forloop.last %}|{% endif %}
+                                                            {% endfor %}
+                                                        </span>
+                                                        {% endif %}
+
+                                                        <a href="{{ product.get_absolute_url }}">
+                                                            <h3>{{ product.name }}</h3></a>
+
+                                                        <div class="product-rating">
+                                                            <div title="Evalué {{ product.rate|default:'0' }} sur 5"
+                                                                 class="star-rating"><span
+                                                                    style="width: {{ product.rating }}%"><strong
+                                                                    class="rating">{{ product.rate|default:'0' }}</strong> sur 5</span>
+                                                            </div>
+                                                            ({{ product.rate|default:'0' }})
+                                                        </div>
+                                                        <div class="product-short-description">
+                                                            <ul style="padding-left: 18px;">
+                                                                {% for specification in product.specification_set.all %}
+                                                                    <li><span
+                                                                            class="font-weight-bold">{{ specification.text }}</span>
+                                                                    </li><br class="clearfix">
+                                                                {% empty %}
+                                                                    <li><span class="font-weight-bold">AUCUNE DESCRIPTION</span>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12" style="text-align: center;">
+                                                        <div class="availability">
+                                                            {% if product.quantity_in_stock > 0 %}
+                                                                <span class="in-stock">Disponible</span>
+                                                            {% else %}
+                                                                <span class="out-of-stock">Indisponible</span>
+                                                            {% endif %}
+                                                        </div>
+                                                        <span class="price">
+                                                                <span class="electro-price">
+                                                                    {% if product.is_sale %}
+                                                                        <ins><span
+                                                                                class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                                        <div class="clear"></div>
+                                                                        <del><span
+                                                                                class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                                                    {% else %}
+                                                                        <span class="amount">{{ product.price.normalize }} Dhs</span>
+                                                                    {% endif %}
+                                                                </span>
+                                                            </span>
+                                                        <a rel="nofollow" href="javascript:void(0)"
+                                                           onclick="add_to_cart(event, {{ product.id }}, '{{ product.stock_set.first.id }}')"
+                                                           class="button product_type_simple add_to_cart_button ajax_add_to_cart">Add
+                                                            to cart</a>
+
+                                                        <div class="hover-area">
+                                                            <div class="action-buttons">
+                                                                <a href="javascript:void(0)" rel="nofollow"
+                                                                   onclick="add_to_wish_list(event, {{ product.id }})"
+                                                                   rel="nofollow" class="add_to_wishlist">Wishlist</a>
+                                                                <a href="javascript:void(0)" rel="nofollow"
+                                                                   onclick="add_to_compare(event, {{ product.id }})"
+                                                                   class="add-to-compare-link">Compare</a>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% empty %}
+                                    <div class="alert alert-warning" style="text-align: center;padding: 10px;font-size:12px;font-weight:bold;width: 100%;">
+                                        <i class="fa fa-info-circle"></i>&nbsp;&nbsp;Aucun produit trouvé.
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="list-view-small" aria-expanded="true">
+
+                            <ul class="products columns-3">
+                                {% for product in products %}
+                                    <li class="product list-view list-view-small">
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <a href="{{ product.images.first.file.url }}"
+                                                   data-fancybox data-caption="{{ product.name }}">
+                                                    <img product="single-product" class="wp-post-image"
+                                                         src="{{ product.images.first.file.url }}"
+                                                         alt="{{ product.name }}">
+                                                </a>
+                                            </div>
+                                            <div class="media-body media-middle">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+
+                                                        {% if category is not None %}
+                                                            <span class="loop-product-categories"><a
+                                                                    href="{{ category.get_absolute_url }}"
+                                                                    rel="tag">{{ category.name }}</a></span>
+                                                        {% else %}
+                                                            <span class="loop-product-categories">
+                                                                    {% for category in product.categories.all %}
+                                                                        <a href="{{ category.get_absolute_url }}"
+                                                                           rel="tag">{{ category.name }}</a>
+                                                                        {% if not forloop.last %}|{% endif %}
+                                                                    {% endfor %}
+                                                                </span>
+                                                        {% endif %}
+
+                                                        <a href="{{ product.get_absolute_url }}">
+                                                            <h3>{{ product.name }}</h3></a>
+
+                                                        <div class="product-short-description">
+                                                            <ul style="padding-left: 18px;">
+                                                                {% for specification in product.specification_set.all %}
+                                                                    <li><span>{{ specification.text }}</span></li>
+                                                                    <br class="clearfix">
+                                                                {% empty %}
+                                                                    <li><span class="font-weight-bold">AUCUNE DESCRIPTION</span>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                        <div class="product-rating">
+                                                            <div title="Evalué {{ product.rate|default:'0' }} sur 5"
+                                                                 class="star-rating"><span
+                                                                    style="width: {{ product.rating }}%"><strong
+                                                                    class="rating">{{ product.rate|default:'0' }}</strong> sur 5</span>
+                                                            </div>
+                                                            ({{ product.rate|default:'0' }})
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div class="price-add-to-cart">
+
+                                                            <span class="price">
+                                                                <span class="electro-price">
+                                                                    {% if product.is_sale %}
+                                                                        <ins><span
+                                                                                class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                                        <div class="clear"></div>
+                                                                        <del><span
+                                                                                class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                                                    {% else %}
+                                                                        <span class="amount">{{ product.price.normalize }} Dhs</span>
+                                                                    {% endif %}
+                                                                </span>
+                                                            </span>
+
+                                                            <a rel="nofollow" href="javascript:void(0)"
+                                                               onclick="add_to_cart(event, {{ product.id }}, '{{ product.stock_set.first.id }}')"
+                                                               class="button product_type_simple add_to_cart_button ajax_add_to_cart">Add
+                                                                to cart</a>
+                                                        </div><!-- /.price-add-to-cart -->
+
+                                                        <div class="hover-area">
+                                                            <div class="action-buttons">
+                                                                <a href="javascript:void(0)" rel="nofollow"
+                                                                   onclick="add_to_wish_list(event, {{ product.id }})"
+                                                                   rel="nofollow" class="add_to_wishlist">Wishlist</a>
+                                                                <a href="javascript:void(0)" rel="nofollow"
+                                                                   onclick="add_to_compare(event, {{ product.id }})"
+                                                                   class="add-to-compare-link">Compare</a>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% empty %}
+                                    <div class="alert alert-warning" style="text-align: center;padding: 10px;font-size:12px;font-weight:bold;width: 100%;">
+                                        <i class="fa fa-info-circle"></i>&nbsp;&nbsp;Aucun produit trouvé.
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="shop-control-bar-bottom">
+                        <nav class="woocommerce-pagination">
+                            {% if products.has_other_pages %}
+                                {% if category is not None and not category_from_search %}
+                                    <ul class="page-numbers">
+                                        {% if products.has_previous %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{{ category.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page=1"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-double-left"></i></a>
+                                                {% else %}
+                                                    <a href="{{ category.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page=1"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-double-left"></i></a>
+                                                {% endif %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{{ category.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ products.previous_page_number }}"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-left"></i></a>
+                                                {% else %}
+                                                    <a href="{{ category.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ products.previous_page_number }}"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-left"></i></a>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+
+                                        {% for n in products.paginator.page_range %}
+
+                                            {% if sort_type is None %}
+                                                <li><a href="{{ category.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ n }}"
+                                                       class="page-numbers {% if n == products.number %}current{% endif %}">{{ n }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li>
+                                                    <a href="{{ category.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ n }}"
+                                                       class="page-numbers {% if n == products.number %}current{% endif %}">{{ n }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if products.has_next %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{{ category.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ products.next_page_number }}"
+                                                       class="page-numbers"><i class="fas fa-angle-right"></i></a>
+                                                {% else %}
+                                                    <a href="{{ category.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ products.next_page_number }}"
+                                                       class="page-numbers"><i class="fas fa-angle-right"></i></a>
+                                                {% endif %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{{ category.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ products.paginator.num_pages }}"
+                                                       class="page-numbers"><i
+                                                            class="fas fa-angle-double-right"></i></a>
+                                                {% else %}
+                                                    <a href="{{ category.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ products.paginator.num_pages }}"
+                                                       class="page-numbers"><i
+                                                            class="fas fa-angle-double-right"></i></a>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+
+                                {% elif brand is not None %}
+                                    <ul class="page-numbers">
+                                        {% if products.has_previous %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{{ brand.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page=1"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-double-left"></i></a></li>
+                                                {% else %}
+                                                    <a href="{{ brand.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page=1"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-double-left"></i></a></li>
+                                                {% endif %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{{ brand.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ products.previous_page_number }}"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-left"></i></a>
+                                                {% else %}
+                                                    <a href="{{ brand.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ products.previous_page_number }}"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-left"></i></a>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                        {% for n in products.paginator.page_range %}
+
+                                            {% if sort_type is None %}
+                                                <li><a href="{{ brand.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ n }}"
+                                                       class="page-numbers {% if n == products.number %}current{% endif %}">{{ n }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li>
+                                                    <a href="{{ brand.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ n }}"
+                                                       class="page-numbers {% if n == products.number %}current{% endif %}">{{ n }}</a>
+                                                </li>
+                                            {% endif %}
+
+                                        {% endfor %}
+
+                                        {% if products.has_next %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{{ brand.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ products.next_page_number }}"
+                                                       class="page-numbers"><i class="fas fa-angle-right"></i></a></li>
+                                                {% else %}
+                                                    <a href="{{ brand.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ products.next_page_number }}"
+                                                       class="page-numbers"><i class="fas fa-angle-right"></i></a></li>
+                                                {% endif %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{{ brand.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ products.paginator.num_pages }}"
+                                                       class="page-numbers"><i
+                                                            class="fas fa-angle-double-right"></i></a>
+                                                {% else %}
+                                                    <a href="{{ brand.get_absolute_url }}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ products.paginator.num_pages }}"
+                                                       class="page-numbers"><i
+                                                            class="fas fa-angle-double-right"></i></a>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                {% else %}
+                                    <ul class="page-numbers">
+                                        {% if products.has_previous %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{% url 'ecommerce:products' %}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page=1"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-double-left"></i></a></li>
+                                                {% else %}
+                                                    <a href="{% url 'ecommerce:products' %}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page=1"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-double-left"></i></a></li>
+                                                {% endif %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{% url 'ecommerce:products' %}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ products.previous_page_number }}"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-left"></i></a>
+                                                {% else %}
+                                                    <a href="{% url 'ecommerce:products' %}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ products.previous_page_number }}"
+                                                       class="previous page-numbers"><i
+                                                            class="fas fa-angle-left"></i></a>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                        {% for n in products.paginator.page_range %}
+
+                                            {% if sort_type is None %}
+                                                <li><a href="{% url 'ecommerce:products' %}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ n }}"
+                                                       class="page-numbers {% if n == products.number %}current{% endif %}">{{ n }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li>
+                                                    <a href="{% url 'ecommerce:products' %}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ n }}"
+                                                       class="page-numbers {% if n == products.number %}current{% endif %}">{{ n }}</a>
+                                                </li>
+                                            {% endif %}
+
+                                        {% endfor %}
+
+                                        {% if products.has_next %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{% url 'ecommerce:products' %}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ products.next_page_number }}"
+                                                       class="page-numbers"><i class="fas fa-angle-right"></i></a></li>
+                                                {% else %}
+                                                    <a href="{% url 'ecommerce:products' %}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ products.next_page_number }}"
+                                                       class="page-numbers"><i class="fas fa-angle-right"></i></a></li>
+                                                {% endif %}
+                                            <li>
+                                                {% if sort_type is None %}
+                                                    <a href="{% url 'ecommerce:products' %}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}page={{ products.paginator.num_pages }}"
+                                                       class="page-numbers"><i
+                                                            class="fas fa-angle-double-right"></i></a>
+                                                {% else %}
+                                                    <a href="{% url 'ecommerce:products' %}?{% if search is not None %}search={{ search }}&{% endif %}{% if category is not None and category_from_search %}category={{ category.id }}&{% endif %}{% if min_price is not None %}min_price={{ min_price }}&{% endif %}{% if max_price is not None %}max_price={{ max_price }}&{% endif %}sort_type={{ sort_type }}&page={{ products.paginator.num_pages }}"
+                                                       class="page-numbers"><i
+                                                            class="fas fa-angle-double-right"></i></a>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                {% endif %}
+                            {% endif %}
+                        </nav>
+                    </div>
+
+                </main><!-- #main -->
+            </div><!-- #primary -->
+
+            <div id="sidebar" class="sidebar" role="complementary">
+                <aside class="widget woocommerce widget_product_categories electro_widget_product_categories">
+                    <ul class="product-categories category-single">
+                        <li class="product_cat">
+                            <ul class="show-all-cat">
+                                <li class="product_cat"><span class="show-all-cat-dropdown font-weight-bold">Afficher tous les categories</span>
+                                    <ul>
+                                        {% for category in categories %}
+                                            <li class="cat-item font-italic font-weight-bold">
+                                                <a title="{{ category.name }}" href="{{ category.get_absolute_url }}"><i
+                                                        class="{{ category.icon }}"
+                                                        style="padding-right: 1em;"></i>{{ category.name }} <span
+                                                        class="count">({{ category.product_set.all.count }})</span></a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul>
+                                {% if category is not None %}
+                                    <li class="cat-item font-italic font-weight-bold">
+                                        <a title="{{ category.name }}" href="{{ category.get_absolute_url }}"><i
+                                                class="{{ category.icon }}"
+                                                style="padding-right: 1em;"></i>{{ category.name }} <span class="count">({{ category.product_set.all.count }})</span></a>
+                                    </li>
+                                {% endif %}
+                                <li class="cat-item font-italic font-weight-bold">
+                                    <a title="{{ category.name }}" href="{% url 'ecommerce:products' %}"><i
+                                            class="fab fa-product-hunt" style="padding-right: 1em;"></i>Tous les
+                                        produits</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+                <aside class="widget widget_electro_products_filter">
+                    <h3 class="widget-title"><i class="fas fa-filter"></i> Filtres</h3>
+                    <aside class="widget woocommerce widget_layered_nav">
+                        <h3 class="widget-title">Marques</h3>
+                        <ul>
+                            {% for brand in brands %}
+                                {% if forloop.counter <= 3 %}
+                                    <li><a href="{{ brand.get_absolute_url }}">{{ brand.name }}</a> <span class="count">({{ brand.product_set.all.count }})</span>
+                                    </li>
+                                {% else %}
+                                    <li class="hidden_brands" style="display: none;"><a
+                                            href="{{ brand.get_absolute_url }}">{{ brand.name }}</a> <span
+                                            class="count">({{ brand.product_set.all.count }})</span></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                        <p class="maxlist-more"><a href="javascript:void(0)" id="more_brands">+ Afficher plus</a></p>
+                    </aside>
+                    <aside class="widget woocommerce widget_price_filter"
+                           style=" border-bottom: 1px solid #0787ea; padding-bottom: 8%; text-align: center;">
+                        <form>
+                            <h3 class="widget-title">Prix</h3>
+
+                            {% if sort_type is not None %}
+                                <input type="hidden" name="sort_type" value="{{ sort_type }}" style="display: none;"/>
+                            {% elif search is not None %}
+                                <input type="hidden" name="search" value="{{ search }}" style="display: none;"/>
+                            {% elif category is not None %}
+                                <input type="hidden" name="category" value="{{ category.id }}" style="display: none;"/>
+                            {% endif %}
+
+                                {% render_field PriceFilterForm.min_price value=min_price %}
+                            <br class="clearfix"/>
+                                {% render_field PriceFilterForm.max_price value=max_price %}
+
+                            <div class="price_slider_amount" style="text-align: center">
+                                <button type="submit" class="button"><i class="fas fa-filter"></i> Filter</button>
+                            </div>
+                        </form>
+                    </aside>
+                </aside>
+                <aside class="widget widget_products">
+                    <h3 class="widget-title">Nouveaux Produits</h3>
+
+                    <ul class="product_list_widget">
+                        {% for product in latest_products %}
+                            <li>
+                                <a href="{{ product.get_absolute_url }}">
+                                    <a href="{{ product.images.first.file.url }}" data-fancybox
+                                       data-caption="{{ product.name }}">
+                                        <img width="180" height="180" src="{{ product.images.first.file.url }}"
+                                             class="wp-post-image" alt="{{ product.images.first.file.url }}"/>
+                                        <a href="{{ product.get_absolute_url }}"><span
+                                                class="product-title">{{ product.name }}</span></a>
+                                    </a>
+                                </a>
+                                <span class="electro-price">
+                                                {% with product.price as current_price %}
+                                                    {% if product.old_price is not None and product.old_price > current_price %}
+                                                        <ins><span class="amount">{{ current_price.normalize|intcomma }} Dhs</span></ins>
+                                                        <del><span
+                                                                class="amount">{{ product.old_price.normalize|intcomma }} Dhs</span></del>
+                                                    {% else %}
+                                                        <span class="amount">{{ product.price.normalize|intcomma }} Dhs</span>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </aside>
+            </div>
+
+        </div><!-- .container -->
+    </div><!-- #content -->
+    <style>
+        /* Customize website's scrollbar like Mac OS
+        Not supports in Firefox and IE */
+
+        /* total width */
+        .product-short-description::-webkit-scrollbar {
+            background-color: #fff;
+            width: 16px
+        }
+
+        /* background of the scrollbar except button or resizer */
+        .product-short-description::-webkit-scrollbar-track {
+            background-color: #fff
+        }
+
+        .product-short-description::-webkit-scrollbar-track:hover {
+            background-color: #f4f4f4
+        }
+
+        /* scrollbar itself */
+        .product-short-description::-webkit-scrollbar-thumb {
+            background-color: #babac0;
+            border-radius: 16px;
+            border: 5px solid #fff
+        }
+
+        .product-short-description::-webkit-scrollbar-thumb:hover {
+            background-color: #a0a0a5;
+            border: 4px solid #f4f4f4
+        }
+
+        /* set button(top and bottom of the scrollbar) */
+        .product-short-description::-webkit-scrollbar-button {
+            display: none
+        }
+
+    </style>
+
+
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+
+    <script>
+
+    $(".product-short-description").css({'overflow-y': 'scroll', 'height': '10em', 'margin-bottom': '1'});
+    $("body").attr('class','left-sidebar');
+    $("img[product='single-product']").css({'height': '180', 'width': '15em'});
+
+    </script>
+{% endblock %}

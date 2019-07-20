@@ -1,0 +1,46 @@
+/*===================================================================================*/
+/*  QTY-BUTTONS
+/*===================================================================================*/
+div.quantity {
+	&.buttons_added {
+		position: relative;
+
+		.minus, .plus {
+			width: 1.429em;
+			height: 1.429em;
+			border-radius: 50%;
+			font-size: 1em;
+			font-weight: bold;
+			color: #333e48;
+			padding: 0;
+			text-align: center;
+		    line-height: 1.429em;
+		    position: absolute;
+		    bottom: 0.536em;
+    		#{$end}: 0.536em;
+    		display: inline-block;
+
+			&:hover {
+				color: #fff;
+			}
+		}
+
+		input[type="number"] {
+			-moz-appearance: textfield;
+		}
+
+		input[type=number]::-webkit-inner-spin-button,
+		input[type=number]::-webkit-outer-spin-button {
+		  -webkit-appearance: none;
+		  margin: 0; /* Removes leftover margin */
+		}
+
+		.minus {
+		}
+
+		.plus {
+			#{$end}: 1.965em;
+			margin-#{$end}: 0.357em;
+		}
+	}
+}

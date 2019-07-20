@@ -1,0 +1,182 @@
+/*
+Template: 		Electro
+Description: 	Responsive eCommerce Bootstrap 3 Template
+Version: 		1.0
+Author: 		Kader Ibrahim
+Demo URI: 		http://transvelo.github.io/electro-html/home
+
+===================================================================================
+Table of Contents
+===================================================================================
+
+1.  General Styles
+2. Base
+3. Type
+4. Form
+5. Layout
+6. Woocommerce
+7. Page
+8. Media
+9. Primary nav
+10. Departments Menu
+11. Vertical Menu
+12. Secondary Nav
+13. Navbar Search
+14. Navbar Mini Cart
+15. Wc Breadcrumb
+16. Wc Ordering
+17. Wc Tabs
+18. Electro Wc PPP Select
+19. Electro Adv pagination
+20. Product Item
+21. Product List View
+22. Wc Pagination
+23. Star Rating
+24. Owl Carousel
+25. Post Item
+26. Blog Pagination
+27. Table Cart
+28. Cart Collaterals
+29. Jplayer
+30. Post Format Gallery
+31. Wc Reviews
+32. Utilities
+33. Qty Buttons
+34. Megamenu
+35. Scroll Up
+36. Widget Electro Recent Posts
+37. Pace
+38. Typeahead
+39. Top Bar
+40. Header
+41.  Navbar
+42. Sliders
+43. Home Full Width Slider
+44. Features List
+45. Ads
+46. Section Onsale Product
+47. products-carousel-tabs
+48. Shop Control Bar
+49. Product Categories
+50. products
+51. products-carousel
+52. products-carousel-with-image
+53. product-card
+54. Product-cards-carousel
+55. Products-2-1-2
+56. Products-6-1
+57. Home-list-categories
+58. Sidebar
+59. Brands-carousel
+60. Widgets
+61. Wc-widgets
+62. Footer
+63. Comments
+64. Posts
+65. Woocommerce-checkout
+66. Checkout Page 
+67. Myaccount Page
+68. Cart Page
+69. Order-received Page
+70. Track-your-order Page
+71. Single-product Page
+72. About Page
+73. Faq Page
+74. Compare Page
+75. Contact Page
+76. 404 Page
+77. Store-directory Page
+78. Wishlist
+79. Woocompare
+80. Responsive
+
+*/
+
+@import 'bs-variables';
+@import 'variables';
+@import 'mixins';
+
+@import 'base/base';
+@import 'base/type';
+@import 'base/form';
+@import 'base/layout';
+@import 'base/woocommerce';
+@import 'base/page';
+@import 'base/media';
+
+@import 'components/primary-nav';
+@import 'components/departments-menu';
+@import 'components/vertical-menu';
+@import 'components/secondary-nav';
+@import 'components/navbar-search';
+@import 'components/navbar-mini-cart';
+@import 'components/wc-breadcrumb';
+@import 'components/wc-ordering';
+@import 'components/wc-tabs';
+@import 'components/electro-wc-ppp-select';
+@import 'components/electro-adv-pagination';
+@import 'components/product-item';
+@import 'components/product-list-view';
+@import 'components/wc-pagination';
+@import 'components/star-rating';
+@import 'components/owl-carousel';
+@import 'components/post-item';
+@import 'components/blog-pagination';
+@import 'components/table-cart';
+@import 'components/cart-collaterals';
+@import 'components/jplayer';
+@import 'components/post-format-gallery';
+@import 'components/wc-reviews';
+@import 'components/utilities';
+@import 'components/qty-buttons';
+@import 'components/megamenu';
+@import "components/scrollup";
+@import 'components/widget-electro-recent-posts';
+@import 'components/pace';
+@import 'components/typeahead';
+
+@import 'blocks/top-bar';
+@import 'blocks/header';
+@import 'blocks/navbar';
+@import 'blocks/sliders';
+@import 'blocks/home-full-width-slider';
+@import 'blocks/features-list';
+@import 'blocks/ads';
+@import 'blocks/section-onsale-product';
+@import 'blocks/products-carousel-tabs';
+@import 'blocks/shop-control-bar';
+@import 'blocks/product-categories';
+@import 'blocks/products';
+@import 'blocks/products-carousel';
+@import 'blocks/products-carousel-with-image';
+@import 'blocks/product-card';
+@import 'blocks/product-cards-carousel';
+@import 'blocks/products-2-1-2';
+@import 'blocks/products-6-1';
+@import 'blocks/home-list-categories';
+@import 'blocks/sidebar';
+@import 'blocks/brands-carousel';
+@import 'blocks/widgets';
+@import 'blocks/wc-widgets';
+@import 'blocks/footer';
+@import 'blocks/comments';
+@import 'blocks/posts';
+@import 'blocks/woocommerce-checkout';
+
+@import 'pages/page-checkout';
+@import 'pages/page-myaccount';
+@import 'pages/page-cart';
+@import 'pages/page-order-received';
+@import 'pages/page-track-your-order';
+@import 'pages/page-single-product';
+@import 'pages/page-about';
+@import 'pages/page-faq';
+@import 'pages/page-compare';
+@import 'pages/page-contact';
+@import 'pages/page-404';
+@import 'pages/page-store-directory';
+
+@import 'integrations/wishlist';
+@import 'integrations/woocompare';
+
+@import 'responsive';

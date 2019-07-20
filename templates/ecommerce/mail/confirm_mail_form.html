@@ -1,0 +1,73 @@
+{% extends "ecommerce/base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block content %}
+    <div id="content" class="site-content" tabindex="-1">
+                <div class="container">
+
+                    <nav class="woocommerce-breadcrumb" ><a href="../home.html">Acceuil</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Mon Compte</nav><!-- .woocommerce-breadcrumb -->
+
+                    <div class="content-area">
+                        <main id="main" class="site-main">
+
+                    {% include 'ecommerce/messages.html' %}
+
+                            <article id="post-8" class="hentry">
+
+                                <div class="entry-content">
+                                    <div class="woocommerce">
+                                        <div class="customer-login-form">
+
+
+
+
+
+                                                    <h2>Renvoyer message d'activation du compte</h2>
+
+                                                    <form method="post" class="login">
+                                                        {% csrf_token %}
+
+                                                        <p class="before-login-text">Saisir votre adresse email</p>
+
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Email: <span class="required">*</span></label>
+                                                            {% if confirmForm.email.errors %}
+                                                                {% render_field confirmForm.email style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field confirmForm.email %}
+                                                            {% endif %}
+                                                            {% for error in confirmForm.email.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+
+                                                        </p>
+
+                                                        <p class="form-row">
+                                                            <button class="button" type="submit"><i class="fas fa-sign-in-alt"></i> M'envoyer l'email d'activation</button>
+                                                        </p>
+
+
+                                                    </form>
+
+
+
+
+
+                                        </div><!-- /.customer-login-form -->
+                                    </div><!-- .woocommerce -->
+                                </div><!-- .entry-content -->
+
+                            </article><!-- #post-## -->
+
+                        </main><!-- #main -->
+                    </div><!-- #primary -->
+
+                </div><!-- .col-full -->
+            </div><!-- #content -->
+{% endblock %}

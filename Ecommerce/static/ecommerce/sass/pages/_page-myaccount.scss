@@ -1,0 +1,292 @@
+/*===================================================================================*/
+/*  MYACCOUNT-PAGE
+/*===================================================================================*/
+.customer-login-form {
+	position: relative;
+
+	h2 {
+		font-size: 1.786em;
+		line-height: 1.6em;
+		display: block;
+		padding-bottom: 0.400em;
+		position: relative;
+		margin-bottom: 1.360em;
+		border-bottom: 1px solid #dadada;
+
+		&::after {
+			content: ' ';
+			border-bottom: 2px solid transparent;
+			display: block;
+			width: 20%;
+			position: absolute;
+			bottom: -1px;
+		}
+	}
+
+	.button {
+		font-weight: bold;
+	}
+
+	form.register {
+		> p.form-row:nth-last-child(2) {
+			margin-bottom: 3.571em;
+		}
+	}
+}
+
+.no-registration-form {
+	@include make-col-span(5);
+	margin: 0 auto;
+}
+
+#customer_login {
+	padding: 2.5em 2.143em;
+	@include clearfix();
+	position: relative;
+
+	&::before {
+		border-right: 1px solid #ddd;
+		height: 100%;
+		position: absolute;
+		content: ' ';
+		right: 50%;
+		top: 0;
+	}
+
+	.col-1 {
+		padding-right: 6.071em;
+	}
+
+	.col-2 {
+		padding-left: 5.857em;
+	}
+
+	.before-login-text,
+	.before-register-text {
+		margin-bottom: 2.143em;
+	}
+
+	.register-benefits {
+		clear: both;
+
+		h3 {
+			font-size: 1.286em;
+			line-height: 1em;
+			margin-bottom: 1.444em;
+		}
+
+		ul {
+			padding-#{$start}: 0;
+			margin-bottom: 0;
+			list-style: none;
+
+			> li {
+				line-height: 2.143em;
+
+				&::before {
+					content: "\f00c";
+					color: #5bb300;
+					@include fa-icon();
+					font-size: 1.143em;
+					display: inline-block;
+					margin-#{$end}: 1em;
+				}
+			}
+		}
+	}
+}
+
+.or-text {
+	position: absolute;
+	right: 50%;
+	top: 50%;
+	transform: translate(50%);
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	border-radius: 50%;
+	border: 1px solid #ddd;
+	font-style: italic;
+	background-color: #fff;
+	z-index: 1;
+}
+
+.address, .addresses, .track-order {
+	header.title {
+		border-bottom: 1px solid #dadada;
+		margin-bottom: 1.360em;
+		@include clearfix;
+
+		h3 {
+			font-size: 1.786em;
+			line-height: 1.6em;
+			display: block;
+			position: relative;
+			float: $start;
+			padding-bottom: 0.400em;
+			margin-bottom: 0;
+			width: 90%;
+
+			&::after {
+				content: ' ';
+				border-bottom: 2px solid transparent;
+				display: block;
+				width: 20%;
+				position: absolute;
+				bottom: -1px;
+			}
+		}
+
+		.edit {
+			float: $end;
+			line-height: 3.571em;
+		}
+	}
+
+	address {
+		line-height: 2em;
+	}
+}
+
+.woocommerce-account h2 {
+	font-size: 1.786em;
+	line-height: 1.6em;
+	display: block;
+	position: relative;
+	padding-bottom: 0.400em;
+	border-bottom: 1px solid #dadada;
+	margin-bottom: 1.360em;
+
+	&::after {
+		content: ' ';
+		border-bottom: 2px solid transparent;
+		display: block;
+		width: 20%;
+		position: absolute;
+		bottom: -1px;
+	}
+}
+
+.woocommerce-edit-address {
+	form {
+		h3 {
+			@include make-title();
+		}
+	}
+}
+
+.edit-account {
+	legend {
+		@include make-title();
+	}
+}
+
+.my_account_orders {
+	@include make-table();
+
+	.order-actions {
+		.button.view {
+			padding: 0.5875em 2.625em;
+			font-size: 0.875em;
+		}
+	}
+}
+
+.notes {
+	padding-#{$start}: 0;
+	list-style: none;
+}
+
+.note {
+	margin-bottom: 2em;
+
+	.meta {
+		color: #999;
+		font-size: 11px;
+		line-height: 1.5;
+	}
+
+	.description {
+		padding: 10px;
+		background-color: #efefef;
+		font-size: 13px;
+		position: relative;
+
+		&::after {
+			content: "";
+			display: block;
+			position: absolute;
+			top: -10px;
+			left: 20px;
+			width: 0;
+			height: 0;
+			border-width: 0 0 10px 10px;
+			border-style: solid;
+			border-color: #efefef transparent;
+		}
+
+		p:last-child {
+			margin: 0;
+			padding: 0;
+		}
+	}
+}
+
+.order-again {
+	margin-bottom: 2.5em;
+
+	.button {
+		padding: 0.6875rem 2.625rem;
+	}
+}
+
+.order-info {
+	mark {
+		padding: inherit;
+		background-color: transparent;
+		font-weight: bold;
+	}
+}
+
+.customer_details,
+.order_details {
+	@include make-table();
+}
+
+.order_details.bacs_details {
+	list-style: none;
+	padding: 0;
+}
+
+.customer_details {
+	border: $table-border-width solid $table-border-color;
+
+	th,
+	td {
+		border: $table-border-width solid $table-border-color;
+	}
+
+	th {
+    	background-color: $table-bg-accent;
+  	}
+
+	thead {
+		th,
+		td {
+			border-bottom-width: (2 * $table-border-width);
+		}
+	}
+}
+
+.order-info,
+.commentlist.notes,
+.order_details,
+.customer_details,
+.addresses {
+	margin-bottom: 2.5em;
+}
+
+label[for="rememberme"] {
+	margin-#{$start}: 0.75em;
+}

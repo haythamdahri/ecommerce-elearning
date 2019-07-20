@@ -1,0 +1,278 @@
+{% extends 'ecommerce/base.html' %}
+{% load staticfiles %}
+
+{% block title %}{{ product.name|upper }}{% endblock %}
+
+{% block content %}
+
+    <div id="content" class="site-content" tabindex="-1">
+                <div class="container">
+
+                    <nav class="woocommerce-breadcrumb">
+                        <a href="{% url 'ecommerce:home' %}">Acceuil</a>
+                        <span class="delimiter"><i class="fa fa-angle-right"></i>
+                        </span>
+                        <a href="{{ product.categories.first.get_absolute_url }}">{{ product.categories.first.name }}</a>
+                        <span class="delimiter"><i class="fa fa-angle-right"></i>
+                        </span>{{ product.name }}
+                    </nav>
+
+            <div id="primary" class="content-area">
+                        <main id="main" class="site-main">
+
+                            <div class="product">
+
+                                <div class="single-product-wrapper">
+                                    <div class="product-images-wrapper">
+                                        {% if product.is_sale %}
+                                            <span class="onsale">Solde!</span>
+                                        {% endif %}
+                                        <div class="images electro-gallery">
+                                            <div class="thumbnails-single owl-carousel">
+                                                {% for image in product.images.all %}
+                                                    <a href="{{ product.images.first.file.url }}" data-fancybox data-caption="{{ product.name }}" class="zoom" title="" data-rel="{{ image.file.url }}"><img src="{{ image.file.url }}" data-echo="{{ image.file.url }}" class="wp-post-image" alt=""></a>
+                                                {% endfor %}
+                                            </div><!-- .thumbnails-single -->
+
+                                            <div class="thumbnails-all columns-5 owl-carousel">
+                                                {% for image in product.images.all %}
+                                                    <a href="{{ product.images.first.file.url }}" data-fancybox data-caption="{{ product.name }}" class="{% if forloop.first %}first{% elif forloop.last %}last{% endif %}" title=""><img src="{{ image.file.url }}" data-echo="{{ image.file.url }}" class="wp-post-image" alt=""></a>
+                                                {% endfor %}
+                                            </div><!-- .thumbnails-all -->
+                                        </div><!-- .electro-gallery -->
+                                    </div><!-- /.product-images-wrapper -->
+
+                                    <div class="summary entry-summary">
+
+                                        <span class="loop-product-categories">
+                                            {% for category in product.categories.all %}
+                                                <a href="{{ category.get_absolute_url }}" rel="tag">{{ category.name }}</a> {% if not forloop.last %}|{% endif %}
+                                            {% endfor %}
+                                        </span><!-- /.loop-product-categories -->
+
+                                        <h1 itemprop="name" class="product_title entry-title">{{ product.name }}</h1>
+
+                                        <div class="woocommerce-product-rating">
+                                            <div class="star-rating" title="Évalué {{ product.rate }} sur 5">
+                                                <span style="width:{{ product.rating }}%">
+                                                    <strong itemprop="ratingValue" class="rating">{{ product.rate }}</strong>
+                                                    sur <span itemprop="bestRating">5</span>				based on
+                                                    <span itemprop="ratingCount" class="rating">3</span>
+                                                    customer ratings
+                                                </span>
+                                            </div>
+
+                                            <a href="#reviews" class="woocommerce-review-link">(<span itemprop="reviewCount" class="count">{{ product.number_views }}</span> vue)</a>
+                                        </div><!-- .woocommerce-product-rating -->
+
+                                        <div class="brand">
+                                            <a href="product-category.html">
+                                                <img src="{{ product.brand.logo.file.url }}" alt="{{ product.brand.name }}" />
+                                            </a>
+                                        </div><!-- .brand -->
+
+                                        {% if product.quantity_in_stock > 0 %}
+                                            <div class="availability in-stock">
+                                                Disponibilité: <span>Disponible</span>
+                                            </div><!-- .availability -->
+                                        {% else %}
+                                            <div class="availability out-of-stock">
+                                                Disponibilité: <span>Indisponible</span>
+                                            </div><!-- .availability -->
+                                        {% endif %}
+
+                                        <hr class="single-product-title-divider" />
+
+                                        <div class="action-buttons">
+
+                                            <a href="javascript:void(0)" rel="nofollow" onclick="add_to_wish_list(event, {{ product.id }})" class="add_to_wishlist" >Wishlist</a>
+
+                                            <a href="javascript:void(0)" onclick="add_to_compare(event, {{ product.id }})" class="add-to-compare-link" data-product_id="2452">Compare</a>
+                                        </div><!-- .action-buttons -->
+
+                                        <div itemprop="description">
+                                            <ul>
+                                                {% for specification in product.specification_set.all %}
+                                                    <li>{{ specification.text }}</li>
+                                                    <br class="clearfix">
+                                                {% empty %}
+                                                    <li class="font-weight-bold">AUCUNE DESCRIPTION</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div><!-- .description -->
+
+                                        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+
+                                            <p class="price">
+                                                <span class="electro-price">
+                                                    {% if product.is_sale %}
+                                                        <ins><span class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                        <del><span class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                                    {% else %}
+                                                        <span class="amount">{{ product.price.normalize }} Dhs</span>
+                                                    {% endif %}
+                                                </span>
+                                            </p>
+
+                                            <meta itemprop="price" content="1215" />
+                                            <meta itemprop="priceCurrency" content="USD" />
+                                            <link itemprop="availability" href="http://schema.org/InStock" />
+
+                                        </div><!-- /itemprop -->
+
+                                        <form class="variations_form cart" onsubmit="add_product_to_cart(event, this)" method="post">
+                                        {% csrf_token %}
+                                                        <div class="col-sm-12">
+                                                        <table class="variations">
+                                                        <tbody>
+                                                            {% if product.stock_set.all.count > 0 %}
+                                                                <tr>
+                                                                    <td class="label"><label>Couleur</label></td>
+                                                                    <td class="value">
+                                                                        <div class="radio-pillbox" style="box-shadow: 0px 10px 1px #ddd, 0 10px 20px #ccc;">
+                                                                            <radiogroup>
+                                                                                {% for stock in product.stock_set.all %}
+                                                                                    <div>
+                                                                                        <input {% if forloop.first %}checked{% endif %} style="background: {{ stock.color.code_hex }};" type="radio" name="stock" id="{{ stock.id }}" value="{{ stock.id }}" class="{% if forloop.first %}first{% elif forloop.last %}last{% endif %}" />
+                                                                                        <label for="{{ stock.id }}" class="radio-label"></label>
+                                                                                    </div>
+                                                                                {% endfor %}
+                                                                            </radiogroup>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            {% else %}
+                                                                <div class="alert alert-warning" style="padding: 10px;font-size:12px;font-weight:bold;width: 100%;" >
+                                                                    <i class="fa fa-info-circle"></i>&nbsp;&nbsp;Produit indisponible dans le stock!
+                                                                </div>
+                                                            {% endif %}
+                                                        </tbody>
+                                                        </table>
+                                                        </div>
+
+
+                                        <div class="clearfix"></div>
+                                            <div class="single_variation_wrap">
+                                                <div class="woocommerce-variation single_variation"></div>
+                                                <div class="woocommerce-variation-add-to-cart variations_button">
+                                                    <div class="quantity">
+                                                        <label>Quantité:</label>
+                                                        <input type="number" name="quantity" value="1" title="Qty" class="input-text qty text"/>
+                                                    </div>
+                                                    <button type="submit" class="single_add_to_cart_button button"><i class="fas fa-sync-alt fa-spin" style="color: #000000;display: none;"></i> Ajouter au panier</button>
+                                                    <input type="hidden" name="product" value="{{ product.id }}" />
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div><!-- .summary -->
+                                </div><!-- /.single-product-wrapper -->
+
+
+                                <div class="woocommerce-tabs wc-tabs-wrapper">
+                                    <ul class="nav nav-tabs electro-nav-tabs tabs wc-tabs" role="tablist">
+                                        <li class="nav-item description_tab">
+                                            <a href="#tab-description" class="active" data-toggle="tab">Description</a>
+                                        </li>
+
+                                    </ul>
+
+                                    <div class="tab-content">
+
+                                        <div class="tab-pane active in panel entry-content wc-tab" id="tab-description">
+                                            <div class="electro-description">
+                                                {{ product.specification.text|safe }}
+                                            </div><!-- /.electro-description -->
+
+                                            <div class="product_meta">
+
+                                                <span class="posted_in">Categories:
+                                                    {% for category in product.categories.all %}
+                                                        <a href="{{ category.get_basolute_url }}" rel="tag">{{ category.name }}</a> {% if not forloop.last %}|{% endif %}
+                                                    {% endfor %}
+                                                </span>
+
+                                            </div><!-- /.product_meta -->
+                                        </div>
+
+                                    </div>
+                                </div><!-- /.woocommerce-tabs -->
+
+                                <div class="related products">
+                                    <h2>Related Products</h2>
+                                    <ul class="products columns-5">
+
+                                    {% for related_product in related_products|slice:'5' %}
+                                        <li class="product">
+                                            <div class="product-outer">
+                                                <div class="product-inner">
+                                                    <span class="loop-product-categories">
+                                                        {% for category in related_product.categories.all %}
+                                                            <a href="{{ category.get_absolute_url }}" rel="tag">{{ category.name }}</a> {% if not forloop.last %}|{% endif %}
+                                                        {% endfor %}
+                                                    </span>
+                                                    <a href="{{ related_product.get_absolute_url }}"><h3>{{ related_product.name }}</h3></a>
+                                                <a href="{{ related_product.images.first.file.url }}" data-fancybox data-caption="{{ related_product.name }}">
+                                                    <div class="product-thumbnail">
+                                                        <img  product="single-product"
+                                                             src="{{ related_product.images.first.file.url }}"
+                                                             alt="{{ related_product.name }}">
+                                                    </div>
+                                                </a>
+
+                                                    <div class="price-add-to-cart">
+                                                        <span class="price">
+                                                            <span class="electro-price">
+                                                                {% if related_product.is_sale %}
+                                                                    <ins><span
+                                                                            class="amount">{{ related_product.price.normalize }} Dhs</span></ins>
+                                                                    <del><span
+                                                                            class="amount">{{ related_product.old_price.normalize }} Dhs</span></del>
+                                                                {% else %}
+                                                                    <span class="amount">{{ related_product.price.normalize }} Dhs</span>
+                                                                {% endif %}
+                                                            </span>
+                                                        </span>
+                                                        <a rel="nofollow" href="javascript:void(0)"
+                                                       onclick="add_to_cart(event, {{ related_product.id }}, '{{ related_product.stock_set.first.id }}')"
+                                                       class="button add_to_cart_button">Add to cart</a>
+                                                    </div><!-- /.price-add-to-cart -->
+
+                                                    <div class="hover-area">
+                                                        <div class="action-buttons">
+                                                            <a href="javascript:void(0)" rel="nofollow"
+                                                           onclick="add_to_wish_list(event, {{ related_product.id }})"
+                                                           class="add_to_wishlist"> Wishlist</a>
+                                                        <a href="javascript:void(0)"
+                                                           onclick="add_to_compare(event, {{ related_product.id }})"
+                                                           class="add-to-compare-link"> Comparer</a>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- /.product-inner -->
+                                            </div><!-- /.product-outer -->
+                                        </li>
+                                    {% endfor %}
+
+                                    </ul><!-- /.products -->
+                                </div><!-- /.related -->
+                            </div>
+                        </main><!-- /.site-main -->
+                    </div><!-- /.content-area -->
+
+
+        </div><!-- /.container -->
+    </div><!-- /.site-content -->
+
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+
+    <script>
+
+        $("body").attr('class','single-product full-width');
+        $(".owl-item").css({'width':'20vh', 'height':'20vh'});
+        $("img[product='single-product']").css({'height': '180', 'width':'15em', 'margin-right': 'auto', 'margin-left': 'auto'});
+
+    </script>
+{% endblock %}

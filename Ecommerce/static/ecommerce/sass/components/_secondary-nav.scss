@@ -1,0 +1,52 @@
+/*===================================================================================*/
+/*  SECONDARY-NAV
+/*===================================================================================*/
+.secondary-nav {
+	padding-#{$start}: 0;
+	margin-bottom: 0;
+	list-style: none;
+	line-height: 3.714em;
+
+	.menu-item {
+		display: inline-block;
+
+		a {
+			display: inline-block;
+			font-weight: bold;
+			color: $color-body;
+
+		  	@include hover-focus {
+				text-decoration: none;
+				color: $color-body;
+			}
+		}
+
+		&.highlight {
+			a {
+				color: #df3737;
+			}
+		}
+
+		&.unbold {
+			a {
+				font-weight: normal;
+			}
+		}
+
+		&.bold {
+			a {
+				font-weight: normal;
+			}
+		}
+
+		&.pull-right {
+			a {
+				font-weight: normal;
+			}
+		}
+
+		& + .menu-item {
+			margin-#{$start}: 2em;
+		}
+	}
+}

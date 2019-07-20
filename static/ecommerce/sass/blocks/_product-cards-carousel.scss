@@ -1,0 +1,78 @@
+/*===================================================================================*/
+/*  Product cards Carousel
+/*===================================================================================*/
+
+section.section-product-cards-carousel {
+	header {
+		margin-bottom: 0;
+
+		ul.nav {
+			float: $end;
+			line-height: 3.571em;
+
+			.nav-link {
+				font-size: 1.071em;
+				line-height: 1.2em;
+				color: #7b8186;
+
+				& + .nav-link {
+					margin-#{$start}: 1.429em;
+				}
+
+				@include hover-focus() {
+					color: $color-body;
+				}
+			}
+
+			.active {
+				.nav-link {
+					color: $color-body;
+					border-radius: 1em;
+					padding: 0.301em 1.429em;
+					border: 2px solid transparent;
+				}
+			}
+		}
+
+		.owl-nav {
+			float: $end;
+			line-height: 3.407em;
+
+			a {
+				color: #aeaeae;
+				font-size: 1.429em;
+
+				@include hover-focus {
+					color: $color-body;
+					text-decoration: none;
+				}
+
+				& + a {
+					margin-#{$start}: 0.400em;
+				}
+			}
+		}
+	}
+
+	.owl-carousel{
+		.owl-stage-outer {
+			padding-bottom: 2.857em;
+		}
+	}
+}
+
+.product-cards-carousel {
+	.owl-item {
+		ul.products {
+			padding: 0 4px;
+		}
+	}
+}
+
+#homev3-products-cards-carousel {
+	.home-v3 {
+		.products .product.product-card .media {
+			overflow: visible;
+		}
+	}
+}

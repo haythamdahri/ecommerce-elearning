@@ -1,0 +1,163 @@
+/*===================================================================================*/
+/*  Products 6-1
+/*===================================================================================*/
+
+.products-6-1 {
+	background-color: #f9f9f9;
+	padding: 58px 0;
+	width: 100vw;
+	position: relative;
+	margin-#{$start}: -50vw;
+	#{$start}: 50%;
+
+	ul.nav {
+		float: $end;
+		line-height: 3.571em;
+
+		.nav-link {
+			font-size: 1.071em;
+			line-height: 1.2em;
+			color: #7b8186;
+
+			& + .nav-link {
+				margin-#{$start}: 1.429em;
+			}
+
+			@include hover-focus() {
+				color: $color-body;
+			}
+		}
+
+		.active {
+			.nav-link {
+				color: $color-body;
+				border-radius: 1em;
+				padding: 0.301em 1.429em;
+				border: 2px solid transparent;
+			}
+		}
+	}
+}
+
+.columns-6-1 {
+	@include make-row();
+
+	> ul.products {
+		@include make-col();
+
+		> li.product {
+			margin-top: 0;
+			margin-bottom: 5px;
+
+			.product-inner {
+				background-color: #fff;
+				padding-bottom: 0.1px;
+			}
+
+			.hover-area {
+				padding-bottom: 1.429em;
+			}
+
+			&::after {
+				content: none;
+			}
+
+			.price {
+				font-size: 1.786em;
+			}
+
+			.price-add-to-cart {
+				margin-bottom: 1.214em;
+			}
+
+			.thumbnails {
+				clear: both;
+				@include make-row();
+				margin-bottom: 1.56em;
+				margin-#{$start}: 0;
+
+				> a {
+					display: block;
+					@include make-col();
+
+					@include media-breakpoint-up(md) {
+						width: 17.17%;
+					}
+
+					img {
+						@include img-fluid();
+					}
+
+					padding: 0.2em;
+    				margin-#{$end}: 10px;
+					border-width: 1px;
+					border-style: solid;
+					border-color: #e9e9e9;
+					border-bottom-width: 2px;
+
+				}
+
+				>a:nth-child(n+5) {
+					display: none;
+				}
+			}
+		}
+
+
+
+		&.products-6 {
+			@include make-col-span(12);
+
+			@include media-breakpoint-up(lg) {
+				@include make-col-span(7);
+				padding-#{$end}: 0;
+			}
+
+			> li.product {
+				padding-#{$end}: 5px;
+
+				&:hover .product-inner {
+					padding-#{$end}: 2.071em;
+				}
+
+				.price {
+					font-size: 1.143em;
+				}
+			}
+		}
+
+		&.product-main-6-1 {
+			@include make-col-span(12);
+
+			@include media-breakpoint-up(lg) {
+				@include make-col-span(5);
+				padding-#{$start}: 0;
+			}
+
+			> li.product {
+				width: 100%;
+
+				.price-add-to-cart {
+					margin-bottom: 1.643em;
+				}
+
+				.product-thumbnail {
+					padding-bottom: 0.1px;
+					height: inherit;
+					margin-bottom: 1.571em;
+
+					img {
+						height: 367px;
+						width: auto;
+						display: block;
+						margin: auto;
+					}
+				}
+
+				.wp-post-image {
+					position: relative;
+				}
+			}
+		}
+	}
+}

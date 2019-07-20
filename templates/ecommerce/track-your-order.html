@@ -1,0 +1,174 @@
+{% extends 'ecommerce/base.html' %}
+{% load staticfiles %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block title %}SUIVI DES COMMANDES{% endblock %}
+
+{% block content %}
+
+    <div id="content" class="site-content" style="margin-bottom: 2.857em;" tabindex="-1">
+                <div class="container">
+
+                    <nav class="woocommerce-breadcrumb" >
+                        <a href="{% url 'ecommerce:home' %}">Acceuil</a>
+                        <span class="delimiter"><i class="fa fa-angle-right"></i></span>Suivi des commandes
+                    </nav><!-- .woocommerce-breadcrumb -->
+
+                    <div id="primary" class="content-area">
+                        <main id="main" class="site-main">
+
+                    {# Display errors for users #}
+                    {% include 'ecommerce/messages.html' %}
+
+
+                            <article id="post-2181" class="post-2181 page type-page status-publish hentry">
+
+                                <header class="entry-header">
+                                    <h1 class="entry-title" itemprop="name">Suivre vos commandes</h1>
+                                </header><!-- .entry-header -->
+
+                                <div class="entry-content" itemprop="mainContentOfPage">
+                                    <div class="woocommerce">
+                                        <form method="post" class="track_order track_order_form">
+                                        {% csrf_token %}
+                                            <p style=" text-align: center; ">
+                                                Pour suivre votre commande veuillez entrer <b>L'IDENTIFICATEUR</b> sur le champ de saisi <b>(ID DE LA COMMANDE)</b> que vous allez recu par EMAIL</p>
+
+                                            <p class="form-row form-row-first">
+                                                <label for="orderid">ID de la commande</label>
+                                                {% if form.order_id.errors %}
+                                                    {% render_field form.order_id  style='border: 1px solid red' %}
+                                                {% else %}
+                                                    {% render_field form.order_id  %}
+                                                {% endif %}
+                                                {% for error in form.order_id.errors %}
+                                                    <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                        <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                    </small>
+                                                {% endfor %}
+                                            </p>
+
+                                            <p class="form-row form-row-last">
+                                                <label for="order_email">Email de la commande</label>
+                                                {% if form.order_email.errors %}
+                                                    {% render_field form.order_email  style='border: 1px solid red' %}
+                                                {% else %}
+                                                    {% render_field form.order_email  %}
+                                                {% endif %}
+                                                {% for error in form.order_email.errors %}
+                                                    <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                        <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                    </small>
+                                                {% endfor %}
+                                            </p>
+
+                                            <div class="clear"></div>
+
+                                            <p class="form-row">
+                                                <input type="submit" class="button" value="Suivre" />
+                                            </p>
+                                        </form>
+                                    <table class="table table-bordered track_tbl">
+                                        <thead>
+                                            <tr style="background-color: #0787ea;line-height: 2.143em; font-weight: 300; font-size: 1em; color: #333e48;">
+                                                <th style="text-align: center;"></th>
+                                                <th style="text-align: center;">#No</th>
+                                                <th style="text-align: center;">Etat</th>
+                                                <th style="text-align: center;">Montant</th>
+                                                <th style="text-align: center;">Paiement</th>
+                                                <th style="text-align: center;">Livraison</th>
+                                                <th style="text-align: center;">completion de commande</th>
+                                                <th style="text-align: center;">Adresse</th>
+                                                <th style="text-align: center;">Ville</th>
+                                                <th style="text-align: center;">Région</th>
+                                                <th style="text-align: center;">Pays</th>
+                                                <th style="text-align: center;">Code postal</th>
+                                                <th style="text-align: center;">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for order in orders %}
+                                            <tr class="active">
+                                                <td class="track_dot">
+                                                    <span class="track_line"></span>
+                                                </td>
+                                                <td align="center" class="font-weight-bold"">{{ order.pk }}</td>
+                                                <td align="center">{{ order.status }}</td>
+                                                <td align="center">{{ order.amount }} Dhs</td>
+                                                <td align="center">{{ order.payment_method }}</td>
+                                                <td align="center">{{ order.delivery_method }}</td>
+                                                <td align="center">{% if order.date_complete is not None %}<i class="fas fa-check-circle" style="color: #008000"></i>{% else %}<i class="fas fa-times-circle" style="color: #ff0000"></i>{% endif %}</td>
+                                                <td align="center">{{ order.address }}</td>
+                                                <td align="center">{{ order.city }}</td>
+                                                <td align="center">{{ order.state }}</td>
+                                                <td align="center">{{ order.country }}</td>
+                                                <td align="center">{{ order.zipcode }}</td>
+                                                <td align="center">{{ order.date }}</td>
+                                            </tr>
+                                        {% empty %}
+                                            <td colspan="13" class="alert alert-warning" style="text-align: center; padding: 10px;font-size:12px;font-weight:bold;width: 100%;">
+                                                <i class="fa fa-exclamation-circle" ></i>&nbsp;Aucune commande n'était effectuée jusqu'a le moment!
+                                            </td>
+                                        {% endfor %}
+                                        </tbody>
+                                        </table>
+
+                                    </div>
+                                </div><!-- .entry-content -->
+                                {# ------------------ Pagination section ------------------ #}
+                                {% if orders.has_other_pages %}
+                                {% if orders.number > 0 %}
+                                    <div class="shop-control-bar-bottom" style="text-align: center;">
+                                        <nav class="woocommerce-pagination">
+                                             <ul class="page-numbers">
+
+                                                {% if orders.has_previous %}
+                                                    <li>
+                                                    <a href="{% url 'ecommerce:track_your_order' %}?&page=1" class="previous page-numbers"><i class="fas fa-angle-double-left"></i></a></li>
+                                                    <li>
+                                                     <li>
+                                                        <a href="{% url 'ecommerce:track_your_order' %}?page={{ orders.previous_page_number }}"
+                                                           class="previous page-numbers"><i class="fas fa-angle-left"></i></a>
+                                                    </li>
+                                                {% endif %}
+
+                                                {% for n in orders.paginator.page_range %}
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:track_your_order' %}?page={{ n }}" class="page-numbers {% if n == orders.number %}current{% endif %}">{{ n }}</a>
+                                                    </li>
+                                                {% endfor %}
+
+                                                {% if orders.has_next %}
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:track_your_order' %}?&page={{ orders.next_page_number }}"
+                                                           class="page-numbers"><i class="fas fa-angle-right"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:track_your_order' %}?&page={{ orders.next_page_number }}"
+                                                           class="page-numbers"><i class="fas fa-angle-double-right"></i></a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                            </article><!-- #post-## -->
+
+                        </main><!-- #main -->
+                    </div><!-- #primary -->
+
+
+                </div><!-- .col-full -->
+            </div><!-- #content -->
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script>
+
+    $("body").attr('class','page home page-template-default');
+    $(".wp-post-image[compare-image='']").css({'height': '180', 'width':'15em'})
+    </script>
+{% endblock %}

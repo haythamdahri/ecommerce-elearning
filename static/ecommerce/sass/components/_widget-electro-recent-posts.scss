@@ -1,0 +1,58 @@
+/*===================================================================================*/
+/*  ELECTRO-RECENT-POST-WIDGET
+/*===================================================================================*/
+.electro_recent_posts_widget{
+	ul {
+		 > li {
+		 	margin-bottom: 1.429em;
+
+		 	.post-thumbnail {
+		 		float: $start;
+		 		padding-#{$end}: 0.929em;
+
+		 		img {
+		 			@include img-fluid();
+		 			width: 75px;
+		 			height: 75px;
+		 		}
+		 	}
+
+		 	.post-content {
+		 		@include clearfix();
+
+			 	> a{
+			 		color: #434343;
+			 		display: block;
+
+			 		&:hover,
+			 		&:focus {
+			 			text-decoration: none;
+			 			color: #000;
+			 		}
+			 	}
+
+			 	.post-date {
+			 		color: #878787;
+			 		font-size: 0.857em;
+			 		line-height: 1.000em;
+			 	}
+			 }
+
+		 	&:last-child {
+		 		margin-bottom: 0;
+		 	}
+		}
+	}
+
+	.electro-img-placeholder {
+		position: relative;
+
+		.fa {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			@include transform( translate(-50%, -50% ) );
+			color: #fff;
+		}
+	}
+}

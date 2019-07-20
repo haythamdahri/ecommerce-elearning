@@ -1,0 +1,179 @@
+{% extends "ecommerce/base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block content %}
+    <div id="content" class="site-content" tabindex="-1">
+                <div class="container">
+
+                    <nav class="woocommerce-breadcrumb" ><a href="../home.html">Acceuil</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Mon Compte</nav><!-- .woocommerce-breadcrumb -->
+
+                    <div class="content-area">
+                        <main id="main" class="site-main">
+
+                    {% include 'ecommerce/messages.html' %}
+
+                            <article id="post-8" class="hentry">
+
+                                <div class="entry-content">
+                                    <div class="woocommerce">
+                                        <div class="customer-login-form">
+                                            <span class="or-text">Ou</span>
+
+                                            <div class="col2-set" id="customer_login">
+
+
+                                                <div class="col-1">
+
+
+                                                    <h2>Mon Compte</h2>
+
+                                                    <form method="post" class="login" action="{% url 'ecommerce:account' %}">
+                                                        {% csrf_token %}
+
+                                                        {% render_field UserForm.is_password_change value=0 %}
+
+                                                        <p class="before-login-text">BIENVENUE {{ user.first_name }} {{ user.last_name }}</p>
+
+
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Nom d'utilisateur<span class="required">*</span></label>
+                                                            {% if UserForm.username.errors %}
+                                                                {% render_field UserForm.username style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field UserForm.username %}
+                                                            {% endif %}
+                                                            {% for error in UserForm.username.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Nom<span class="required">*</span></label>
+                                                            {% if UserForm.first_name.errors %}
+                                                                {% render_field UserForm.first_name style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field UserForm.first_name %}
+                                                            {% endif %}
+                                                            {% for error in UserForm.first_name.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Prenom<span class="required">*</span></label>
+                                                            {% if UserForm.last_name.errors %}
+                                                                {% render_field UserForm.last_name style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field UserForm.last_name %}
+                                                            {% endif %}
+                                                            {% for error in UserForm.last_name.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Email<span class="required">*</span></label>
+                                                            {% if UserForm.email.errors %}
+                                                                {% render_field UserForm.email style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field UserForm.email %}
+                                                            {% endif %}
+                                                            {% for error in UserForm.email.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+                                                        <p class="form-row">
+                                                            <button class="button" type="submit"><i class="fas fa-edit"></i> Enregistrer les informations</button>
+                                                        </p>
+
+                                                    </form>
+
+
+                                                </div><!-- .col-1 -->
+
+                                                <div class="col-2">
+
+                                                    <h2>CHANGER VOTRE MOT DE PASSE</h2>
+
+                                                    <form method="post" action="{% url 'ecommerce:account' %}" class="register">
+                                                        {% csrf_token %}
+
+                                                        {% render_field userPasswordForm.is_password_change value=1 id='passowrd_check' %}
+
+                                                        <p class="before-register-text">Redifinir votre mot de passe</p>
+
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Ancien mot de passe<span class="required">*</span></label>
+                                                            {% if userPasswordForm.password.errors %}
+                                                                {% render_field userPasswordForm.password style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field userPasswordForm.password %}
+                                                            {% endif %}
+                                                            {% for error in userPasswordForm.password.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Nouveau mot de passe<span class="required">*</span></label>
+                                                            {% if userPasswordForm.new_password.errors %}
+                                                                {% render_field userPasswordForm.new_password style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field userPasswordForm.new_password %}
+                                                            {% endif %}
+                                                            {% for error in userPasswordForm.new_password.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+                                                        <p class="form-row form-row-wide">
+                                                            <label for="username">Confirmation nouveau mot de passe<span class="required">*</span></label>
+                                                            {% if userPasswordForm.confirm_new_password.errors %}
+                                                                {% render_field userPasswordForm.confirm_new_password style='border: 1px solid red' %}
+                                                            {% else %}
+                                                                {% render_field userPasswordForm.confirm_new_password %}
+                                                            {% endif %}
+                                                            {% for error in userPasswordForm.confirm_new_password.errors %}
+                                                                <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                                    <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                                </small>
+                                                            {% endfor %}
+                                                        </p>
+
+                                                        <p class="form-row">
+                                                            <button class="button" type="submit"><i class="fas fa-edit"></i> Enregistrer mot de passe</button>
+                                                        </p>
+
+
+                                                    </form>
+
+                                                </div><!-- .col-2 -->
+
+                                            </div><!-- .col2-set -->
+
+                                        </div><!-- /.customer-login-form -->
+                                    </div><!-- .woocommerce -->
+                                </div><!-- .entry-content -->
+
+                            </article><!-- #post-## -->
+
+                        </main><!-- #main -->
+                    </div><!-- #primary -->
+
+                </div><!-- .col-full -->
+            </div><!-- #content -->
+{% endblock %}

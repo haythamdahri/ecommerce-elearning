@@ -1,0 +1,168 @@
+{% extends 'ecommerce/base.html' %}
+{% load staticfiles %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block title %}LISTE DE COMPARAISON{% endblock %}
+
+{% block content %}
+
+            <div tabindex="-1" class="site-content" id="content">
+                <div class="container">
+
+                    <nav class="woocommerce-breadcrumb"><a href="{% url 'ecommerce:home' %}">Acceuil</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Compare</nav>
+                    <div class="content-area" id="primary">
+                        <main class="site-main" id="main">
+                            <article class="post-2917 page type-page status-publish hentry" id="post-2917">
+                                <div itemprop="mainContentOfPage" class="entry-content">
+                                    <div class="table-responsive">
+                                        {% if compare_list_products.object_list %}
+                                            <table class="table table-compare compare-list">
+                                                <tbody>
+                                                    <tr>
+                                                        <div class="col-2">
+                                                        <th>Produit</th>
+                                                        </div>
+                                                        {% for product in compare_list_products %}
+                                                            <td product="compare_product{{ product.id }}">
+                                                                <a href="{{ product.get_absolute_url }}">
+                                                                    <div class="product-image">
+                                                                        <a href="{{ product.images.first.file.url }}" data-fancybox data-caption="{{ product.name }}">
+                                                                            <div class="">
+                                                                                <img  alt="{{ product.name }}" class="attachment-shop_catalog size-shop_catalog wp-post-image" compare-image="" src="{{ product.images.first.file.url }}">
+                                                                            </div>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="product-info">
+                                                                        <a href="{{ product.get_absolute_url }}"><h3 class="product-title">{{ product.name }}</h3></a>
+
+                                                                        <div title="Évalué {{ product.rate }} sur 5" class="star-rating"><span style="width:{{ product.rating }}%"><strong class="rating">{{ product.rate }}</strong> sur 5</span></div>
+                                                                    </div>
+                                                                </a><!-- /.product -->
+                                                            </td>
+                                                        {% endfor %}
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Prix</th>
+                                                        {% for product in compare_list_products %}
+                                                            <td product="compare_product{{ product.id }}">
+                                                                <div class="product-price price"><span class="electro-price"><span class="amount">{{ product.price.normalize }} Dhs</span></span></div>
+                                                            </td>
+                                                        {% endfor %}
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Disponibilé</th>
+                                                        {% for product in compare_list_products %}
+                                                            {% if product.quantity_in_stock > 0 %}
+                                                                <td product="compare_product{{ product.id }}"><span class="in-stock">Disponible</span></td>
+                                                            {% else %}
+                                                                <td product="compare_product{{ product.id }}"><span class="out-of-stock">Indisponible</span></td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Description</th>
+                                                        {% for product in compare_list_products %}
+                                                            <td product="compare_product{{ product.id }}">
+                                                                <ul style="text-align:left; margin-bottom: 0;" class="more-short-description{{ product.id }}" >
+                                                                    {% for specification in product.specification_set.all %}
+                                                                        <li {% if forloop.counter > 2 %}style="display: none;"{% endif %}><span class="a-list-item font-weight-bold">{{ specificationtext }}</span></li>
+                                                                    {% empty %}
+                                                                        <li><span class="a-list-item font-weight-bold">AUCUNE DESCRIPTION</span></li>
+                                                                    {% endfor %}
+                                                                    {% if product.specification_set.all.count > 2 %}
+                                                                        <p class="maxlist-more font-weight-bold"><a href="javascript:void(0)" onclick="showMoreShortDescription(this, {{ product.id }})" >+ Afficher plus</a></p>
+                                                                    {% endif %}
+                                                                </ul>
+                                                            </td>
+                                                        {% endfor %}
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Ajouter au panier</th>
+                                                        {% for product in compare_list_products %}
+                                                            {% if product not in cart_products %}
+                                                                <td product="compare_product{{ product.id }}" id="add_to_cart_td{{ product.id }}">
+                                                                    <a button="add_cart" class="button add_to_cart_button" href="javascript:void(0)" onclick="add_to_cart(event, {{ product.id }}, '{{ product.stock_set.first.id }}', true);" rel="nofollow"><i class="fas fa-cart-arrow-down"></i><i class="fas fa-sync-alt fa-spin" style="color: #000000;display: none;"></i> Ajouter au panier</a>
+                                                                </td>
+                                                            {% else %}
+                                                                <td product="compare_product{{ product.id }}" class="full-color-background bg-success font-weight-bold">
+                                                                   <i class="fas fa-check-circle"></i> Produit éxiste déja dans votre panier
+                                                                </td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </tr>
+                                                    <tr>
+                                                            <th>Supprimer le produit de la liste</th>
+                                                            {% for product in compare_list_products %}
+                                                                <td product="compare_product{{ product.id }}" class="text-center">
+                                                                    <a href="javascript:void(0)" onclick="delete_from_compare(event, {{ product.id }})" title="Supprimer" class="remove-icon"><i class="fa fa-times"></i></a>
+                                                                </td>
+                                                            {% endfor %}
+                                                        </tr>
+                                                </tbody>
+                                            </table>
+                                        {% else %}
+                                            <div class="alert alert-warning text-md-center text-uppercase font-weight-bold" style="padding: 10px;font-size:12px;font-weight:bold;width: 100%;" >
+                                                <i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;Aucun produit trouvé dans votre liste de comparaison.
+                                            </div>
+                                        {% endif %}
+                                    </div><!-- /.table-responsive -->
+                                </div><!-- .entry-content -->
+
+                                {# ------------------ Pagination section ------------------ #}
+                            {% if compare_list_products.has_other_pages %}
+                                {% if compare_list_products.number > 0 %}
+                                    <div class="shop-control-bar-bottom" style="text-align: center;">
+                                        <nav class="woocommerce-pagination">
+                                             <ul class="page-numbers">
+
+                                                {% if compare_list_products.has_previous %}
+                                                    <li>
+                                                    <a href="{% url 'ecommerce:compare_list' %}?&page=1" class="previous page-numbers"><i class="fas fa-angle-double-left"></i></a></li>
+                                                    <li>
+                                                     <li>
+                                                        <a href="{% url 'ecommerce:compare_list' %}?page={{ compare_list_products.previous_page_number }}"
+                                                           class="previous page-numbers"><i class="fas fa-angle-left"></i></a>
+                                                    </li>
+                                                {% endif %}
+
+                                                {% for n in compare_list_products.paginator.page_range %}
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:compare_list' %}?page={{ n }}" class="page-numbers {% if n == wish_list.number %}current{% endif %}">{{ n }}</a>
+                                                    </li>
+                                                {% endfor %}
+
+                                                {% if compare_list_products.has_next %}
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:compare_list' %}?&page={{ compare_list_products.next_page_number }}"
+                                                           class="page-numbers"><i class="fas fa-angle-right"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:compare_list' %}?&page={{ compare_list_products.next_page_number }}"
+                                                           class="page-numbers"><i class="fas fa-angle-double-right"></i></a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                            </article><!-- #post-## -->
+                        </main><!-- #main -->
+                    </div><!-- #primary -->
+                </div><!-- .col-full -->
+            </div>
+
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script>
+
+    $("body").attr('class','page home page-template-default');
+    $(".wp-post-image[compare-image='']").css({'height': '180', 'width':'15em'})
+    </script>
+{% endblock %}
+
+
+

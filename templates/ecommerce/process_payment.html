@@ -1,0 +1,124 @@
+{% extends 'ecommerce/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}PAIEMENT{% endblock %}
+
+{% block content %}
+
+    <div id="content" class="site-content" tabindex="-1">
+        <div class="container">
+
+            <nav class="woocommerce-breadcrumb"><a href="{% url 'ecommerce:home' %}">Acceuil</a><span class="delimiter"><i
+                    class="fa fa-angle-right"></i></span>Paiement commande
+            </nav>
+
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main">
+
+                    <article class="page type-page status-publish hentry">
+
+                        {% include 'ecommerce/messages.html' %}
+
+                        <header class="entry-header"><h1 itemprop="name" class="entry-title">Paiement commande</h1></header><!-- .entry-header -->
+
+                        <div id="customer_details" class="col2-set checkout woocommerce-checkout">
+
+                            <h3 id="order_review_heading">Les informations du payeur:</h3>
+
+                            <div class="woocommerce-checkout-review-order" id="order_review">
+                            <table  class="shop_table woocommerce-checkout-review-order-table">
+                                <thead align="center">
+                                <tr align="center">
+                                    <th class="product-name">Données</th>
+                                    <th class="product-total">Informations</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for field in Checkout_form.visible_fields %}
+                                    <tr class="cart_item">
+                                        <td class="product-name">
+                                            {{ field.label_tag }}
+                                        </td>
+                                        <td class="product-total">
+
+                                                <span class="amount">{% if field.name != "payment_method" %}{{ field.value|default:"Aucune note" }}{% elif field.value == "1" %}Paiement à la livraison{% else %}Paypal{% endif %}</span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <h3 id="order_review_heading">Votre commande:</h3>
+
+                            <table class="shop_table woocommerce-checkout-review-order-table">
+                                <thead>
+                                <tr>
+                                    <th class="product-name">Produit x Quantité</th>
+                                    <th class="product-total">Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for cart in carts %}
+                                    <tr class="cart_item">
+                                        <td class="product-name">
+                                            {{ cart.product.name }}
+                                            <strong class="product-quantity">× {{ cart.quantity }}</strong>
+                                        </td>
+                                        <td class="product-total">
+                                            <span class="amount">{{ cart.total }} Dhs</span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                <tr class="order-total">
+                                    <th>Total</th>
+                                    <td><strong><span class="amount">{{ total_price_in_cart }} Dhs</span></strong></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        </div>
+
+                    {% if order.payment_method == 'Paypal' %}
+                        <div style="padding: 25px; text-align: center;width: 100%;">
+                            <!-- writes out the form tag automatically -->
+                            {{ form.render }}
+                        </div>
+                    {% else %}
+                        <div class="row" style="padding-bottom: 6%;">
+                            <!-- writes out the form tag automatically -->
+                            <div class="place-order col-md-6 col-sm-12 col-xs-12 col-lg-6" style="text-align: center">
+                                <form method="POST" action="{% url 'ecommerce:cash_checkout' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="1" name="payment_method" />
+                                    <input type="hidden" value="{{ order.pk }}" name="order" />
+                                    <input type="submit" data-value="Confirmer le paiement" value="Confirmer le paiement" class="button alt">
+                                </form>
+                            </div>
+                            <div class="place-order col-md-6 col-sm-12 col-xs-12 col-lg-6" style="text-align: center" >
+                                <a href="{% url 'ecommerce:checkout' %}"><button class="button alt"><i class="fas fa-bell-slash"></i> Annuler</button></a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    </article>
+                </main>
+                        <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+
+    <script>
+
+        $("body").attr('class', 'page home page-template-default');
+        $('img[product="wishlist-product"]').css({'height': '100', 'height': '100'});
+    </script>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="fr-FR" >
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Ecommerce : {% block title %}{% endblock %}</title>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/bootstrap.min.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/font-awesome.min.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/animate.min.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/font-electro.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/owl-carousel.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/style.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/colors/blue.min.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/all.min.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/sweetalert2.min.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/jquery.jgrowl.min.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/jquery.fancybox.min.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/drift-basic.min.css' %}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{% static 'ecommerce/css/custom.css' %}" media="all" />
+
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,700italic,800,800italic,600italic,400italic,300italic' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="{% static 'ecommerce/platform_images/E-Commerce-Concept-PNG-Image-Background.png' %}">
+    </head>
+
+    <body class="home-v2">
+
+
+        <div id="page" class="hfeed site">
+
+
+            {% block top_navbar %}
+                {% include 'ecommerce/parts/top_navbar.html' %}
+            {% endblock %}
+            {% block header %}
+                {% include 'ecommerce/parts/header.html' %}
+            {% endblock %}
+            {% block navbar_left %}
+                {% include 'ecommerce/parts/navbar_left.html' %}
+            {% endblock %}
+
+
+        <!-- CONTENT PART -->
+            {% block content %}
+
+
+
+            {% endblock %}
+        <!-- END CONTENT PART -->
+
+            {% block brands %}
+                {% include 'ecommerce/parts/brands_caroussel.html' %}
+            {% endblock %}
+
+
+            {% block footer %}
+                {% include 'ecommerce/parts/footer.html' %}
+            {% endblock %}
+
+
+            {% block js %}
+                {% include 'ecommerce/parts/javascript.html' %}
+            {% endblock %}
+
+
+        </div><!-- #page -->
+    </body>
+</html>

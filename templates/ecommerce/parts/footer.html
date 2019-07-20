@@ -1,0 +1,229 @@
+{% load staticfiles %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+<footer id="colophon" class="site-footer">
+                <div class="footer-widgets">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-xs-12">
+                                <aside class="widget clearfix">
+                                    <div class="body">
+                                        <h4 class="widget-title">Les produits spéciales</h4>
+                                        <ul class="product_list_widget">
+                                            {% for product in featured_products_footer|slice:"4" %}
+                                                <li>
+                                                    <a href="{{ product.images.first.file.url }}" data-fancybox data-caption="{{ product.name }}">
+                                                        <img class="wp-post-image" data-echo="{{ product.images.first.file.url }}" src="{{ product.images.first.file.url }}" alt="{{ product.images.first.name }}">
+                                                        <a href="{{ product.get_absolute_url }}" title="{{ product.name }}">
+                                                           <span class="product-title">{{ product.name }}</span>
+                                                        </a>
+                                                    </a>
+
+                                                    {% if product.is_sale %}
+                                                        <ins><span
+                                                                class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                        <del><span
+                                                                class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                                    {% else %}
+                                                        {% with product.price as current_price %}
+                                                            {% if product.old_price is not None and product.old_price > current_price %}
+                                                                <ins><span class="amount">{{ current_price.normalize|intcomma }} Dhs</span></ins>
+                                                                <del><span class="amount">{{ product.old_price.normalize|intcomma }} Dhs</span></del>
+                                                            {% else %}
+                                                                <span class="amount">{{ product.price.normalize|intcomma }} Dhs</span>
+                                                            {% endif %}
+                                                        {% endwith %}
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xs-12">
+                                <aside class="widget clearfix">
+                                    <div class="body"><h4 class="widget-title">Les produits en offre</h4>
+                                        <ul class="product_list_widget">
+                                        {% for product in sale_products|slice:"4" %}
+                                            <li>
+                                                <a href="{{ product.images.first.file.url }}" data-fancybox data-caption="{{ product.name }}">
+                                                    <img class="wp-post-image" data-echo="{{ product.images.first.file.url }}" src="{{ product.images.first.file.url }}" alt="{{ product.images.first.name }}">
+                                                    <a href="{{ product.get_absolute_url }}" title="{{ product.name }}">
+                                                       <span class="product-title">{{ product.name }}</span>
+                                                    </a>
+                                                </a>
+
+                                                {% if product.is_sale %}
+                                                    <ins><span
+                                                            class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                    <del><span
+                                                            class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                                {% else %}
+                                                    {% with product.price as current_price %}
+                                                        {% if product.old_price is not None and product.old_price > current_price %}
+                                                            <ins><span class="amount">{{ current_price.normalize|intcomma }} Dhs</span></ins>
+                                                            <del><span class="amount">{{ product.old_price.normalize|intcomma }} Dhs</span></del>
+                                                        {% else %}
+                                                            <span class="amount">{{ product.price.normalize|intcomma }} Dhs</span>
+                                                        {% endif %}
+                                                    {% endwith %}
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xs-12">
+                                <aside class="widget clearfix">
+                                    <div class="body">
+                                        <h4 class="widget-title">Les plus vendus</h4>
+                                        <ul class="product_list_widget">
+                                    {% for stock in rated|slice:"5" %}
+                                            <li>
+                                                <a href="{{ stock.product.images.first.file.url }}" data-fancybox data-caption="{{ stock.product.name }}">
+                                                    <img class="wp-post-image" data-echo="{{ stock.product.images.first.file.url }}" src="{{ stock.product.images.first.file.url }}" alt="{{ product.images.first.name }}">
+                                                    <a href="{{ stock.product.get_absolute_url }}" title="{{ stock.product.name }}">
+                                                       <span class="product-title">{{ stock.product.name }}</span>
+                                                    </a>
+                                                </a>
+
+                                                <div class="star-rating" title="Évalué {{ stock.product.rate }} sur 5"><span style="width:{{ stock.product.rating }}%"><strong class="rating">{{ stock.product.rate }}</strong> out of 5</span></div>
+
+                                                {% if product.is_sale %}
+                                                    <ins><span
+                                                            class="amount">{{ stock.product.price.normalize }} Dhs</span></ins>
+                                                    <del><span
+                                                            class="amount">{{ stock.product.old_price.normalize }} Dhs</span></del>
+                                                {% else %}
+                                                    {% with stock.product.price as current_price %}
+                                                        {% if stock.product.old_price is not None and stock.product.old_price > current_price %}
+                                                            <ins><span class="amount">{{ current_price.normalize|intcomma }} Dhs</span></ins>
+                                                            <del><span class="amount">{{ stock.product.old_price.normalize|intcomma }} Dhs</span></del>
+                                                        {% else %}
+                                                            <span class="amount">{{ stock.product.price.normalize|intcomma }} Dhs</span>
+                                                        {% endif %}
+                                                    {% endwith %}
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-newsletter">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-7">
+                                <h5 class="newsletter-title">S'inscrire au Newsletter</h5>
+                                <span class="newsletter-marketing-text">...et recevoir des coupons de réduction</span>
+                            </div>
+                            <div class="col-xs-12 col-sm-5">
+                                <form method="POST" action="{% url 'ecommerce:subscribe_email' %}" onsubmit="subscribeNews(event, this);">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        {% render_field subscribe_email.email class='form-control' type='text' placeholder='Entrer votre adresse Email' %}
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-secondary" type="submit"><i class="fas fa-share-square"></i> <i class="fas fa-sync-alt fa-spin" style="color: #000000;display: none;"></i> S'inscrir</button>
+                                        </span>
+                                    </div>
+                                    <div class="input-group">
+                                         <small class="form-text text-muted text-danger" id="news_letter_helper" style="display:none;">Etat NewsLetter</small>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom-widgets">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-7 col-md-push-5">
+                                <div class="columns">
+                                    <aside id="nav_menu-2" class="widget clearfix widget_nav_menu">
+                                        <div class="body">
+                                            <h4 class="widget-title">Trouver le rapidement</h4>
+                                            <div class="menu-footer-menu-1-container">
+                                                <ul id="menu-footer-menu-1" class="menu">
+                                                    {% for category in categories %}
+                                                        <li class="menu-item"><a href="{% url 'ecommerce:category_products' category.id %}">{{ category.name }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </aside>
+                                </div><!-- /.columns -->
+
+
+                                <div class="columns">
+                                    <aside id="nav_menu-4" class="widget clearfix widget_nav_menu">
+                                        <div class="body">
+                                            <h4 class="widget-title">Service clientèle</h4>
+                                            <div class="menu-footer-menu-3-container">
+                                                <ul id="menu-footer-menu-3" class="menu">
+                                                    <li class="menu-item"><a href="{% url 'ecommerce:account' %}">Mon compte</a></li>
+                                                    <li class="menu-item"><a href="{% url 'ecommerce:commands_tracker' %}">Suivi des commandes</a></li>
+                                                    <li class="menu-item"><a href="{% url 'ecommerce:wish_list' %}">Wishlist</a></li>
+                                                    <li class="menu-item"><a href="{% url 'ecommerce:contact_us' %}">Support</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </aside>
+                                </div><!-- /.columns -->
+
+                            </div>
+
+                            <div class="footer-contact col-xs-12 col-sm-12 col-md-5 col-md-pull-7">
+                                <!-- <div class="footer-logo">
+                                    <img src="{% static 'ecommerce/platform_images/logo.png' %}" />
+                                </div><!-- /.footer-contact -->
+
+                                <div class="footer-call-us">
+                                    <div class="media">
+                                        <span class="media-left call-us-icon media-middle"><i class="ec ec-support"></i></span>
+                                        <div class="media-body">
+                                            <span class="call-us-text">Avez vous des questions? Appelez-nous 24/7!</span>
+                                            <span class="call-us-number"> SOON</span>
+                                        </div>
+                                    </div>
+                                </div><!-- /.footer-call-us -->
+
+
+                                <div class="footer-address">
+                                    <strong class="footer-address-title">Contact Info</strong>
+                                    <address>CASABLANCA, Maroc</address>
+                                </div><!-- /.footer-address -->
+
+                                <div class="footer-social-icons">
+                                    <ul class="social-icons list-unstyled">
+                                        <li><a href="https://www.facebook.com/Haytham.Dahri"><i class="fab fa-facebook"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="copyright-bar">
+                    <div class="container">
+                        <div class="pull-left flip copyright">&copy; <a href="https://www.linkedin.com/in/haytham-dahri-645795155/" target="_blank">HAYTHAM DAHRI</a> - Tous les droits sont reservés.</div>
+                        <div class="pull-right flip payment">
+                            <div class="footer-payment-logo">
+                                <ul class="cash-card card-inline">
+                                    <li class="card-item"><img src="{% static 'ecommerce/platform_images/1-2-ecommerce-png-300x265.png' %}" alt="" width="52"></li>
+                                </ul>
+                            </div><!-- /.payment-methods -->
+                        </div>
+                    </div><!-- /.container -->
+                </div><!-- /.copyright-bar -->
+            </footer><!-- #colophon -->
+

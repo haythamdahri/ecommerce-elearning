@@ -1,0 +1,68 @@
+/*===================================================================================*/
+/*  CART-COLLATERALS
+/*===================================================================================*/
+.cart-collaterals {
+	@include make-row();
+	padding-top: 5em;
+
+	h2 {
+		font-size: 1.786em;
+		@include make-title();
+		margin-bottom: 0.5em;
+	}
+
+	.cross-sells {
+		@include make-col();
+		@include make-col-span(12);
+
+		@include media-breakpoint-up(md) {
+			@include make-col-span(6);
+		}
+
+		ul.products > .product {
+			width: 50%;
+		}
+
+		& + .cart_totals {
+			@include media-breakpoint-up(md) {
+				@include make-col-offset(1);
+			}
+		}
+	}
+
+	.cart_totals {
+		@include make-col();
+		@include make-col-span(12);
+
+		@include media-breakpoint-up(md) {
+			@include make-col-span(5);
+			@include make-col-offset(7);
+		}
+
+		table.shop_table {
+			@include make-table();
+
+			tbody {
+				tr {
+					th {
+						padding-#{$start}: 0;
+					}
+
+					td {
+						padding-#{$end}: 0;
+						text-align: $end;
+					}
+				}
+				tr:first-child {
+					td, th {
+						border-top-width: 0;
+					}
+				}
+			}
+		}
+
+		.wc-proceed-to-checkout {
+			display: none;
+		}
+	}
+}

@@ -1,0 +1,39 @@
+
+/*===================================================================================*/
+/*  Products Carousel With Image
+/*===================================================================================*/
+
+.products-carousel-with-image {
+	background-color: #f9f9f9;
+	padding: 58px 0 0;
+	width: 100vw;
+	position: relative;
+	margin-#{$start}: -50vw;
+	#{$start}: 50%;
+	margin-bottom: 85px;
+
+	.products-carousel {
+		.owl-item {
+			.product {
+				&::after {
+					content: none;
+				}
+			}
+			.product-inner {
+				background-color: #fff;
+			}
+		}
+
+		.owl-dots {
+			display: none;
+		}
+	}
+
+	section.section-products-carousel header {
+		margin-bottom: 1.357em;
+	}
+
+	section {
+		margin-bottom: 2.857em;
+	}
+}

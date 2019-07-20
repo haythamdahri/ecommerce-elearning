@@ -1,0 +1,157 @@
+/*===================================================================================*/
+/*  Wishlist
+/*===================================================================================*/
+
+.wishlist-title {
+	text-align: center;
+	padding: 40px 0;
+
+	h2 {
+		font-size: 40px;
+		line-height: 50px;
+		color: #434343;
+	}
+}
+
+.yith-wcwl-add-button img,
+.yith-wcwl-wishlistexistsbrowse .feedback {
+	display: none !important;
+}
+
+.yith-wcwl-wishlistaddedbrowse {
+
+	.feedback {
+		cursor: pointer;
+
+		&:before {
+			@include fa-icon();
+			margin-#{$end}: 5px;
+			content: $fa-var-check;
+		}
+	}
+
+	> a {
+		display: none;
+	}
+}
+
+.add_to_wishlist {
+	&::before {
+		// font: normal normal normal 14px/1 font-electro;
+		// margin-#{$end}: 3px;
+		// content: "\67";
+		// vertical-align: middle;
+		@include fa-icon();
+		margin-#{$end}: 3px;
+		content: $fa-var-heart-o;
+	}
+}
+
+.yith-wcwl-wishlistexistsbrowse > a {
+	&::before {
+		color: #F22613;
+		@include fa-icon();
+		margin-#{$end}: 5px;
+		content: $fa-var-heart;
+	}
+}
+
+.yith-wcwl-share {
+
+	.yith-wcwl-share-title {
+		margin: 0;
+	}
+
+	> ul {
+		padding-#{$start}: 0 !important;
+	}
+}
+
+.shop_table.wishlist_table {
+	> tbody > tr > th,
+	> tbody > tr > td,
+	> tfoot > tr > th,
+	> tfoot > tr > td {
+		vertical-align: middle;
+	}
+
+	.mc-price-wrapper {
+		> ins {
+			float: $start;
+			margin-#{$end}: 10px;
+		}
+
+		> del, > del .amount {
+			font-size: 90%;
+		}
+	}
+}
+
+.yith-wcwl-share{
+	margin-top: 10px;
+
+    h4{
+        line-height: 27px;
+        padding-bottom: 11px;
+		font-weight: bold;
+	    font-size: 18px;
+    }
+
+    ul > li > a{
+        line-height: 1;
+        font-family: FontAwesome;
+        font-style: normal;
+    }
+
+	ul > li {
+		padding-#{$end}: 10px;
+	}
+
+    .facebook{
+        &:before{
+            content: $fa-var-facebook;
+			color: #3b5998;
+        }
+    }
+
+    .twitter{
+        &:before{
+            content: $fa-var-twitter;
+			color: #00aced;
+        }
+    }
+
+    .pinterest{
+        &:before{
+            content: $fa-var-pinterest;
+			color: #cb2027;
+        }
+    }
+
+    .googleplus{
+        &:before{
+            content: $fa-var-google-plus;
+			color: #dd4b39;
+        }
+    }
+
+    .email{
+        &:before{
+            content: $fa-var-envelope;
+			color: $color-body;
+        }
+    }
+}
+
+.btn-add-to-wishlist{
+    i{
+        margin: dir-values(0 5px 0 0);
+        color: darken(#f9f9f9,20%);
+        @include transition(0.3s,ease);
+    }
+}
+
+.yith-wcwl-add-button > a i,
+.wishlist_table .add_to_cart.button i{
+    margin-#{$end}: 5px !important;
+}

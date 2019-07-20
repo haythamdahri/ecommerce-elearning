@@ -1,0 +1,87 @@
+/*===================================================================================*/
+/*  Brands Carousel
+/*===================================================================================*/
+
+.brands-carousel{
+	margin-bottom: 6.071em;
+	.item {
+		text-align: center;
+		height: 50px;
+		position: relative;
+
+		figure{
+			display: block;
+			margin: 0;
+			position: absolute;
+			top: 50%;
+			@include transform( translateY(-50%));
+			width: 100%;
+			text-align: center;
+			
+			.text-overlay{
+				background-color: rgba(26, 187, 156, 0) !important;
+				display: none;
+				
+				a{
+					opacity: 0;
+				}
+			}
+
+			&:hover{
+				img{
+					opacity: 1;
+				}
+			}
+
+			img{
+				opacity: 0.5;
+				max-height: 50px;
+				width: auto;
+				margin: 0 auto;
+			}
+		}
+	}
+}
+
+.owl-brands {
+	border-top: 1px solid #dadada;
+	border-bottom: 1px solid #dadada;
+	padding: 1.286em 0;
+
+	.owl-nav {
+		-webkit-tap-highlight-color: transparent;
+		position: relative;
+		
+		[class*='owl-'] {
+			color: #D6D6D6;
+			font-size: 14px;
+			display: inline-block;
+			cursor: pointer;
+			position: absolute;
+			top: -30px;
+			line-height: 14px;
+
+			&:hover {
+				color: #869791;
+				text-decoration: none;
+			}
+		}
+
+		.owl-prev {
+			#{$start}: 0;
+		}
+
+		.owl-next {
+			#{$end}: 0;
+		}
+		
+		.disabled {
+			opacity: 0.5;
+			cursor: default;
+		}
+	}
+}
+
+#content + .brands-carousel {
+	margin-top: -5.143em;
+}

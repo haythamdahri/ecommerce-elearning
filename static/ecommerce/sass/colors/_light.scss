@@ -1,0 +1,77 @@
+/*===================================================================================*/
+/*  Light Color
+/*===================================================================================*/
+
+.header-v1 .navbar-search .input-group .btn,
+.header-v1 .navbar-search .input-group .hero-action-btn,
+.header-v3 .navbar-search .input-group .btn,
+.header-v3 .navbar-search .input-group .hero-action-btn,
+.navbar-mini-cart .cart-items-count,
+.navbar-primary a[data-toggle=dropdown]::after,
+.navbar-primary .navbar-nav .nav-link,
+.vertical-menu>li.list-group-item>a,
+.vertical-menu>li.list-group-item>span,
+.departments-menu>.nav-item .nav-link,
+.customer-login-form .button,
+.dropdown-menu-mini-cart .wc-forward.checkout,
+.widget_price_filter .price_slider_amount .button,
+input[type=submit],
+table.cart .actions .checkout-button,
+.pagination ul.page-numbers>li a.current,
+.pagination ul.page-numbers>li span.current,
+.woocommerce-pagination ul.page-numbers>li a.current,
+.woocommerce-pagination ul.page-numbers>li span.current,
+.footer-newsletter .newsletter-title::before,
+.footer-newsletter .newsletter-marketing-text,
+.footer-newsletter .newsletter-title,
+.full-color-background .top-bar .nav-inline .menu-item>a,
+.full-color-background .top-bar .nav-inline .menu-item+.menu-item:before,
+.full-color-background .header-v1 .navbar-nav .nav-link,
+.full-color-background .header-v3 .navbar-nav .nav-link,
+.full-color-background .navbar-primary .navbar-nav>.menu-item>a,
+.full-color-background .navbar-primary .navbar-nav>.menu-item>a:focus,
+.full-color-background .navbar-primary .navbar-nav>.menu-item>a:hover,
+.woocommerce-info,
+.woocommerce-noreviews,
+p.no-comments,
+.woocommerce-info a,
+.woocommerce-info button,
+.woocommerce-noreviews a,
+.woocommerce-noreviews button,
+p.no-comments a,
+p.no-comments button,
+.hero-action-btn a,
+.header-v3 + .navbar-primary .navbar-nav > .menu-item > a{
+    color: $primary-text-color;
+}
+
+.woocommerce-info a:focus,
+.woocommerce-info a:hover,
+.woocommerce-info button:focus,
+.woocommerce-info button:hover,
+.woocommerce-noreviews a:focus,
+.woocommerce-noreviews a:hover,
+.woocommerce-noreviews button:focus,
+.woocommerce-noreviews button:hover,
+p.no-comments a:focus,
+p.no-comments a:hover,
+p.no-comments button:focus,
+p.no-comments button:hover {
+    color: darken($primary-text-color, 2%);
+}
+
+.full-color-background .header-logo path {
+    fill:$primary-text-color;
+}
+
+.home-v1-slider,
+.home-v2-slider,
+.home-v3-slider {
+	.btn-primary {
+		color: $primary-text-color !important;
+
+		&:hover {
+			color: $primary-text-color !important;
+		}
+	}
+}

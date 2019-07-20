@@ -1,0 +1,23 @@
+/*===================================================================================*/
+/*  BLOG-PAGINATION
+/*===================================================================================*/
+.pagination {
+	display: block;
+	border-top: 1px solid #eaeaea;
+	padding-top: 1.5625rem;
+	text-align: center;
+	border-radius: 0;
+	clear: both;
+
+	ul.page-numbers {
+		display: inline-block;
+
+		> li {
+			a,span {
+				.meta-nav {
+					display: none;
+				}
+			}
+		}
+	}
+}

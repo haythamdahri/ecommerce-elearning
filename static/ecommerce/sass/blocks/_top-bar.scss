@@ -1,0 +1,58 @@
+/*===================================================================================*/
+/*  TopBar
+/*===================================================================================*/
+
+.top-bar {
+	border-bottom: 1px solid #dddddd;
+	padding: 0.786em 0;
+
+	.nav-inline {
+		.menu-item {
+			display: inline-block;
+			color: #959595;
+			font-size: 0.929em;
+		}
+
+		.menu-item + .menu-item {
+			&:before {
+				content: '|';
+				color: #cad5d5;
+				display: inline-block;
+				margin: 0 1em;
+			}
+		}
+
+		.menu-item > a {
+			display: inline-block;
+			color: #334141;
+
+			i {
+				margin-#{$end}: 6px;
+				font-size: 1rem;
+			}
+
+			@include hover-focus {
+				text-decoration: none;
+			}
+
+			// Disabled state lightens text and removes hover/tab effects
+			&.disabled {
+				color: $nav-disabled-link-color;
+
+				@include plain-hover-focus {
+					color: $nav-disabled-link-hover-color;
+					cursor: $cursor-disabled;
+					background-color: transparent;
+				}
+			}
+		}
+
+		.menu-item .dropdown-menu {
+			top: 30px;
+			
+			.menu-item {
+				display: block;
+			}
+		}
+	}
+}

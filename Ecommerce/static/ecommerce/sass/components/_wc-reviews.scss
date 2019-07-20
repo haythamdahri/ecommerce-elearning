@@ -1,0 +1,239 @@
+/*===================================================================================*/
+/*  WC-REVIEWS
+/*===================================================================================*/
+#reviews:not(.electro-advanced-reviews) {
+
+	#comments {
+		padding-top: 0;
+
+		> h2 {
+			font-size: 1.786em;
+			line-height: 1.6em;
+			color: #333e48;
+			position: relative;
+			margin-bottom: 1.5em;
+			border-bottom: 1px solid #dddddd;
+			padding-bottom: 0.6em;
+
+			&:after {
+				border-bottom: 2px solid transparent;
+				bottom: -1px;
+				content: " ";
+				display: block;
+				position: absolute;
+				width: 3.684em;
+			}
+		}
+	}
+
+	.comment-form > p {
+		margin-bottom: 1.714em;
+
+		label {
+			display: block;
+		}
+
+		input[type="text"], textarea, input[type="email"], input[type="url"] {
+			width: 100%;
+		}
+	}
+
+	.comment-form-rating {
+		clear: both;
+
+		label {
+			display: block;
+		}
+	}
+
+	.comment-form-author,
+	.comment-form-email {
+		@include make-col();
+
+		@include media-breakpoint-up(md) {
+			@include make-col-span(6);
+		}
+	}
+
+	.comment-form-author {
+		padding-#{$start}: 0;
+	}
+
+	.comment-form-email {
+		padding-#{$end}: 0;
+	}
+
+	.comment-form-email {
+		margin-#{$end}: 0;
+	}
+
+	.form-submit {
+		clear: both;
+	}
+}
+
+#reviews {
+	.commentlist {
+		list-style: none;
+		padding-#{$start}: 0;
+	}
+
+	.commentlist > li {
+		border-bottom: 1px solid #ddd;
+		margin-bottom: 1.5em;
+		list-style: none;
+		clear: both;
+		padding-bottom: 1.5em;
+
+		time {
+			color: #aeaeae;
+			font-size: 0.929em;
+
+		}
+
+		.avatar {
+			display: none;
+		}
+
+		p.meta {
+			margin-bottom: 0;
+		}
+
+		ul.children {
+			border-top: 1px solid #ddd;
+			@include span(last 5 of 6);
+			padding-top: 2.618em;
+		}
+
+		.star-rating {
+			margin-bottom: 1em;
+		}
+
+		.star-rating + .meta {
+			display: none;
+		}
+
+		.description {
+			margin-bottom: 1.5em;
+			line-height: 1.571em;
+		}
+
+		&:last-child {
+			border-bottom: none;
+			margin-bottom: 0;
+			padding-bottom: 0;
+		}
+	}
+}
+
+.electro-advanced-reviews {
+	#reply-title, h2 {
+		font-size: 1.286em;
+		line-height: 1.222em;
+		font-weight: normal;
+		border: none;
+		padding-bottom: 0;
+
+		&::after {
+			content: none;
+		}
+	}
+
+	.comment-form {
+		> p {
+			margin-bottom: 1.143em;
+			display: table;
+			width: 100%;
+
+			label {
+				display: table-cell;
+				font-weight: normal;
+				width: 30%;
+				vertical-align: middle;
+			}
+
+			input[type="text"], textarea {
+				display: table-cell;
+			}
+
+			p.stars {
+				display: table-cell;
+			}
+
+			textarea {
+				height: 7.857em;
+			}
+		}
+
+		.form-submit {
+			input[type="submit"] {
+				font-size: 0.929em;
+				color: #fff;
+				line-height: 1.385em;
+				padding: 1em 2.222em;
+				margin-#{$start}: 30%;
+			}
+		}
+	}
+}
+
+.advanced-review {
+	margin-bottom: 3.429em;
+
+	.based-title {
+		margin-bottom: 2.571em;
+	}
+
+	.avg-rating {
+		margin-bottom: 1.429em;
+
+		.avg-rating-number {
+			display: block;
+			font-size: 2.143em;
+			font-weight: bold;
+			line-height: 0.6em;
+		}
+	}
+
+	.rating-histogram {
+
+		.rating-bar {
+			margin-bottom: 1.429em;
+			@include clearfix;
+
+			.rating-percentage-bar {
+				float: $start;
+			}
+
+			.star-rating {
+				float: $start;
+			}
+		}
+
+		.rating-percentage-bar {
+			width: 14.286em;
+			height: 0.714em;
+			border-radius: 0.286em;
+			background-color: #f3f3f3;
+			margin-top: 0.143em;
+			margin-#{$start}: 2.857em;
+		}
+
+		.rating-percentage {
+			height: 100%;
+			background-color: #d8d8d8;
+			display: block;
+			border-radius: 0.286em;
+		}
+
+		.rating-count {
+			float: $start;
+			margin-#{$start}: 0.714em;
+			line-height: 1em;
+
+			&.zero {
+				color: #b6b6b6;
+			}
+		}
+	}
+}

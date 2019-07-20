@@ -1,0 +1,178 @@
+{% extends 'ecommerce/base.html' %}
+{% load staticfiles %}
+
+{% block title %}LISTE DES SOUHAITS{% endblock %}
+
+{% block content %}
+
+    <div tabindex="-1" class="site-content" id="content">
+                <div class="container">
+
+                    <nav class="woocommerce-breadcrumb"><a href="{% url 'ecommerce:home' %}">Acceuil</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Wishlist</nav>
+                    <div class="content-area" id="primary">
+                        <main class="site-main" id="main">
+                            <article class="page type-page status-publish hentry">
+                                <div itemprop="mainContentOfPage" class="entry-content">
+                                    <div id="yith-wcwl-messages"></div>
+
+                                        <!-- TITLE -->
+                                        <div class="wishlist-title ">
+                                            <h2>MA LISTE DES SOUHAITS</h2>
+                                        </div>
+
+                                        <!-- WISHLIST TABLE -->
+                                        <table data-token="" data-id="" data-page="1" data-per-page="5" data-pagination="no" class="shop_table cart wishlist_table">
+
+                                            <thead>
+                                                <tr>
+
+                                                    <th class="product-remove"></th>
+
+                                                    <th class="product-thumbnail"></th>
+
+                                                    <th class="product-name">
+                                                        <span class="nobr">Nom Du Produit</span>
+                                                    </th>
+
+                                                    <th class="product-price">
+                                                        <span class="nobr">Prix par unité</span>
+                                                    </th>
+                                                    <th class="product-stock-stauts">
+                                                        <span class="nobr">Disponibilité Dans Stock</span>
+                                                    </th>
+
+                                                    <th class="product-add-to-cart"></th>
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            {% for wishlist in wish_list %}
+                                                <tr id="wish_list{{ wishlist.id }}">
+                                                    <td class="product-remove">
+                                                        <div>
+                                                            <a title="Supprimer ce produit de ma liste" product="{{ wishlist.product.id }}" onclick="delete_wish(event, {{ wishlist.id }});" class="remove remove_from_wishlist" href="javascript:void(0)">×</a>
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="product-thumbnail">
+                                                        <a href="{{ wishlist.product.images.first.file.url }}"
+                                                       data-fancybox data-caption="{{ wishlist.product.name }}">
+                                                            <img product="wishlist-product"
+                                                                 src="{{ wishlist.product.images.first.file.url }}"
+                                                                 style="width: 100%; height: auto;"
+                                                                 alt="{{ wishlist.product.name }}">
+                                                        </a>
+                                                    </td>
+
+                                                    <td class="product-name">
+                                                        <a href="{{ wishlist.product.get_absolute_url }}">{{ wishlist.product.name }}</a>
+                                                    </td>
+
+                                                    <td class="product-price">
+                                                        <span class="electro-price">
+                                                            {% if wishlist.product.is_sale %}
+                                                                <span class="amount">{{ wishlist.product.price.normalize }} Dhs</span>
+                                                            {% else %}
+                                                                <span class="amount">{{ wishlist.product.price.normalize }} Dhs</span>
+                                                            {% endif %}
+                                                        </span>
+                                                    </td>
+
+                                                    <td class="product-stock-status">
+                                                        {% if wishlist.product.quantity_in_stock > 0 %}
+                                                            <span class="in-stock">Disponible</span>
+                                                        {% else %}
+                                                            <span class="out-of-stock">Indisponible</span>
+                                                        {% endif %}
+                                                    </td>
+
+                                                    <td class="product-add-to-cart">
+                                                        <!-- Date added -->
+
+                                                        <!-- Add to cart button -->
+                                                        <a href="javascript:void(0)" class="button " onclick="add_to_cart(event, {{ wishlist.product.id }}, '{{ wishlist.product.stock_set.first.id }}')" ><i class="fas fa-cart-arrow-down"></i><i class="fas fa-sync-alt fa-spin" style="color: #000000;display: none;"></i> Ajouter au panier</a>
+                                                        <!-- Change wishlist -->
+
+                                                        <!-- Remove from wishlist -->
+                                                    </td>
+                                                </tr>
+                                            {% empty %}
+                                                <td colspan="6">
+                                                    <div class="alert alert-warning text-md-center text-uppercase font-weight-bold" style="padding: 10px;font-size:12px;font-weight:bold;width: 100%;" >
+                                                        <i class="fas fa-exclamation-triangle"></i> Aucun produit trouvé dans votre liste des souhaits.
+                                                    </div>
+                                                </td>
+                                            {% endfor %}
+
+
+                                            </tbody>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="6"></td>
+                                                </tr>
+                                            </tfoot>
+
+                                        </table>
+
+                                </div><!-- .entry-content -->
+
+
+                            {# ------------------ Pagination section ------------------ #}
+                            {% if wish_list.has_other_pages %}
+                                {% if wish_list.number > 0 %}
+                                    <div class="shop-control-bar-bottom" style="text-align: center;">
+                                        <nav class="woocommerce-pagination">
+                                             <ul class="page-numbers">
+
+                                                {% if wish_list.has_previous %}
+                                                    <li>
+                                                    <a href="{% url 'ecommerce:wish_list' %}?&page=1"
+                                                    class="previous page-numbers"><i class="fas fa-angle-double-left"></i></a></li>
+                                                    <li>
+                                                     <li>
+                                                        <a href="{% url 'ecommerce:wish_list' %}?page={{ wish_list.previous_page_number }}"
+                                                           class="previous page-numbers"><i class="fas fa-angle-left"></i></a>
+                                                    </li>
+                                                {% endif %}
+
+                                                {% for n in wish_list.paginator.page_range %}
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:wish_list' %}?page={{ n }}" class="page-numbers {% if n == wish_list.number %}current{% endif %}">{{ n }}</a>
+                                                    </li>
+                                                {% endfor %}
+
+                                                {% if wish_list.has_next %}
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:wish_list' %}?&page={{ wish_list.next_page_number }}"
+                                                           class="page-numbers"><i class="fas fa-angle-right"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:wish_list' %}?&page={{ wish_list.next_page_number }}"
+                                                           class="page-numbers"><i class="fas fa-angle-double-right"></i></a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+
+                            </article><!-- #post-## -->
+
+                        </main><!-- #main -->
+                    </div><!-- #primary -->
+                </div><!-- .col-full -->
+            </div>
+
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+
+    <script>
+
+        $("body").attr('class','page home page-template-default');
+        $('img[product="wishlist-product"]').css({'height': '100', 'height': '100'});
+    </script>
+{% endblock %}

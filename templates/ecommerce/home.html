@@ -1,0 +1,801 @@
+{% extends 'ecommerce/base.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+{% block title %}ACCEUIL{% endblock %}
+
+{% block content %}
+
+    <div id="content" class="site-content" tabindex="-1">
+        <div class="container">
+
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main">
+                    <div class="home-v2-slider" >
+                        <!-- ========================================== SECTION – HERO : END========================================= -->
+
+                        <div id="owl-main" class="owl-carousel owl-inner-nav owl-ui-sm">
+                    {# home slider show products stored in database => trending_products_stock #}
+                            {% for stock in trending_products_stock %}
+                                    <div class="item" style="background-image: url({{ stock.product.images.first.file.url }});">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-offset-3 col-md-5">
+                                                    <div class="caption vertical-center text-left" style="color: white;text-shadow: 0 0 3px #000000;-webkit-text-fill-color: white;-webkit-text-stroke-width: 1px;-webkit-text-stroke-color: #1f1a01;">
+                                                        <div class="hero-1 fadeInDown-1"  style="color: white;font-weight: bold;">
+                                                            {{ stock.product.name }}
+                                                        </div>
+
+                                                        <div class="hero-v2-price fadeInDown-3" style="color: white;">
+                                                            <span style="color: white;font-weight: bold;font-size: 20px;">À partir de </span><br><span>{{ stock.product_min_price_from.normalize|intcomma }} Dhs</span>
+                                                        </div>
+                                                        <div class="hero-action-btn fadeInDown-4" style="color: white;">
+                                                            <a href="{{ stock.product.get_absolute_url }}" class="big le-button font-weight-bold">Commencer à acheter</a>
+                                                        </div>
+                                                    </div><!-- /.caption -->
+                                                </div>
+                                            </div>
+                                        </div><!-- /.container -->
+                                    </div><!-- /.item -->
+                            {% endfor %}
+                        </div><!-- /.owl-carousel -->
+
+                        <!-- ========================================= SECTION – HERO : END ========================================= -->
+
+                    </div><!-- /.home-v1-slider -->
+                    <div class="home-v2-ads-block animate-in-view fadeIn animated" data-animation=" animated fadeIn" style=" padding-bottom: 6%; ">
+                        <div class="ads-block row">
+
+                            {% for banner in banners %}
+                                <div class="ad col-xs-12 col-sm-6">
+                                    <div class="media">
+                                        <div class="media-left media-middle"  style="background: url({{ banner.get_banner_image }}); background-repeat: no-repeat; background-size: 100% 100%;"></div>
+                                        <div class="media-body media-middle">
+                                            <div class="ad-text" style=" margin-left: 0.3em;color: white;text-shadow: 0 0 3px #000000;-webkit-text-fill-color: white;-webkit-text-stroke-width: 1px;-webkit-text-stroke-color: #1f1a01;">
+                                                {{ banner.title|safe }}
+                                            </div>
+                                            <div class="ad-action" style="margin-left: 0.5em;color: white;text-shadow: 0 0 3px #000000;-webkit-text-fill-color: white;-webkit-text-stroke-width: 1px;-webkit-text-stroke-color: #1f1a01;">
+                                                <a href="#"><span class="from"><span class="prefix">À partir de </span><span class="value">{{ banner.price_from|floatformat:"0" }}</span><span class="suffix">{{ banner.get_rest }}</span><sup>Dhs </sup></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <section class="products-carousel-tabs animate-in-view fadeIn animated" data-animation="fadeIn">
+                        <h2 class="sr-only">Product Carousel Tabs</h2>
+
+                        <ul class="nav nav-inline">
+
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#tab-products-1" data-toggle="tab">Offres Spéciales</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#tab-products-2" data-toggle="tab">Soldes</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#tab-products-3" data-toggle="tab">Les Plus Evalués</a>
+                            </li>
+
+                        </ul><!-- /.nav -->
+
+                        <div class="tab-content">
+
+                            <div class="tab-pane active" id="tab-products-1" role="tabpanel">
+                                <section class="section-products-carousel" >
+                                    <div class="home-v2-owl-carousel-tabs">
+                                        <div class="woocommerce columns-3">
+
+                                            <div class="products owl-carousel home-v2-carousel-tabs products-carousel columns-3">
+
+                                        {# featured products under slider show => featured #}
+                                                {% for stock in featured %}
+                                                    <div class="product {% if forloop.first or forloop.counter|divisibleby:4 and featured.count > 1 %}first{% elif forloop.last or forloop.counter|divisibleby:3 and featured.count > 1 %}last{% endif %}">
+                                                        <div class="product-outer" id="product-outer{{ product.id }}">
+                                                            <div class="product-inner"  id="product-inner{{ product.id }}">
+                                                                <span class="loop-product-categories">
+                                                            {# featured products categories => stock.product.categories.all #}
+                                                                    {% for category in stock.product.categories.all %}
+                                                                        <a href="{{ category.get_absolute_url }}" rel="tag">{{ category.name }}</a> {% if not forloop.last %}|{% endif %}
+                                                                    {% endfor %}
+                                                                </span>
+
+                                                            <a href="{{ stock.product.get_absolute_url }}"><h3>{{ stock.product.name }}</h3></a>
+
+                                                                <a href="{{ stock.product.images.first.file.url }}" data-fancybox data-caption="{{ stock.product.name }}" >
+                                                                    <div class="product-thumbnail">
+                                                                        <img  product="single-product" src="{{ stock.product.images.first.file.url }}"  alt="{{ stock.product.name }}">
+                                                                    </div>
+                                                                </a>
+
+                                                                <div class="price-add-to-cart">
+                                                                    <span class="price">
+                                                                        <span class="electro-price">
+                                                                            {% with stock.product.price as current_price %}
+                                                                                {% if stock.product.old_price is not None and stock.product.old_price > current_price %}
+                                                                                        <ins><span class="amount">{{ current_price.normalize|intcomma }} Dhs</span></ins>
+                                                                                        <del><span class="amount">{{ stock.product.old_price.normalize|intcomma }} Dhs</span></del>
+                                                                                {% else %}
+                                                                                        <span class="amount">{{ stock.product.price.normalize|intcomma }} Dhs</span>
+                                                                                {% endif %}
+                                                                            {% endwith %}
+                                                                        </span>
+                                                                    </span>
+                                                                    <a rel="nofollow" href="javascript:void(0)" onclick="add_to_cart(event, {{ stock.product.id }}, '{{ stock.product.stock_set.first.id }}')" class="button add_to_cart_button">Add to cart</a>
+                                                                </div><!-- /.price-add-to-cart -->
+
+                                                                <div class="hover-area">
+                                                                    <div class="action-buttons">
+
+                                                                        <a href="javascript:void(0)" rel="nofollow" onclick="add_to_wish_list(event, {{ stock.product.id }})" class="add_to_wishlist"> Wishlist</a>
+
+                                                                        <a href="javascript:void(0)" onclick="add_to_compare(event, {{ stock.product.id }})" class="add-to-compare-link"> Comparer</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- /.product-inner -->
+                                                        </div><!-- /.product-outer -->
+                                                    </div><!-- /.product -->
+                                                {% endfor %}
+
+                                            </div><!-- /.products -->
+                                        </div>
+                                    </div>
+                                </section>
+                            </div><!-- /.tab-pane -->
+
+                            <div class="tab-pane" id="tab-products-2" role="tabpanel">
+                                <section class="section-products-carousel">
+                                    <div class="home-v2-owl-carousel-tabs">
+                                        <div class="woocommerce columns-3">
+
+
+                                            <div class="products owl-carousel home-v2-carousel-tabs products-carousel columns-3">
+
+                                        {# sales products(Solde) => sales #}
+                                                {% for product in sale_products %}
+                                                    <div class="product {% if forloop.first or forloop.counter|divisibleby:4 and sales.count > 1 %}first{% elif forloop.last or forloop.counter|divisibleby:3 and sales.count > 1 %}last{% endif %}">
+                                                        <div class="product-outer">
+                                                            <div class="product-inner">
+                                                                <span class="loop-product-categories">
+                                                            {# sales products categories(Solde) => sale.product.categories.all #}
+                                                                    {% for category in product.categories.all %}
+                                                                        <a href="{{ category.get_absolute_url }}" rel="tag">{{ category.name }}</a>
+                                                                        {% if not forloop.last %}|{% endif %}
+                                                                    {% endfor %}
+                                                                </span>
+
+                                                                <a href="{{ product.get_absolute_url }}"><h3>{{ product.name }}</h3></a>
+
+                                                                <a href="{{ product.images.first.file.url }}" data-fancybox data-caption="{{ product.name }}" >
+                                                                    <div class="product-thumbnail">
+                                                                        <img  product="single-product" src="{{ product.images.first.file.url }}"  alt="{{ product.name }}">
+                                                                    </div>
+                                                                </a>
+
+                                                                <div class="price-add-to-cart">
+                                                                    <span class="price">
+
+                                                                        <span class="electro-price">
+                                                                            <ins><span
+                                                                                    class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                                            <del><span
+                                                                                    class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                                                        </span>
+
+                                                                    </span>
+                                                                    <a rel="nofollow" href="javascript:void(0)" onclick="add_to_cart(event, {{ product.id }}, '{{ product.stock_set.first.id }}')" class="button add_to_cart_button">Add to cart</a>
+                                                                </div><!-- /.price-add-to-cart -->
+
+                                                                <div class="hover-area">
+                                                                    <div class="action-buttons">
+
+                                                                        <a href="javascript:void(0)" rel="nofollow" onclick="add_to_wish_list(event, {{ product.id }})" class="add_to_wishlist"> Wishlist</a>
+
+                                                                        <a href="javascript:void(0)" onclick="add_to_compare(event, {{ product.id }})" class="add-to-compare-link"> Comparer</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- /.product-inner -->
+                                                        </div><!-- /.product-outer -->
+                                                    </div><!-- /.product -->
+                                                {% endfor %}
+
+                                            </div><!-- /.products -->
+                                        </div>
+                                    </div>
+                                </section>
+                            </div><!-- /.tab-pane -->
+
+                            <div class="tab-pane" id="tab-products-3" role="tabpanel">
+                                <section class="section-products-carousel">
+                                    <div class="home-v2-owl-carousel-tabs">
+                                        <div class="woocommerce columns-3">
+
+
+                                            <div class="products owl-carousel home-v2-carousel-tabs products-carousel columns-3">
+
+                                        {# top rated products(rated) => rated #}
+                                                {% for stock in rated %}
+                                                    <div class="product {% if forloop.first or forloop.counter|divisibleby:4 and featured.count > 1%}first{% elif forloop.last or forloop.counter|divisibleby:3 and featured.count > 1 %}last{% endif %}">
+                                                        <div class="product-outer">
+                                                            <div class="product-inner">
+                                                                <span class="loop-product-categories">
+                                                            {# top rated products categories => stock.product.categories.all #}
+                                                                    {% for category in stock.product.categories.all %}
+                                                                        <a href="{{ category.get_absolute_url }}" rel="tag">{{ category.name }}</a> {% if not forloop.last %}|{% endif %}
+                                                                    {% endfor %}
+                                                                </span>
+
+                                                                <a href="{{ stock.product.get_absolute_url }}"><h3>{{ stock.product.name }}</h3></a>
+
+                                                                <a href="{{ stock.product.images.first.file.url }}" data-fancybox data-caption="{{ stock.product.name }}" >
+                                                                    <div class="product-thumbnail">
+                                                                        <img  product="single-product" src="{{ stock.product.images.first.file.url }}"  alt="{{ stock.product.name }}">
+                                                                    </div>
+                                                                </a>
+
+                                                                <div class="price-add-to-cart">
+                                                                    <span class="price">
+                                                                        <span class="electro-price">
+
+
+                                                                            {% if product.is_sale %}
+                                                                                <ins><span
+                                                                                        class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                                                <del><span
+                                                                                        class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                                                            {% else %}
+                                                                                {% with stock.product.price as current_price %}
+                                                                                    {% if stock.product.old_price is not None and stock.product.old_price > current_price %}
+                                                                                            <ins><span class="amount">{{ current_price.normalize|intcomma }} Dhs</span></ins>
+                                                                                            <del><span class="amount">{{ stock.product.old_price.normalize|intcomma }} Dhs</span></del>
+                                                                                    {% else %}
+                                                                                            <span class="amount">{{ stock.product.price.normalize|intcomma }} Dhs</span>
+                                                                                    {% endif %}
+                                                                                {% endwith %}
+                                                                            {% endif %}
+
+                                                                            <span class="amount"> </span>
+                                                                        </span>
+                                                                    </span>
+                                                                    <a rel="nofollow" href="javascript:void(0)" onclick="add_to_cart(event, {{ stock.product.id }}, '{{ stock.product.stock_set.first.id }}')" class="button add_to_cart_button">Add to cart</a>
+                                                                </div><!-- /.price-add-to-cart -->
+
+                                                                <div class="hover-area">
+                                                                    <div class="action-buttons">
+
+                                                                        <a href="javascript:void(0)" rel="nofollow" onclick="add_to_wish_list(event, {{ stock.product.id }})" class="add_to_wishlist"> Wishlist</a>
+
+                                                                        <a href="javascript:void(0)" onclick="add_to_compare(event, {{ stock.product.id }})" class="add-to-compare-link"> Comparer</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- /.product-inner -->
+                                                        </div><!-- /.product-outer -->
+                                                    </div><!-- /.product -->
+                                                {% endfor %}
+
+                                            </div><!-- /.products -->
+                                        </div>
+                                    </div>
+                                </section>
+                            </div><!-- /.tab-pane -->
+
+
+                        </div><!-- /.tab-content -->
+                    </section><!-- /.products-carousel-tabs -->
+
+
+
+                {% if deals_of_week %}
+                    <section class=" section-onsale-product-carousel" data-animation="fadeIn">
+
+                        <header>
+                            <h1 class="h1">Offres de la semaine</h1>
+                        </header>
+                        <div class="owl-nav">
+                            <a href="#onsale-products-carousel-prev" data-target="#onsale-products-carousel-57176fb23fad9" class="slider-prev"><i class="fa fa-angle-left"></i>Offre précedent</a>
+                            <a href="#onsale-products-carousel-next" data-target="#onsale-products-carousel-57176fb23fad9" class="slider-next">Offre suivant<i class="fa fa-angle-right"></i></a>
+                        </div>
+                        <div id="onsale-products-carousel-57176fb23fad9">
+
+                            <div class="onsale-product-carousel owl-carousel">
+                        {# deal products stored in sale table => deals_of_week #}
+                                {% for deal in deals_of_week %}
+                                    <div class="onsale-product">
+                                    <div class="onsale-product-thumbnails">
+
+
+                                        <div class="savings">
+                                            <span class="savings-text">
+                                                Economiser <span class="amount">{{ deal.saved_amount.normalize|intcomma }} Dhs</span>
+                                            </span>
+                                        </div>
+
+
+                                        <div class="images" ><a href="{{ deal.product.get_absolute_url }}" itemprop="image" class="woocommerce-main-image" title=""><img id="deal-product{{ deal.id }}" product="deal-product" data-zoom="{{ deal.product.images.first.file.url }}" src="{{ deal.product.images.first.file.url }}" class="wp-post-image" alt="{{ deal.product.images.first.name }}" title="{{ deal.product.images.first.name }}"/></a>
+                                            <div class="thumbnails columns-3">
+                                        {# deal products images => deal.product.images.all #}
+                                                {% for image in deal.product.images.all %}
+                                                    <a href="javascript:void(0)" class="{% if forloop.first %}first{% elif forloop.last %}last{% endif %}" title="" ><img id="deal-product-other{{ image.id }}" product="deal-product-other" src="{{ image.file.url }}" class="attachment-shop_thumbnail size-shop_thumbnail" alt="{{ image.name }}" title="{{ image.name }}"/></a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="onsale-product-content{{ deal.id }}" class="onsale-product-content">
+
+                                        <a href="{{ deal.product.get_absolute_url }}"><h3>{{ deal.product.name }}</h3></a>
+                                        <span class="price">
+                                            <span class="electro-price">
+                                                {% with deal.new_price as new_price %}
+                                                            <ins><span class="amount">{{ new_price.normalize|intcomma }} Dhs</span></ins>
+                                                            <del><span class="amount">{{ deal.product.price.normalize|intcomma }} Dhs</span></del>
+                                                {% endwith %}
+                                            </span>
+                                        </span>
+                                        <div class="deal-progress">
+                                            <div class="deal-stock">
+                                                <span class="stock-sold">Déja vendus: <strong>{{ deal.sold }}</strong></span>
+                                                <span class="stock-available">Valable: <strong>{{ deal.quantity }}</strong></span>
+                                            </div>
+                                            <div class="progress">
+                                                <span class="progress-bar" style="width:{{ deal.consumed_percentage|intcomma }}%">{{ deal.consumed_percentage }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="deal-countdown-timer">
+                                            <div class="marketing-text text-xs-center">Dépêchez-vous! L'offre se termine dans:</div>
+                                            <span class="deal-end-date" id="deal-end-date{{ deal.id }}" style="display:none;">{{ deal.date_end|date:"Y-m-d" }}</span>
+                                            <div id="deal-countdown{{ deal.id }}" class="countdown" ></div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </section>
+                {% endif %}
+
+                {% if best_categories is not None %}
+                    <section class="section-product-cards-carousel animate-in-view fadeIn animated" data-animation="fadeIn">
+
+                        <header>
+
+                            <h2 class="h1">Meilleures ventes</h2>
+
+                            <ul class="nav nav-inline">
+
+                                <li class="nav-item active"><span class="nav-link">Top 4 Produits</span></li>
+                    {# Best sellers categories => best_categories #}
+                            {% for category in best_categories %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </header>
+
+                        <div id="home-v1-product-cards-careousel">
+                            <div class="woocommerce columns-2 home-v1-product-cards-carousel product-cards-carousel owl-carousel">
+
+                                    <ul class="products columns-2">
+                                        {% for product in best_products %}
+                                            <li class="product product-card {% if not forloop.counter|divisibleby:'2' %}first{% else %}last{% endif %}">
+
+                                                <div class="product-outer">
+                                                    <div class="media product-inner">
+
+                                                     <a  class="media-left" href="{{ product.images.first.file.url }}" data-fancybox data-caption="{{ product.name }}" title="{{ product.title }}" >
+                                                        <img  product="single-product-best" src="{{ product.images.first.file.url }}"  alt="{{ product.name }}" class="media-object wp-post-image img-responsive" />
+                                                     </a>
+
+                                                    <div class="media-body">
+
+                                                            <span class="loop-product-categories">
+                                                                {% for category in product.categories.all %}
+                                                                    <a href="{{ category.get_absolute_url }}" rel="tag">{{ category.name }}</a> {% if not forloop.last %}|{% endif %}
+                                                                {% endfor %}
+                                                            </span>
+
+                                                            <div class="price-add-to-cart">
+
+                                                                <a href="{{ product.get_absolute_url }}">
+                                                                    <h3>{{ product.name }}</h3>
+                                                                </a>
+
+                                                                <span class="price">
+                                                                    <span class="electro-price">
+                                                                    {% if product.is_sale %}
+                                                                        <ins><span
+                                                                                class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                                        <del><span
+                                                                                class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                                                        {% else %}
+                                                                            {% with product.price as current_price %}
+                                                                                {% if product.old_price is not None and product.old_price > current_price %}
+                                                                                        <ins><span class="amount">{{ current_price.normalize|intcomma }} Dhs</span></ins>
+                                                                                        <del><span class="amount">{{ product.old_price.normalize|intcomma }} Dhs</span></del>
+                                                                                {% else %}
+                                                                                        <ins><span class="amount">{{ current_price.normalize|intcomma }} Dhs</span></ins>
+                                                                                {% endif %}
+                                                                                        <span class="amount"> </span>
+                                                                            {% endwith %}
+                                                                        {% endif %}
+                                                                    </span>
+                                                                </span>
+
+                                                                    <a rel="nofollow" href="javascript:void(0)" onclick="add_to_cart(event, {{ product.id }}, '{{ product.stock_set.first.id }}')" class="button add_to_cart_button">Add to cart</a>
+                                                            </div><!-- /.price-add-to-cart -->
+
+                                                            <div class="hover-area">
+                                                                <div class="action-buttons">
+
+                                                                    <a href="javascript:void(0)" rel="nofollow"  onclick="add_to_wish_list(event, {{ product.id }})" class="add_to_wishlist"> Wishlist</a>
+
+                                                                    <a href="javascript:void(0)" onclick="add_to_compare(event, {{ product.id }})" class="add-to-compare-link"> Comparer</a>
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div><!-- /.product-inner -->
+                                                </div><!-- /.product-outer -->
+
+                                            </li><!-- /.products -->
+                                            {% if not forloop.first and forloop.counter|divisibleby:"4" and forloop.counter > 4 %}
+                                                </ul>
+                                                <ul class="products columns-2">
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+
+                            </div>
+                        </div><!-- #home-v1-product-cards-careousel -->
+
+                    </section>
+                {% endif %}
+
+                {% if more_products is not None %}
+                    <section class="home-v2-categories-products-carousel section-products-carousel animate-in-view fadeIn animated animation" data-animation="fadeIn">
+
+
+                        <header>
+
+                            <a href="{{ more_products_category.id.get_absolute_url }}"><h2 class="h1">{{ more_products_category.id.name }}</h2></a>
+
+                            <div class="owl-nav">
+                                <a href="#products-carousel-prev" data-target="#products-carousel-57176fb2c4230" class="slider-prev"><i class="fa fa-angle-left"></i></a>
+                                <a href="#products-carousel-next" data-target="#products-carousel-57176fb2c4230" class="slider-next"><i class="fa fa-angle-right"></i></a>
+                            </div>
+
+                        </header>
+
+                    <div id="products-carousel-57176fb2c4230">
+                                <section class="section-products-carousel" >
+                                    <div class="home-v2-owl-carousel-tabs">
+                                        <div class="woocommerce columns-3">
+
+                                            <div class="products owl-carousel home-v2-carousel-tabs products-carousel columns-3">
+
+                                        {# featured products under slider show => featured #}
+                                                {% for product in more_products %}
+                                                    <div class="product {% if forloop.first or forloop.counter|divisibleby:4 and featured.count > 1 %}first{% elif forloop.last or forloop.counter|divisibleby:3 and featured.count > 1 %}last{% endif %}">
+                                                        <div class="product-outer">
+                                                            <div class="product-inner">
+                                                                <span class="loop-product-categories">
+                                                                    <a href="{{ category.get_absolute_url }}" rel="tag">{{ more_products_category.id.name }}</a>
+                                                                </span>
+
+                                                                <a href="{{ product.get_absolute_url }}">
+                                                                    <h3>{{ product.name }}</h3>
+                                                                </a>
+
+                                                                <a href="{{ product.images.first.file.url }}" data-fancybox data-caption="{{ product.name }}">
+                                                                     <div class="product-thumbnail">
+                                                                        <img  product="single-product" src="{{ product.images.first.file.url }}" alt="{{ product.name }}">
+                                                                     </div>
+                                                                </a>
+
+                                                                <div class="price-add-to-cart">
+                                                                    <span class="price">
+                                                                        <span class="electro-price">
+                                                                            {% if product.is_sale %}
+                                                                                <ins><span
+                                                                                        class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                                                <del><span
+                                                                                        class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                                                                {% else %}
+                                                                                    {% with product.price as current_price %}
+                                                                                    {% if product.old_price is not None and product.old_price > current_price %}
+                                                                                            <ins><span class="amount">{{ current_price.normalize|intcomma }} Dhs</span></ins>
+                                                                                            <del><span class="amount">{{ product.old_price.normalize|intcomma }} Dhs</span></del>
+                                                                                    {% else %}
+                                                                                            <span class="amount">{{ product.price.normalize|intcomma }} Dhs</span>
+                                                                                    {% endif %}
+                                                                                {% endwith %}
+                                                                            {% endif %}
+                                                                        </span>
+                                                                    </span>
+                                                                    <a rel="nofollow" href="javascript:void(0)" onclick="add_to_cart(event, {{product.id }}, '{{ product.stock_set.first.id }}')" class="button add_to_cart_button">Add to cart</a>
+                                                                </div><!-- /.price-add-to-cart -->
+
+                                                                <div class="hover-area">
+                                                                    <div class="action-buttons">
+
+                                                                        <a href="javascript:void(0)" rel="nofollow"  onclick="add_to_wish_list(event, {{ product.id }})" class="add_to_wishlist"> Wishlist</a>
+
+                                                                        <a href="javascript:void(0)" onclick="add_to_compare(event, {{ product.id }})" class="add-to-compare-link"> Comparer</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- /.product-inner -->
+                                                        </div><!-- /.product-outer -->
+                                                    </div><!-- /.product -->
+                                                {% endfor %}
+
+                                            </div><!-- /.products -->
+                                        </div>
+                                    </div>
+                                </section>
+                            </div><!-- /.tab-pane -->
+
+
+
+                    </section>
+                {% endif %}
+                </main><!-- #main -->
+            </div><!-- #primary -->
+
+            <div id="sidebar" class="sidebar" role="complementary" style="margin-top: 38em;">
+
+            {% if last_products is not None %}
+                <aside class="widget widget_products">
+                    <h3 class="widget-title">Nouveaux Produits</h3>
+                    <ul class="product_list_widget">
+                {# last added products => last_products #}
+                        {% for product in last_products %}
+                        <li>
+                            <a href="{{ product.images.first.file.url }}" data-fancybox data-caption="{{ product.name }}">
+                                <img  src="{{ product.images.first.file.url }}"  alt="{{ product.name }}" class="wp-post-image">
+                            </a>
+                            <a href="{{ product.get_absolute_url }}" title="{{ product.name }}">
+                               <span class="product-title">{{ product.name }}</span>
+                            </a>
+
+                            <span class="price">
+                                <span class="electro-price">
+                                    {% if product.is_sale %}
+                                        <ins><span
+                                                class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                        <del><span
+                                                class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                    {% else %}
+                                        {% with product.price as current_price %}
+                                            {% if product.old_price is not None and product.old_price > current_price %}
+                                                <ins><span class="amount">{{ current_price.normalize|intcomma }} Dhs</span></ins>
+                                                <del><span class="amount">{{ product.old_price.normalize|intcomma }} Dhs</span></del>
+                                            {% else %}
+                                                <span class="amount">{{ product.price.normalize|intcomma }} Dhs</span>
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                </span>
+                            </span>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                </aside>
+            {% endif %}
+                <aside id="electro_features_block_widget-2" class="widget widget_electro_features_block_widget">
+                    <div class="features-list columns-1">
+                        <div class="feature">
+                            <div class="media">
+                                <div class="media-left media-middle feature-icon">
+                                    <i class="ec ec-transport"></i>
+                                </div>
+                                <div class="media-body media-middle feature-text">
+                                    <strong>Livraison gratuite</strong> à partir de 2000 Dhs
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <div class="media">
+                                <div class="media-left media-middle feature-icon">
+                                    <i class="ec ec-customers"></i>
+                                </div>
+                                <div class="media-body media-middle feature-text">
+                                    <strong>99% Des avis positifs</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <div class="media">
+                                <div class="media-left media-middle feature-icon">
+                                    <i class="ec ec-returning"></i>
+                                </div>
+                                <div class="media-body media-middle feature-text">
+                                    <strong>365 jours</strong> pour le retour d'argent
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <div class="media">
+                                <div class="media-left media-middle feature-icon">
+                                    <i class="ec ec-payment"></i>
+                                </div>
+                                <div class="media-body media-middle feature-text">
+                                    <strong>Payement</strong> Système sécurisé
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <div class="media">
+                                <div class="media-left media-middle feature-icon">
+                                    <i class="ec ec-tag"></i>
+                                </div>
+                                <div class="media-body media-middle feature-text">
+                                    <strong>Seulement les meilleurs</strong> Marques
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+            {% if featured_products is not None %}
+                <aside class="widget widget_electro_products_carousel_widget">
+                    <section class="section-products-carousel" >
+
+
+                        <header>
+
+                            <h1>Produits</h1>
+
+                            <div class="owl-nav">
+                                <a href="#products-carousel-prev" data-target="#products-carousel-57176fb2dc4a8" class="slider-prev"><i class="fa fa-angle-left"></i></a>
+                                <a href="#products-carousel-next" data-target="#products-carousel-57176fb2dc4a8" class="slider-next"><i class="fa fa-angle-right"></i></a>
+                            </div>
+
+                        </header>
+
+                        <div id="products-carousel-57176fb2dc4a8">
+                            <div class="products owl-carousel  products-carousel-widget columns-1">
+
+                    {# Featured products => featured_products #}
+                            {% for product in featured_products %}
+                                <div class="product-carousel-alt">
+
+                                    <a href="{{ product.images.first.file.url }}" data-fancybox data-caption="{{ product.name }}">
+                                         <div class="product-thumbnail">
+                                            <img  product="single-product" src="{{ product.images.first.file.url }}" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="{{ product.name }}">
+                                         </div>
+                                    </a>
+
+                                    <span class="loop-product-categories">
+                                        {% for category in product.categories.all %}
+                                            <a href="{{ category.get_basolute_url }}" rel="tag">{{ category.name }}</a> {% if not forloop.last %}|{% endif %}
+                                        {% endfor %}
+                                    </span>
+
+                                    <a href="{{ product.get_absolute_url }}"><h3>{{ product.name }}</h3></a>
+
+                                    <span class="price">
+                                        <span class="electro-price">
+
+                                            {% if product.is_sale %}
+                                                <ins><span
+                                                        class="amount">{{ product.price.normalize }} Dhs</span></ins>
+                                                <del><span
+                                                        class="amount">{{ product.old_price.normalize }} Dhs</span></del>
+                                            {% else %}
+                                                {% with product.price as current_price %}
+                                                    {% if product.old_price is not None and product.old_price > current_price %}
+                                                            <ins><span class="amount">{{ current_price.normalize|intcomma }} Dhs</span></ins>
+                                                            <del><span class="amount">{{ product.old_price.normalize|intcomma }} Dhs</span></del>
+                                                    {% else %}
+                                                            <span class="amount">{{ product.price.normalize|intcomma }} Dhs</span>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            {% endif %}
+
+
+                                        </span>
+                                </div>
+                            {% endfor %}
+
+                            </div>
+                        </div>
+                    </section>
+                </aside>
+            {% endif %}
+            </div>
+
+        </div><!-- .container -->
+    </div><!-- #content -->
+
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+            <script>
+        //================================== Deals countdown ==================================
+        {% for deal in deals_of_week %}
+            function Deal{{ deal.id }}Timer(){
+                // set the date we're counting down to
+                var deal_end_date = document.getElementById("deal-end-date{{ deal.id }}").textContent;
+                var target_date = new Date(deal_end_date).getTime();
+
+                // variables for time units
+                var days, hours, minutes, seconds;
+
+                // get tag element
+                var countdown = document.getElementById('deal-countdown{{ deal.id }}');
+
+                // update the tag with id "countdown" every 1 second
+                setTimer{{ deal.id }} = setInterval(function () {
+
+                    // find the amount of "seconds" between now and target
+                    var current_date = new Date().getTime();
+                    var seconds_left = (target_date - current_date) / 1000;
+
+                    // do some time calculations
+                    days = parseInt(seconds_left / 86400);
+                    seconds_left = seconds_left % 86400;
+
+                    hours = parseInt(seconds_left / 3600);
+                    seconds_left = seconds_left % 3600;
+
+                    minutes = parseInt(seconds_left / 60);
+                    seconds = parseInt(seconds_left % 60);
+
+                    // format countdown string + set tag value
+                    countdown.innerHTML = '<span data-value="' + days + '" class="days"><span class="value">' + days + '</span><b>Jours</b></span><span class="hours"><span class="value">' + hours + '</span><b>Heures</b></span><span class="minutes"><span class="value">'
+                        + minutes + '</span><b>Minutes</b></span><span class="seconds"><span class="value">' + seconds + '</span><b>Secondes</b></span>';
+
+                }, 1000);
+            }
+            Deal{{ deal.id }}Timer();
+
+            var triggerEl{{ deal.id }} = document.querySelector("#deal-product{{ deal.id }}");
+            var drift{{ deal.id }} = new Drift(document.querySelector("#deal-product{{ deal.id }}"), {
+              paneContainer: document.querySelector("#onsale-product-content{{ deal.id }}")
+            });
+
+            {% for image in deal.product.images.all %}
+                $("#deal-product-other{{ image.id }}").click(function(){
+                        var src = $(this).attr('src');
+                        console.log(src);
+                        var image = $("#deal-product{{ deal.id }}");
+                        image.fadeOut('fast', function () {
+                            image.attr('src', src);
+                            image.fadeIn('fast');
+                    });
+                    drift{{ deal.id }}.setZoomImageURL(src);
+                    triggerEl{{ deal.id }}.setAttribute("data-zoom", src);
+                });
+            {% endfor %}
+
+
+        {% endfor %}
+
+
+        //================================== change image src of such deal ==================================
+
+
+
+    $("img[product='single-product']").css({'height': '180', 'width':'15em', 'margin-right': 'auto', 'margin-left': 'auto'});
+    $("img[product='single-product-best']").css({'height': '150', 'width':'12em', 'margin-right': 'auto', 'margin-left': 'auto'});
+    $("img[product='deal-product']").css({'height': '500', 'width':'500', 'margin-right': 'auto', 'margin-left': 'auto'});
+    $("img[product='deal-product-other']").css({'height': '50', 'width':'50'});
+
+        {% if messages %}
+            {% for message in messages %}
+                swal('Erreur', '{{ message }}', 'error');
+            {% endfor %}
+        {% endif %}
+    </script>
+
+{% endblock %}

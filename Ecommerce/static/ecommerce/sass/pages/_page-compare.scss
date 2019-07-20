@@ -1,0 +1,80 @@
+/*===================================================================================*/
+/*  COMPARE-PAGE
+/*===================================================================================*/
+.table-compare {
+    border: 1px solid #d7d7d7;
+    margin-bottom: 3.75em;
+
+    .product-title {
+        font-size: 1.071em;
+        line-height: 1.286em;
+        font-weight: bold;
+        color: #0062bd;
+    }
+
+    tbody {
+        tr {
+            th {
+                text-transform: uppercase;
+                background-color: #f1f1f1;
+                vertical-align: middle;
+                text-align: center;
+            }
+
+            th,td {
+                border:1px solid #d7d7d7;
+            }
+
+            td {
+                vertical-align: middle;
+                text-align: center;
+                padding: 1em;
+
+                > span,.out-of-stock {
+                    font-size: 0.6875rem;
+                    padding: 4px 0.625rem;
+                    letter-spacing: 0.6px;
+                    text-transform: uppercase;
+                }
+
+                > span {
+                    border: 1px solid #1abc9c;
+                    color: #1abc9c;
+                }
+
+                .out-of-stock {
+                    border: 1px solid #e74c3c;
+                    color: #e74c3c;
+                }
+
+                .product-image,.star-rating {
+                    display: inline-block;
+                }
+            }
+
+            &:first-child {
+                td {
+                    vertical-align: top;
+                    width: 22%;
+                }
+            }
+        }
+
+        .button {
+            padding: 0.6em 2em;
+        }
+
+        .price {
+            font-size: 1.3em;
+
+            ins {
+                text-decoration: none;
+            }
+
+            del {
+                color: lighten($color-body, 20%);
+                font-size: 0.875rem;
+            }
+        }
+    }
+}

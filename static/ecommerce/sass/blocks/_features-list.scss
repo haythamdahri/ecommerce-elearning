@@ -1,0 +1,65 @@
+/*===================================================================================*/
+/*  Features List
+/*===================================================================================*/
+
+.features-list {
+	@include clearfix();
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	margin-bottom: 2.5em;
+	margin-#{$start}: 0;
+	margin-#{$end}: 0;
+
+	.media {
+		width: 150px;
+		margin: 0 auto;
+	}
+
+	.media-left {
+		i {
+			font-size: 2.571em;
+		}
+		
+		i.ec-customers {
+			font-size: 3.386em;
+		}
+	}
+
+	.media-body {
+		text-align: center;
+		font-size: 1.071em;
+	}
+
+	.feature {
+		padding-top: 2.143em;
+		padding-bottom: 2.143em;
+	}
+
+	.feature + .feature {
+		border-#{$start}: 1px solid #ddd;
+	}
+
+	.feature-text {
+		strong {
+			display: block;
+		}
+	}
+
+	&.columns-4 .feature {
+		@include make-col();
+		@include make-col-span(12);
+
+		@include media-breakpoint-up(lg) {
+			@include make-col-span(4);
+		}
+	}
+
+	&.columns-5 .feature {
+		@include make-col();
+		@include make-col-span(12);
+
+		@include media-breakpoint-up(lg) {
+			width: 20%;
+		}
+	}
+}

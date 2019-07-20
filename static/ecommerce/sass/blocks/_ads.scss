@@ -1,0 +1,181 @@
+/*===================================================================================*/
+/*  Ads Block
+/*===================================================================================*/
+
+.ads-block {
+	margin-bottom: 5.286em;
+}
+
+.ad {
+
+	.media {
+		background-color: #f5f5f5;
+	}
+
+	.media-left,
+	.media-body {
+		width: 50%;
+	}
+
+	.media-body {
+		padding: 1.571em;
+	}
+
+	.ad-text {
+		font-size: 1.286em;
+		line-height: 1.278em;
+		font-weight: 200;
+		text-transform: uppercase;
+		margin-bottom: 1.429em;
+	}
+
+	.ad-action {
+		> a {
+			font-size: 1.071em;
+			font-weight: bold;
+			line-height: 2em;
+			color: $color-body;
+
+			@include hover-focus {
+				color: $color-body;
+				text-decoration: none;
+			}
+
+			&::after {
+				@include fa-icon();
+				width: 17px;
+				height: 17px;
+				border-radius: 50%;
+				content: $fa-var-angle-right;
+				font-weight: bold;
+				margin-#{$start}: 8px;
+				color: #fff;
+				text-align: center;
+			}
+
+			.upto, .from {
+				text-transform: uppercase;
+				font-weight: 300;
+
+				.prefix {
+					font-size: 0.919em;
+					line-height: 0.909em;
+					display: inline-block;
+					width: 1.321em;
+					margin-#{$end}: 4px;
+				}
+
+				.value {
+					font-weight: bold;
+					font-size: 2.173em;
+					letter-spacing: -0.025em;
+					line-height: 0.592em;
+
+					sup {
+						top: -0.25em;
+					}
+				}
+
+				.suffix {
+					top: -0.5em;
+					position: relative;
+					font-weight: bold;
+					vertical-align: top;
+					margin-#{$start}: 2px;
+				}
+			}
+
+			.from {
+				position: relative;
+
+				.prefix {
+					width: auto;
+					position: absolute;
+					top: -1.714em;
+				}
+			}
+		}
+	}
+}
+
+.home-v1-ads-block,
+.home-v2-ads-block,
+.home-v3-ads-block {
+	.media-left img {
+		width: 100%;
+	}
+}
+
+.home-v1-ads-block {
+	.ad {
+		.media-body {
+			padding: 3.286em 0 2.143em 0;
+		}
+
+		.ad-text {
+			margin-bottom: 0.357em;
+		}
+
+		.media-left {
+			width: 60%;
+		}
+
+		.media-body {
+			width: 40%;
+		}
+
+		&:nth-child(2) {
+			.media-body {
+				padding-top: 3.113em;
+			}
+		}
+	}
+}
+
+.home-v2-ads-block {
+	.ad {
+		.media-body {
+			padding: 3.286em 0 2.143em 0;
+		}
+
+		.ad-text {
+			font-size: 1.571em;
+			letter-spacing: -1px;
+		}
+
+		.media-left {
+			width: 60%;
+		}
+
+		.media-body {
+			width: 40%;
+		}
+	}
+}
+
+.home-v3-ads-block {
+	.ad {
+		.media-body {
+			padding: 2.857em 0 2.143em 0;
+		}
+
+		.ad-text {
+			font-size: 1.571em;
+			letter-spacing: -1px;
+		}
+
+		&:last-child {
+			.media-body {
+				padding-#{$start}: 12px;
+			}
+		}
+
+		.media-left {
+			width: 62%;
+		}
+
+		.media-body {
+			width: 38%;
+		}
+	}
+}

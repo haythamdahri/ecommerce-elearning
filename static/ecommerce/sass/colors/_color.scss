@@ -1,0 +1,194 @@
+/*===================================================================================*/
+/*  Base File For Colors
+/*===================================================================================*/
+
+.footer-call-us .call-us-icon i,
+.header-support-info .support-icon i,
+.widget_electro_products_filter .widget_layered_nav li > a:hover::before,
+.widget_electro_products_filter .widget_layered_nav li > a:focus::before,
+.widget_electro_products_filter .widget_product_categories li > a:hover::before,
+.widget_electro_products_filter .widget_product_categories li > a:focus::before,
+.widget_electro_products_filter .widget_layered_nav li.chosen > a::before,
+.widget_electro_products_filter .widget_product_categories li.current-cat > a::before,
+.features-list .media-left i,
+p.stars a{
+	color: $primary-color;
+}
+
+.header-logo svg ellipse,
+.footer-logo svg ellipse{
+	fill:$primary-color;
+}
+
+.primary-nav .nav-inline > .menu-item .dropdown-menu,
+.navbar-primary .navbar-nav > .menu-item .dropdown-menu,
+.vertical-menu .menu-item-has-children > .dropdown-menu,
+.departments-menu .menu-item-has-children:hover > .dropdown-menu,
+.top-bar .nav-inline > .menu-item .dropdown-menu{
+	border-top-color: $primary-color;
+}
+
+.columns-6-1 > ul.products > li.product .thumbnails > a:hover,
+.primary-nav .nav-inline .yamm-fw.open > a::before {
+	border-bottom-color: $primary-color;
+}
+
+.navbar-primary,
+.footer-newsletter,
+.button:hover::before,
+li.product:hover .button::before,
+li.product:hover .button,
+li.product:hover .added_to_cart::before,
+.owl-item .product:hover .button::before,
+.owl-item .product:hover .button,
+.owl-item .product:hover .added_to_cart::before,
+.widget_price_filter .ui-slider .ui-slider-handle,
+.woocommerce-pagination ul.page-numbers > li a.current,
+.woocommerce-pagination ul.page-numbers > li span.current,
+.pagination ul.page-numbers > li a.current,
+.pagination ul.page-numbers > li span.current,
+.owl-dots .owl-dot.active,
+.products-carousel-tabs .nav-link.active::before,
+.deal-progress .progress-bar,
+.products-2-1-2 .nav-link.active::before,
+.ad .ad-action > a::after,
+.header-v1 .navbar-search .input-group .btn,
+.header-v3 .navbar-search .input-group .btn,
+.vertical-menu > li:first-child,
+.widget.widget_tag_cloud .tagcloud a:hover,
+.widget.widget_tag_cloud .tagcloud a:focus,
+.navbar-mini-cart .cart-items-count,
+.wc-tabs > li.active a::before,
+.ec-tabs > li.active a::before,
+.electro-nav-tabs > li.nav-item a.active::before,
+.woocommerce-info,
+.woocommerce-noreviews,
+p.no-comments,
+.products-2-1-2 .nav-link:hover::before,
+.single_add_to_cart_button,
+.wpb-accordion .vc_tta.vc_general .vc_tta-panel .vc_tta-panel-heading .vc_tta-panel-title > a:not(.collapsed):before,
+ul.products > li.product.list-view:not(.list-view-small) .button:hover,
+ul.products > li.product.list-view:not(.list-view-small) .button:focus,
+ul.products > li.product.list-view:not(.list-view-small) .button:active,
+ul.products > li.product.list-view.list-view-small .button:hover::after,
+ul.products > li.product.list-view.list-view-small .button:focus::after,
+ul.products > li.product.list-view.list-view-small .button:active::after,
+.widget_electro_products_carousel_widget .section-products-carousel .owl-nav .owl-prev:hover,
+.widget_electro_products_carousel_widget .section-products-carousel .owl-nav .owl-next:hover,
+.full-color-background .header-v3,
+.full-color-background .top-bar,
+.pace .pace-progress {
+	background-color: $primary-color;
+}
+
+.hero-action-btn:hover {
+	background-color: darken($primary-color, 4%) !important;
+}
+
+.hero-action-btn {
+	background-color: $primary-color !important;
+}
+
+.departments-menu .departments-menu-dropdown,
+.departments-menu .menu-item-has-children > .dropdown-menu,
+.widget_price_filter .ui-slider .ui-slider-handle:last-child,
+section header h1::after,
+section header .h1::after,
+.products-carousel-tabs .nav-link.active::after,
+section.section-product-cards-carousel header ul.nav .active .nav-link,
+section.section-onsale-product,
+section.section-onsale-product-carousel .onsale-product-carousel,
+.products-2-1-2 .nav-link.active::after,
+.products-6-1 header ul.nav .active .nav-link,
+.header-v1 .navbar-search .input-group .form-control,
+.header-v1 .navbar-search .input-group .input-group-addon,
+.header-v1 .navbar-search .input-group .btn,
+.header-v3 .navbar-search .input-group .form-control,
+.header-v3 .navbar-search .input-group .input-group-addon,
+.header-v3 .navbar-search .input-group .btn,
+.widget.widget_tag_cloud .tagcloud a:hover,
+.widget.widget_tag_cloud .tagcloud a:focus,
+.navbar-primary .navbar-mini-cart .dropdown-menu-mini-cart,
+.woocommerce-checkout h3::after,
+#customer_login h2::after,
+.customer-login-form h2::after,
+.navbar-primary .navbar-mini-cart .dropdown-menu-mini-cart,
+.woocommerce-edit-address form h3::after,
+.edit-account legend::after,
+.woocommerce-account h2::after,
+.address header.title h3::after,
+.addresses header.title h3::after,
+.woocommerce-order-received h2::after,
+.track-order h2::after,
+.wc-tabs > li.active a::after,
+.ec-tabs > li.active a::after,
+.electro-nav-tabs > li.nav-item a.active::after,
+.comments-title::after,
+.comment-reply-title::after,
+.pings-title::after,
+#reviews #comments > h2::after,
+.single-product .woocommerce-tabs ~ div.products > h2::after,
+.single-product .electro-tabs ~ div.products > h2::after,
+.cart-collaterals h2::after,
+.footer-widgets .widget-title:after,
+.sidebar .widget-title::after,
+.sidebar-blog .widget-title::after,
+.contact-page-title::after,
+#reviews:not(.electro-advanced-reviews) #comments > h2::after,
+.widget_electro_products_carousel_widget .section-products-carousel .owl-nav .owl-prev:hover,
+.widget_electro_products_carousel_widget .section-products-carousel .owl-nav .owl-next:hover,
+.wpb-accordion .vc_tta.vc_general .vc_tta-panel .vc_tta-panel-heading .vc_tta-panel-title > a:not(.collapsed):before{
+	border-color: $primary-color;
+}
+
+.widget_price_filter .price_slider_amount .button,
+.dropdown-menu-mini-cart .wc-forward.checkout,
+table.cart .actions .checkout-button,
+.customer-login-form .button,
+.btn-primary,
+input[type="submit"] {
+	@include button-variant( $color-body, $primary-color, $primary-color );
+}
+
+.navbar-primary .navbar-nav > .menu-item > a:hover,
+.navbar-primary .navbar-nav > .menu-item > a:focus {
+	background-color: darken( $primary-color, 4.5% );
+}
+
+.navbar-primary .navbar-nav > .menu-item > a {
+	border-color: darken( $primary-color, 4.5% );
+}
+
+.full-color-background .navbar-primary {
+	border-top-color: darken( $primary-color, 4.5% );
+}
+
+.full-color-background .top-bar .nav-inline .menu-item+.menu-item:before {
+	color: darken( $primary-color, 4.5% );
+}
+
+.single-product div.thumbnails-all .synced a,
+.products-2-1-2 .nav-link:hover::after,
+.section-onsale-product-carousel .onsale-product-carousel .onsale-product .onsale-product-thumbnails .images .thumbnails a.current {
+	border-bottom-color: $primary-color;
+}
+
+#scrollUp {
+	background-color: $primary-color;
+}
+
+.custom .tp-bullet.selected {
+	background-color: $primary-color !important;
+}
+
+.home-v1-slider,
+.home-v2-slider,
+.home-v3-slider {
+	.btn-primary {
+		background-color: $primary-color !important;
+
+		&:hover {
+			background-color: darken($primary-color, 4%) !important;
+		}
+	}
+}

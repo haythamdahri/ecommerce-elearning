@@ -1,0 +1,104 @@
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+<nav class="navbar navbar-primary navbar-full">
+                <div class="container">
+                    <ul class="nav navbar-nav departments-menu animate-dropdown">
+                        <li class="nav-item dropdown ">
+
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="departments-menu-toggle" >Accessoires - Categories</a>
+                            <ul id="menu-vertical-menu" class="dropdown-menu yamm departments-menu-dropdown">
+                                {% for category in categories %}
+                                    <li class="menu-item">
+                                        <a title="{{ category.name }}" href="{{ category.get_absolute_url }}" ><i class="{{ category.icon }} col-md-3" ></i> {{ category.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-search" method="GET" action="{% url 'ecommerce:products' %}">
+                        <label class="sr-only screen-reader-text" for="search">Rechercher:</label>
+                        <div class="input-group">
+                            {% render_field search_form.search  %}
+                            <div class="input-group-addon search-categories">
+                                {% render_field search_form.category id='product_cat' class='postform resizeselect' %}
+                            </div>
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-secondary"><i class="ec ec-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <ul class="navbar-mini-cart navbar-nav animate-dropdown nav pull-right flip">
+                        <li class="nav-item dropdown">
+                            <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
+                                <i class="ec ec-shopping-bag"></i>
+                                <span class="cart-items-count count" id="number_products_in_cart">{{ number_products_in_cart|default:'0' }}</span>
+                                <span class="cart-items-total-price total-price"><span class="amount" id="total_price_in_cart">{{ total_price_in_cart.normalize }}</span> Dhs</span>
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-mini-cart">
+                                <li>
+                                    {% if user.is_authenticated %}
+                                        <div class="widget_shopping_cart_content">
+
+                                            <ul id="user_carts" class="cart_list product_list_widget ">
+
+                                            {% for cart in carts|slice:"3" %}
+                                                <li class="mini_cart_item" id="cart_item{{ cart.id }}">
+                                                    <a href="javascript:void(0)" onclick="deleteCart(event, {{ cart.id }});" title="Supprimer {{ cart.product.name }}" class="remove" href="javascript">×</a>
+                                                    <a href="{{ cart.product.images.first.file.url }}" data-fancybox data-caption="{{ cart.product.name }}">
+                                                        <div class="product-thumbnail">
+                                                            <img class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image" src="{{ cart.product.images.first.file.url }}" alt="{{ cart.product.name }}&nbsp;"><a href="{{ cart.product.get_absolute_url }}">{{ cart.product.name }}</a>&nbsp;
+                                                        </div>
+                                                    </a>
+
+                                                    <span class="quantity">{{ cart.quantity }} × <span class="amount">{{ cart.product.name }}</span></span>
+                                                </li>
+                                            {% endfor %}
+
+                                            {% if carts.count == 0 %}
+                                                <li class="alert alert-info text-md-center text-uppercase font-weight-bold" style="padding: 10px;font-size:12px;font-weight:bold;width: 100%;">
+                                                    <i class="fas fa-info-circle"></i> Aucun produit dans votre panier
+                                                </li>
+                                            {% endif %}
+
+
+
+                                            </ul><!-- end product list -->
+
+                                                    <p {% if carts.count <= 3 %}style="display: none;"{% endif %} id="show_more_carts" class="buttons">
+                                                        {{ carts.count|add:"-3" }} autres produits au panier
+                                                    </p><hr>
+
+                                            <p class="buttons">
+                                                <a class="button wc-forward" href=" {% url 'ecommerce:cart' %}"><i class="fas fa-shopping-cart"></i> Panier</a>
+                                                <a class="button checkout wc-forward checkout_link" href="{% url 'ecommerce:checkout' %}"><i class="fas fa-credit-card"></i> Achat</a>
+                                            </p>
+
+
+                                        </div>
+                                    {% else %}
+                                        <div class="widget_shopping_cart_content">
+                                            <ul id="user_carts" class="cart_list product_list_widget" style="text-align: center;">
+                                                <a href="{% url 'ecommerce:account' %}"><button class="button btn-link"><i class="fas fa-sign-in-alt"></i> Se connecter</button></a>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-wishlist nav navbar-nav pull-right flip">
+                        <li class="nav-item">
+                            <a href="{% url 'ecommerce:wish_list' %}" class="nav-link"><i class="ec ec-favorites"></i></a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-compare nav navbar-nav pull-right flip">
+                        <li class="nav-item">
+                            <a href="{% url 'ecommerce:compare_list' %}" class="nav-link"><i class="ec ec-compare"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>

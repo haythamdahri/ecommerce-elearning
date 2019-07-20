@@ -1,0 +1,596 @@
+{% load staticfiles %}
+
+        <script type="text/javascript" src="{% static 'ecommerce/js/jquery-3.3.1.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/tether.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/bootstrap.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/bootstrap-hover-dropdown.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/owl.carousel.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/echo.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/wow.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/jquery.easing.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/jquery.waypoints.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/electro.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/sweetalert2.all.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/jquery.jgrowl.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/jquery.fancybox.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/Drift.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ecommerce/js/custom.js' %}"></script>
+
+<script type="text/javascript">
+
+    function subscribeNews(e, frm){
+        e.preventDefault();
+        var form_data = new FormData(frm);
+        $.post({
+            url: '{% url "ecommerce:subscribe_email" %}',
+            data: form_data,
+            processData: false,
+            contentType: false,
+            beforeSend: function(){
+                    $(frm).find('input:first').attr('readonly', "");
+                    $(frm).find('button:first').addClass('disabled');
+                    $(frm).find('.fa-sync-alt').show();
+            },
+            success: function(response){
+                    $(frm).find('input:first').removeAttr('readonly');
+                    $(frm).find('button:first').removeClass('disabled');
+                    $(frm).find('.fa-sync-alt').hide();
+                    var mailInput = $(frm).find('input[name=email]');
+                    var nw = $("#news_letter_helper");
+                    nw.show();
+                if( response.status ){
+                    mailInput.css({'border':'1px solid green'});
+                    nw.removeClass('text-danger');
+                    nw.addClass("text-success");
+                    nw.html('<i class="fas fa-check-circle"></i> '+response.message);
+                }
+                else{
+                    mailInput.css({'border':'1px solid red'});
+                    nw.addClass('text-danger');
+                    nw.removeClass("text-success");
+                    $("#news_letter_helper").html('<i class="fas fa-exclamation-triangle"></i> '+response.message);
+                }
+            },
+            error: function(response){
+                    $(frm).find('input:first').removeAttr('readonly');
+                    $(frm).find('button:first').removeClass('disabled');
+                    $(frm).find('.fa-sync-alt').hide();
+                    var mailInput = $(frm).find('input[name=email]');
+                    var nw = $("#news_letter_helper");
+                    nw.show();
+                    $("#news_letter_helper").html('<i class="fas fa-exclamation-triangle"></i> Une erreur est survenue, veuillez ressayer!');
+            }
+        });
+
+
+    }
+
+    function deleteCart(event, cart_id, is_cart_page=false){
+        console.log(cart_id);
+        $.post({
+            url: '{% url "ecommerce:delete_cart" %}',
+            type: 'POST',
+            data: {'cart_id': cart_id, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+            //dataType: JSON,
+            success: function(response){
+                if( response.status ){
+                    $("#cart_item"+cart_id).remove();
+                    $("#number_products_in_cart").text(response.number_products_in_cart);
+                    $("#total_price_in_cart").text(response.total_price_in_cart);
+                    load_carts();
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'success',
+                      title: response.message
+                    });
+                    if( is_cart_page ){
+                        $("td[data-title='Total'] strong span").text(response.total_price_in_cart+" Dhs");
+                        if( response.number_products_in_cart === 0 ){
+                            html = "<td colspan=\"6\" style='padding: 0.75rem;'>" +
+                                "<div class=\"alert alert-warning text-md-center text-uppercase font-weight-bold\" style=\"padding: 10px;font-size:12px;font-weight:bold;width: 100%;\" >" +
+                                "<i class=\"fas fa-exclamation-triangle\"></i> Aucun produit trouvé dans votre panier." +
+                                "</div>" +
+                                "</td>";
+                            console.log(html);
+                            $("#cart_item"+cart_id).html(html);
+                        }else{
+                            console.log("NUMBER CARTS: "+response.number_products_in_cart)
+                            $("#cart_item"+cart_id).remove();
+                        }
+                    }
+                }else{
+                    $("#number_products_in_cart").text(response.number_products_in_cart);
+                    $("#total_price_in_cart").text(response.total_price_in_cart);
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: response.message
+                    })
+                }
+            },
+            error: function(response){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: 'Une erreur est survenue, veuillez ressayer!'
+                    })
+            }
+        });
+
+    }
+
+    function load_carts(){
+        $.ajax({
+            url: '{% url "ecommerce:load_carts" %}',
+            type: 'GET',
+            success: function(response){
+                $("#user_carts").html(response.html_elements);
+                 if( response.has_more_carts ){
+                    $("#show_more_carts").text(parseInt(response.nb_elements_more)+" autres produits au panier");
+                    $("#show_more_carts").show();
+                 }else{
+                    $("#show_more_carts").text("");
+                    $("#show_more_carts").hide();
+                 }
+                if( response.nb_elements_in_cart == 0 ) {
+                    html = "<ul class=\"alert alert-info text-md-center text-uppercase font-weight-bold\" style=\"padding: 10px;font-size:12px;font-weight:bold;width: 100%;\">\n" +
+                        "                                                    <i class=\"fas fa-info-circle\"></i> Aucun produit dans votre panier\n" +
+                        "                                                </ul>";
+                    $("#user_carts").html(html);
+                }
+            },
+            error: function(response){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: 'Une erreur est survenue, veuillez ressayer!'
+                    })
+            }
+        });
+
+    }
+
+    function add_to_wish_list(event, product){
+        $.ajax({
+            url: '{% url "ecommerce:add_to_wish_list" %}',
+            type: 'GET',
+            data: {'product': product},
+            success: function(response){
+                if( !response.message_error ){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'success',
+                      title: 'Produit est ajouté dans votre liste des souhaits'
+                    })
+                }else{
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: response.message_error
+                    })
+                }
+            },
+            error: function(response){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: 'Une erreur est survenue, veuillez ressayer!'
+                    })
+            }
+        });
+
+    }
+
+    function add_to_cart(event, product, stock, is_compare_page=false){
+        var btn = $("a[button='add_cart']");
+        $.ajax({
+            url: '{% url "ecommerce:add_to_cart" %}',
+            type: 'GET',
+            data: {'product': product, 'stock': stock},
+            beforeSend: function(){
+                btn.addClass('disabled');
+                btn.find('.fa-sync-alt').show();
+            },
+            success: function(response){
+                if( !response.message_error ){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'success',
+                      title: 'Produit est ajouté dans votre panier\n'+response.message_warning
+                    });
+                    $("#number_products_in_cart").text(response.number_products_in_cart);
+                    $("#total_price_in_cart").text(response.total_price_in_cart);
+                    load_carts();
+                    if( is_compare_page ) {
+                        $('#add_to_cart_td' + product).html('<i class="fas fa-check-circle"></i> Produit ajouté dans votre panier');
+                        $('#add_to_cart_td' + product).addClass('full-color-background');
+                        $('#add_to_cart_td' + product).addClass('bg-success');
+                        $('#add_to_cart_td' + product).addClass('font-weight-bold');
+                    }
+
+                }else{
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: response.message_error
+                    })
+                }
+            },
+            error: function(response){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: 'Une erreur est survenue, veuillez ressayer!'
+                    })
+            },
+            complete: function(){
+                btn.removeClass('disabled');
+                btn.find('.fa-sync-alt').hide();
+            }
+        });
+
+    }
+
+    function add_to_compare(event, product){
+        var page = parseInt(parseInt($("#user_carts li").length)/3)+1;
+        $.ajax({
+            url: '{% url "ecommerce:add_to_compare" %}',
+            type: 'GET',
+            data: {'product': product},
+            beforeSend: function(){
+                    $('#product-outer'+product).attr('disabled', true);
+                    $('#product-inner'+product).attr('disabled', true);
+            },
+            success: function(response){
+                if( response.is_success ){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'success',
+                      title: response.message_success
+                    });
+                    $('#product-outer'+product).attr('disabled', false);
+                    $('#product-inner'+product).attr('disabled', false);
+                }else{
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: response.message_error
+                    });
+                    $('#product-outer'+product).attr('disabled', false);
+                    $('#product-inner'+product).attr('disabled', false);
+                }
+            },
+            error: function(response){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: 'Une erreur est survenue, veuillez ressayer!'
+                    })
+            }
+        });
+
+    }
+
+    function delete_from_compare(event, product){
+        $.ajax({
+            url: '{% url "ecommerce:delete_from_compare" %}',
+            type: 'GET',
+            data: {'product': product},
+            success: function(response){
+                console.log(response);
+                if( response.is_success ){
+                    console.log("SUCCESS");
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'success',
+                      title: response.message_success
+                    });
+                    $("td[product='compare_product"+product+"']").remove();
+                    if( response.number_products_in_carts == 0 ){
+                        html = '<div class="alert alert-warning text-md-center text-uppercase font-weight-bold">\n' +
+                            '<i class="fas fa-exclamation-triangle"></i> Aucun produit trouvé dans votre liste de comparaison.\n' +
+                            '</div>';
+                        $('.table').html(html);
+                    }
+                }else{
+                    console.log("FAILED");
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: response.message_error
+                    });
+                }
+            },
+            error: function(response){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: 'Une erreur est survenue, veuillez ressayer!'
+                    })
+            }
+        });
+
+    }
+
+    function add_product_to_cart(event, form){
+        event.preventDefault();
+        event.preventDefault();
+        $.ajax({
+            url: '{% url "ecommerce:add_to_cart" %}',
+            type: 'GET',
+            data: $(form).serialize(),
+            processData: false,
+            contentType: false,
+            beforeSend: function (xhr, settings) {
+                $(form).find('button:first').addClass('disabled');
+                $(form).find('.fa-sync-alt').show();
+            },
+            success: function(response){
+                if( !response.message_error ){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'success',
+                      title: 'Produit est ajouté dans votre panier\n'+response.message_warning
+                    });
+                    $("#number_products_in_cart").text(response.number_products_in_cart);
+                    $("#total_price_in_cart").text(response.total_price_in_cart);
+                    load_carts();
+                }else{
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: response.message_error
+                    })
+                }
+            },
+            error: function(response){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: 'Une erreur est survenue, veuillez ressayer!'
+                    })
+            },
+            complete: function(){
+                $(form).find('button:first').removeClass('disabled');
+                $(form).find('.fa-sync-alt').hide();
+            }
+        });
+
+    }
+
+    function delete_wish(event, wish_list_id){
+        var row = $("#wish_list"+wish_list_id);
+        $.post({
+            url: '{% url "ecommerce:remove_wish_list" %}',
+            type: 'POST',
+            data: {'wish_list': wish_list_id, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+            //dataType: JSON,
+            success: function(response){
+                if( response.is_success ){
+                    row.remove();
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'success',
+                      title: response.message_success
+                    });
+                    if( response.number_wishs == 0 ){
+                        html = '<tr><td colspan="6"><div class="alert alert-warning text-md-center text-uppercase font-weight-bold" style="padding: 10px;font-size:12px;font-weight:bold;width: 100%;" >'+
+                                                    '<i class="fas fa-exclamation-triangle"></i> Aucun produit trouvé dans votre liste des souhaits.'+
+                                                    '</div></td></tr>';
+                        $('.wishlist_table tbody').after(html);
+                    }
+                }else{
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: response.message_error
+                    })
+                }
+            },
+            error: function(response){
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: 'Une erreur est survenue, veuillez ressayer!'
+                    })
+            }
+        });
+
+    }
+
+    function updateCart(event, cart_id, operator=undefined, input){
+        var quantity;
+        var quantity_element;
+        var cancel_operation = false;
+        if( operator === "+" ) {
+            quantity = parseInt($(input).prev().val())+1;
+            quantity_element = $(input).prev();
+            if( parseInt(quantity) <= 0 ){
+                cancel_operation = true;
+            }
+        }else if( operator === "-" ) {
+            quantity = parseInt($(input).next().next().val())-1;
+            quantity_element = $(input).next().next();
+            if( parseInt(quantity) <= 0 ){
+                cancel_operation = true;
+            }
+        }else {
+            quantity = $(input).val();
+            quantity_element = $(input);
+            if( parseInt(quantity) <= 0 || quantity == "" || quantity == undefined ){
+                quantity_element.val(quantity_element.attr('last_quantity'));
+                swal('Erreur', 'Quantité doit être positive', 'error');
+                cancel_operation = true;
+            }
+        }
+        if( !cancel_operation ){
+            $.post({
+            url: '{% url "ecommerce:update_cart" %}',
+            type: 'POST',
+            data: {'cart': cart_id,'quantity': quantity, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+            //dataType: JSON,
+            success: function(response){
+                console.log(response);
+                if( response.is_success ){
+                    $("#total_price_in_cart").text(response.total_price_in_cart);
+                    load_carts();
+                    quantity_element.val(parseInt(quantity));
+                    quantity_element.attr('last_quantity', quantity);
+                    $("span[cartAmount='"+cart_id+"']").html(parseFloat(response.single_cart_price).toString()+" Dhs");
+                    $("td[data-title='Total'] strong span").text(parseFloat(response.total_price_in_cart).toString()+" Dhs");
+                    console.debug("TOTAL PRICE: "+parseFloat(response.total_price_in_cart).toString());
+                }else{
+                    const toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: response.message_error
+                    })
+                }
+            },
+            error: function(response){
+                console.log("ERROR, OPERATION NOT COMPLETED")
+            }
+        });
+        }
+    }
+
+</script>

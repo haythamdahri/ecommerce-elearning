@@ -1,0 +1,52 @@
+/*===================================================================================*/
+/*  Compares
+/*===================================================================================*/
+
+.add-to-compare-link {
+	padding: 0;
+	border-radius: 0;
+	font-weight: normal;
+
+	@include if-ltr {
+		&::before {
+			font: normal normal normal 14px/1 font-electro;
+			margin-right: 6px;
+			content: "\64";
+			vertical-align: middle;
+		}
+
+		&.added {
+			&::before {
+				content: $fa-var-check;
+				@include fa-icon();
+				margin-#{$end}: 5px;
+			}
+		}
+	}
+
+	@include if-rtl {
+		&::after {
+			font: normal normal normal 14px/1 font-electro;
+			margin-left: 6px;
+			content: "\64";
+			vertical-align: middle;
+		}
+
+		 &.added {
+			&::after {
+				content: $fa-var-check;
+				@include fa-icon();
+				margin-left: 5px;
+				display: inline;
+			}
+		}
+	}
+}
+
+.btn-add-to-compare{
+	i{
+		margin: dir-values(0 5px 0 0);
+		color:darken(#f9f9f9,20%);
+		@include transition(0.3s,ease);
+	}
+}

@@ -1,0 +1,309 @@
+/*===================================================================================*/
+/*  Posts
+/*===================================================================================*/
+
+.hentry {
+
+	.wp-post-image {
+		@include img-fluid();
+	}
+
+	.byline,
+	.updated:not(.published) {
+		display: none;
+	}
+}
+
+embed,
+iframe,
+object,
+video {
+	max-width: 100%;
+	border: none;
+}
+
+article.post {
+	.entry-content {
+
+		p{
+			margin-bottom: 2.143em;
+		}
+
+		p,
+		ol,
+		ul {
+			line-height: 1.714em;
+		
+		}
+
+		p.highlight,
+		ul.highlight,
+		ol.highlight {
+			font-size: 1.143em;
+			font-weight: 700;
+		}
+
+		blockquote {
+			border-#{$start}: 0 none;
+		    font-size: inherit;
+		    margin: dir-values(0 0 1.429em 2.714em);
+		    padding: 0;
+
+		    &:before {
+		    	color: #a7a7a7;
+			    content:dir-check( "\f10d",  "\f10e" );
+			    float: $start;
+			    font-family: FontAwesome;
+			    font-size: 1.786em;
+			    margin-#{$start}: -1.5em;
+		    }
+
+		    p {
+		    	font-style: italic;
+		    	font-size: 1.071em;
+		    }
+		}
+
+		img {
+			@include img-fluid();
+		}
+
+		figure,
+		.wp-caption {
+			img {
+				margin-bottom: 10px;
+			}
+		}
+
+		.gallery {
+			figure.gallery-item {
+				display: inline-block;
+			}
+		}
+	}
+}
+
+.single-post {
+	article.post {
+		margin-bottom: 0;
+
+		.entry-header {
+			position: relative;
+
+			h1.entry-title {
+				.comments-link {
+				 float: $end;
+
+				    a {
+				    	font-size: 0.480em;
+				    	display: inline-block;
+				    	vertical-align: middle;
+				    }
+				}
+			}
+
+		}
+	}
+}
+
+.post-author-info {
+	background: #f5f5f5;
+	padding: 1.357em 1.143em;
+	margin-bottom: 5.714em;
+	margin-top: 2.857em;
+
+	.media {
+		.media-left {
+			padding-#{$end}: 1.786em;
+		}
+
+		img {
+			max-width: none;
+		}
+
+		.media-body {
+			h4.media-heading {
+				font-size: 1.357em;
+				line-height: 1.474em;
+				margin-bottom: 1.071em;
+				margin-top: 0.526em;
+
+				a {
+					color: #333e48;
+				}
+			}
+
+			p{
+				color: #747474;
+				line-height: 1.714em;
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+}
+
+.post-navigation {
+	margin-bottom: 5.714em;
+	
+	.nav-links {
+		@include clearfix();
+
+		.nav-previous {
+			float: $start;
+		}
+
+		.nav-next {
+			float: $end;
+			text-align: $end;
+		}
+
+		.nav-previous,
+		.nav-next {
+			width: 48%;
+			a {
+				color: #575560;
+
+				&:hover,
+				&:focus {
+					text-decoration: none;
+					color: #333e48;
+				}
+			}
+		}
+	}
+}
+
+
+/*grid*/
+@include with-layout($blog-grid-settings) {
+	.blog-grid {
+		@include media-breakpoint-up(md) {
+			article.post{
+				margin-bottom: 5em;
+				@include span(6 of 12);
+				clear: both;
+
+				&:nth-child(odd){
+			 		float: $start;
+				    
+			 	}
+
+			 	&:nth-child(even){
+			 		clear: none;
+				   	margin-#{$end}: 0;
+				   	float: $end;
+
+			 	}
+
+			 	.media-attachment {
+			 		margin-bottom: 2.000em;
+			 	} 
+
+		 		.entry-header {
+					h1.entry-title {
+						padding-bottom: 0.200em;
+						margin-bottom: 0.200em;
+					}
+				}
+			}
+		}
+	}
+}
+
+/*list*/
+.blog-list {
+	article.post{
+		@include make-row();
+		margin-bottom: 6.214em;
+
+		.media-attachment{
+			margin-bottom: 0;
+
+			@include make-col();
+			@include make-col-span(12);
+
+			@include media-breakpoint-up(md) {
+				@include make-col-span(4);
+			}
+		}
+
+		.content-body {
+			@include make-col();
+			@include make-col-span(12);
+
+			@include media-breakpoint-up(md) {
+				@include make-col-span(8);
+			}
+		}
+
+		.entry-header {
+			h1.entry-title {
+				padding-bottom: 0.240em;
+				margin-bottom: 0.240em;
+			}
+		}
+	}
+}
+
+/*menu*/
+.blog-navigation {
+	padding: 0;
+	margin-bottom: 2.500em;
+	border-bottom: 1px solid #eeeeee;
+	padding: 0 0 1.429em;
+	border-radius: 0;
+
+	.navbar-toggle {
+		display: none;
+	}
+
+	.collapse {
+		display: block;
+	}
+
+	ul.blog-nav-menu {
+	 	margin-bottom: 0;
+	    position: relative;
+	    text-align: center;
+	    padding-#{$start}: 0;
+
+	    > li {
+	    	display: inline-block;
+
+	    	> a{
+	    		letter-spacing: 0.05em;
+	    		color: #333e48;
+	    		font-weight: 400;
+
+	    		@include hover-focus {
+	    			color: #000;
+	    			text-decoration: underline;
+	    		}
+
+	    	}
+
+	    	&:after {
+	    		content: "/";
+	    		display: inline-block;
+			    margin: 0 10px;
+			    color: #b9b9b9;
+	    	}
+
+	    	&:last-child {
+	    		&:after {
+	    			display: none;
+	    		}
+	    	}
+
+	    	&.current-menu-item {
+	    		> a {
+	    			font-weight: bold;
+	    			text-decoration: underline;
+	    		}
+	    	}
+	    }
+	}
+}

@@ -1,0 +1,178 @@
+{% extends 'ecommerce/base.html' %}
+{% load staticfiles %}
+
+{% block title %}LISTE DES SOUHAITS{% endblock %}
+
+{% block content %}
+
+            <div id="content" class="site-content" tabindex="-1">
+            	<div class="container">
+
+            		<nav class="woocommerce-breadcrumb"><a href="{% url 'ecommerce:home' %}">Acceuil</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Panier</nav>
+
+            		<div id="primary" class="content-area">
+            			<main id="main" class="site-main">
+            				<article class="page type-page status-publish hentry">
+            					<header class="entry-header"><h1 itemprop="name" class="entry-title">Panier</h1></header><!-- .entry-header -->
+
+                            {% include 'ecommerce/messages.html' %}
+
+                                    <table class="shop_table shop_table_responsive cart">
+                                        <thead>
+                                            <tr>
+                                                <th class="product-remove">&nbsp;</th>
+                                                <th class="product-thumbnail">&nbsp;</th>
+                                                <th class="product-name">Produit</th>
+                                                <th class="product-price">Prix</th>
+                                                <th class="product-quantity">Quantité</th>
+                                                <th class="product-subtotal">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for cart in my_carts %}
+
+                                            <tr class="cart_item" id="cart_item{{ cart.id }}">
+
+                                                <td class="product-remove">
+                                                    <a title="Supprimer ce produit de ma liste"  onclick="deleteCart(event, {{ cart.id }}, true);" class="remove" href="javascript:void(0)">×</a>
+                                                </td>
+
+                                                <td class="product-thumbnail">
+                                                        <a href="{{ cart.product.images.first.file.url }}"
+                                                       data-fancybox data-caption="{{ cart.product.name }}">
+                                                            <img product="wishlist-product"
+                                                                 src="{{ cart.product.images.first.file.url }}"
+                                                                 style="width: 100%; height: auto;"
+                                                                 alt="{{ cart.product.name }}">
+                                                        </a>
+                                                    </td>
+
+                                                <td data-title="Product" class="product-name">
+                                                    <a href="{{ cart.product.get_absolute_url }}">{{ cart.product.name }}</a>
+                                                </td>
+
+                                                <td data-title="Price" class="product-price">
+                                                    <span class="amount">{{ cart.product.price.normalize }} Dhs</span>
+                                                </td>
+
+                                                <td data-title="Quantity" class="product-quantity">
+                                                    <div class="quantity buttons_added">
+                                                        <input type="button" onclick="updateCart(event, {{ cart.id }}, '-', this, {{ cart.quantity }});" class="minus" value="-">
+                                                        <label>Quantité:</label>
+                                                        <input type="number" last_quantity="{{ cart.quantity }}" size="4" class="input-text qty text" title="Qty" onchange="updateCart(event, {{ cart.id }}, undefined, this, {{ cart.quantity }});" value="{{ cart.quantity }}" max="{{ cart.max_quantity }}" min="1" step="1">
+                                                        <input type="button" class="plus" onclick="updateCart(event, {{ cart.id }}, '+', this, {{ cart.quantity }});" value="+">
+                                                    </div>
+                                                </td>
+
+                                                <td data-title="Total" class="product-subtotal">
+                                                    <span cartAmount="{{ cart.id }}" class="amount">{{ cart.total.normalize }} Dhs</span>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                                <td colspan="6">
+                                                    <div class="alert alert-warning text-md-center text-uppercase font-weight-bold" style="padding: 10px;font-size:12px;font-weight:bold;width: 100%;" >
+                                                        <i class="fas fa-exclamation-triangle"></i> Aucun produit trouvé dans votre panier.
+                                                    </div>
+                                                </td>
+                                            {% endfor %}
+
+                                            <tr>
+                                                <td class="actions" colspan="6">
+                                                <!--
+                                                    <div class="coupon">
+
+                                                        <label for="coupon_code">Coupon:</label> <input type="text" placeholder="Coupon code" value="" id="coupon_code" class="input-text" name="coupon_code"> <input type="submit" value="Apply Coupon" name="apply_coupon" class="button">
+
+                                                    </div>
+
+                                                    <input type="submit" value="Update Cart" name="update_cart" class="button"> -->
+
+
+                                                <div class="wc-proceed-to-checkout">
+                                                    {% if number_products_in_cart > 0 %}
+                                                        <a class="checkout-button button alt wc-forward checkout_link" href="{% url 'ecommerce:checkout' %}"><i class="fas fa-terminal"></i> Finaliser votre commande</a>
+                                                    {% else %}
+                                                        <a class="checkout-button button alt wc-forward disabled" href="javascript:void(0)"><i class="fas fa-exclamation-circle"></i> Aucun produit ajouté dans votre panier</a>
+                                                    {% endif %}
+                                                </div>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                            {# ------------------ Pagination section ------------------ #}
+                            {% if my_carts.has_other_pages %}
+                                {% if my_carts.number > 0 %}
+                                    <div class="shop-control-bar-bottom" style="text-align: center;">
+                                        <nav class="woocommerce-pagination">
+                                             <ul class="page-numbers">
+
+                                                {% if my_carts.has_previous %}
+                                                    <li>
+                                                    <a href="{% url 'ecommerce:cart' %}?&page=1"
+                                                    class="previous page-numbers"><i class="fas fa-angle-double-left"></i></a></li>
+                                                    <li>
+                                                     <li>
+                                                        <a href="{% url 'ecommerce:cart' %}?page={{ my_carts.previous_page_number }}"
+                                                           class="previous page-numbers"><i class="fas fa-angle-left"></i></a>
+                                                    </li>
+                                                {% endif %}
+
+                                                {% for n in my_carts.paginator.page_range %}
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:cart' %}?page={{ n }}" class="page-numbers {% if n == my_carts.number %}current{% endif %}">{{ n }}</a>
+                                                    </li>
+                                                {% endfor %}
+
+                                                {% if my_carts.has_next %}
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:cart' %}?&page={{ my_carts.next_page_number }}"
+                                                           class="page-numbers"><i class="fas fa-angle-right"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{% url 'ecommerce:cart' %}?&page={{ my_carts.next_page_number }}"
+                                                           class="page-numbers"><i class="fas fa-angle-double-right"></i></a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+
+            					<div class="cart-collaterals">
+
+                                    <div class="cart_totals ">
+
+                                        <h2>Total de votre panier</h2>
+
+                                        <table class="shop_table shop_table_responsive">
+
+                                            <tbody>
+                                                <tr class="order-total">
+                                                    <th>Total</th>
+                                                    <td data-title="Total"><strong><span class="amount">{{ total_price_in_cart.normalize|default:"0" }} Dhs</span></strong> </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+            				</article>
+            			</main><!-- #main -->
+            		</div><!-- #primary -->
+            	</div><!-- .container -->
+            </div><!-- #content -->
+
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+
+    <script>
+
+        $("body").attr('class','page home page-template-default');
+        $('img[product="wishlist-product"]').css({'height': '100', 'height': '100'});
+    </script>
+
+{% endblock %}

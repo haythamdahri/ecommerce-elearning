@@ -1,0 +1,13 @@
+/*===================================================================================*/
+/*  Gold Color
+/*===================================================================================*/
+
+@import '../bs-variables';
+@import '../variables';
+@import '../mixins';
+
+$primary-color: #dab26d;
+$primary-text-color: #fff;
+
+@import 'color';
+@import 'light';

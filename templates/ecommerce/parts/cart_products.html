@@ -1,0 +1,11 @@
+{% for cart in carts|slice:"3" %}
+    <li class="mini_cart_item" id="cart_item{{ cart.id }}">
+        <a href="javascript:void(0)" onclick="deleteCart(event, {{ cart.id }});" title="Supprimer {{ cart.product.name }}" class="remove" href="#">×</a>
+        <a href="{{ cart.product.get_absolute_url }}">
+            <img class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image" src="{{ cart.product.images.first.file.url }}" alt="{{ cart.product.name }}&nbsp;">{{ cart.product.name }}&nbsp;
+        </a>
+
+        <span class="quantity">{{ cart.quantity }} × <span class="amount">{{ cart.product.name }}</span></span>
+    </li>
+{% endfor %}
+

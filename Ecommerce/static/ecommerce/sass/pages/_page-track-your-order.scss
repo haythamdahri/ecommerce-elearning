@@ -1,0 +1,35 @@
+/*===================================================================================*/
+/*  TRACK-YOUR-ORDER-PAGE
+/*===================================================================================*/
+.track_order {
+	> p:first-child {
+		text-align: center;
+		margin: 0 auto 4.714em;
+		width: 90%;
+	}
+}
+
+.track-order {
+	h2 {
+		font-size: 1.786em;
+		line-height: 1.6em;
+		display: block;
+		padding-bottom: 0.400em;
+		position: relative;
+		margin-bottom: 1.360em;
+		border-bottom: 1px solid #dadada;
+
+		&::after {
+			content: ' ';
+			border-bottom: 2px solid transparent;
+			display: block;
+			width: 20%;
+			position: absolute;
+			bottom: -1px;
+		}
+	}
+
+	> p {
+		text-align: center;
+	}
+}

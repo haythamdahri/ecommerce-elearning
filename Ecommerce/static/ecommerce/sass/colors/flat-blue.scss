@@ -1,0 +1,13 @@
+/*===================================================================================*/
+/*  Flat Blue Color
+/*===================================================================================*/
+
+@import '../bs-variables';
+@import '../variables';
+@import '../mixins';
+
+$primary-color: #00abc5;
+$primary-text-color: #fff;
+
+@import 'color';
+@import 'light';

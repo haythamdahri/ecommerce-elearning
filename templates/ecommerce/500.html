@@ -1,0 +1,30 @@
+{% extends 'ecommerce/base.html' %}
+{% load staticfiles %}
+{% load humanize %}
+{% load staticfiles %}
+
+{% block title %}ACCEUIL{% endblock %}
+
+{% block content %}
+    <div id="content" class="site-content" tabindex="-1">
+    <div class="container">
+        <nav class="woocommerce-breadcrumb"><a href="{% url 'ecommerce:home' %}">Acceuil</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Erreur 500</nav>
+        <div id="primary" class="content-area">
+            <main id="main" class="site-main">
+                <div class="center-block">
+                    <div class="info-404">
+                        <div class="text-xs-center inner-bottom-xs">
+                            <h2 class="display-3">500!</h2>
+                            <p class="lead">Internal error!</p>
+                            <hr class="m-y-2">
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+{% endblock %}

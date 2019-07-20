@@ -1,0 +1,13 @@
+/*===================================================================================*/
+/*  Pink Color
+/*===================================================================================*/
+
+@import '../bs-variables';
+@import '../variables';
+@import '../mixins';
+
+$primary-color: #ce1d76;
+$primary-text-color: #fff;
+
+@import 'color';
+@import 'light';

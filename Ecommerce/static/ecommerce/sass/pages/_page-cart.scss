@@ -1,0 +1,38 @@
+/*===================================================================================*/
+/*  CART-PAGE
+/*===================================================================================*/
+.cart-empty {
+	font-size: 3.5em;
+    font-weight: 300;
+    text-align: center;
+    line-height: 1.5em;
+    margin-bottom: 0.75em;
+    margin-top: 2em;
+}
+
+.return-to-shop {
+	text-align: center;
+	margin-bottom: 7em;
+}
+
+.shipping-calculator-form {
+	select {
+		@include c-select();
+		border-color: #ddd;
+		border-radius: 1.571em;
+		width: 100%;
+		padding: 0.857em 1.214em;
+		color: #818181;
+		line-height: 1.286em;
+	}
+}
+
+.woocommerce-shipping-calculator {
+	margin-top: 0.357em;
+}
+
+.shipping-calculator-button {
+	font-size: 0.857em;
+	font-weight: bold;
+	border-bottom: 1px solid #3e3e3e;
+}

@@ -1,0 +1,95 @@
+/*===================================================================================*/
+/*  WC-TABS
+/*===================================================================================*/
+.wc-tabs, .ec-tabs {
+	padding-#{$start}: 0;
+	margin-bottom: 0;
+	list-style: none;
+
+	> li {
+		display: inline-block;
+
+		a {
+			line-height: 1em;
+			font-size: 1.286em;
+			color: $color-body;
+			padding-bottom: 1em;
+			position: relative;
+			display: block;
+
+			@include hover-focus {
+				text-decoration: none;
+			}
+		}
+
+		&.active {
+			a {
+				font-weight: bold;
+
+				&::before {
+					content: ' ';
+					height: 4px;
+					width: 10px;
+					display: block;
+					position: absolute;
+					bottom: -5px;
+					left: 50%;
+					@include border-radius( 0 0 10px 10px );
+					@include transform( translateX( -50% ) );
+				}
+
+				&::after {
+					content: ' ';
+					border-bottom: 2px solid transparent;
+					display: block;
+					position: absolute;
+					bottom: -1px;
+					width: 100%;
+				}
+			}
+		}
+
+		& + li {
+			margin-#{$start}: 3.214em;
+		}
+	}
+}
+
+.electro-nav-tabs {
+	border-bottom: none;
+
+	> li.nav-item {
+		display: inline-block;
+		float: none;
+
+		a{
+			&.active {
+				font-weight: bold;
+
+				&::before {
+					content: ' ';
+					height: 4px;
+					width: 10px;
+					display: block;
+					position: absolute;
+					bottom: -5px;
+					left: 50%;
+					@include border-radius( 0 0 10px 10px );
+					@include transform( translateX( -50% ) );
+				}
+
+				&::after {
+					content: ' ';
+					border-bottom: 2px solid transparent;
+					display: block;
+					position: absolute;
+					bottom: -1px;
+					width: 100%;
+				}
+			}
+		}
+		& + .nav-item {
+			margin-#{$start}: 3.214em;
+		}
+	}
+}

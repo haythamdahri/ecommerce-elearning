@@ -1,0 +1,72 @@
+/*===================================================================================*/
+/*  WooCommerce Checkout
+/*===================================================================================*/
+
+#ship-to-different-address {
+	font-size: 1em;
+	border-bottom: none;
+
+	&::after{
+		content: none;
+	}
+
+	label {
+		display: inline-block;
+	}
+
+	.input-checkbox {
+		float: $start;
+		margin-#{$end}: 0.714em;
+		margin-top: 3px;
+	}
+}
+
+.form-row.notes {
+	padding-#{$start}: 0;
+	padding-#{$end}: 0;
+}
+
+.woocommerce-checkout {
+
+	h3 {
+		font-size: 1.786em;
+		line-height: 1.6em;
+		display: block;
+		padding-bottom: 0.400em;
+		position: relative;
+		margin-bottom: 1.360em;
+		border-bottom: 1px solid #dadada;
+
+		&::after {
+			content: ' ';
+			border-bottom: 2px solid transparent;
+			display: block;
+			width: 20%;
+			position: absolute;
+			bottom: -1px;
+		}
+	}
+}
+
+.checkout_coupon {
+	.form-row-first {
+		padding-#{$end}: 0;
+
+		.input-text {
+			border-top-#{$end}-radius: 0;
+			border-bottom-#{$end}-radius: 0;
+			font-size: 1.071em;
+		}
+	}
+
+	.form-row-last {
+		padding-#{$start}: 0;
+
+		.button {
+			border-top-#{$start}-radius: 0;
+			border-bottom-#{$start}-radius: 0;
+
+			@extend .btn-secondary;
+		}
+	}
+}

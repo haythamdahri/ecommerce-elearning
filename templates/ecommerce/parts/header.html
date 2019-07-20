@@ -1,0 +1,43 @@
+{% load staticfiles %}
+
+<header id="masthead" class="site-header header-v2">
+    <div class="container">
+        <div class="row">
+            {# include logo #}
+                {% include 'ecommerce/parts/header_logo.html' %}
+            {# end include logo #}
+            {# navbar links #}
+                <div class="primary-nav animate-dropdown">
+                    <div class="clearfix">
+                         <button class="navbar-toggler hidden-sm-up pull-right flip" type="button" data-toggle="collapse" data-target="#default-header">
+                                &#9776;
+                         </button>
+                     </div>
+
+                    <div class="collapse navbar-toggleable-xs" id="default-header">
+                        <nav>
+                            <ul id="menu-main-menu" class="nav nav-inline yamm">
+                            <li class="menu-item"><a title="About Us" href="{% url 'ecommerce:home' %}"><i class="fas fa-home"></i> Acceuil</a></li>
+                            <li class="menu-item"><a title="About Us" href="{% url 'ecommerce:contact_us' %}"><i class="fas fa-file-signature"></i> Contactez-nous</a></li>
+                            <li class="menu-item"><a title="About Us" href="{% url 'ecommerce:home' %}"><i class="fas fa-users"></i> À Propos</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            {# end navbar links #}
+
+            {# Support links #}
+                <div class="header-support-info">
+                    <div class="media">
+                        <span class="media-left support-icon media-middle"><i class="ec ec-support"></i></span>
+                        <div class="media-body">
+                            <span class="support-number"><strong>Support</strong> SOON</span><br>
+                            <span class="support-email">Email: haytham.dahri@gmail.com</span>
+                        </div>
+                    </div>
+                </div>
+            {# end Support links #}
+
+        </div>
+    </div>
+</header><!-- #masthead -->

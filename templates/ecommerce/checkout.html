@@ -1,0 +1,254 @@
+{% extends 'ecommerce/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}PAIEMENT{% endblock %}
+
+{% block content %}
+
+            <div id="content" class="site-content" tabindex="-1">
+                <div class="container">
+
+                    <nav class="woocommerce-breadcrumb"><a href="{%url 'ecommerce:home' %}">Acceuil</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Finalisation de commande</nav>
+
+                    <div id="primary" class="content-area">
+                        <main id="main" class="site-main">
+                            <article class="page type-page status-publish hentry">
+
+                            {% include 'ecommerce/messages.html' %}
+
+                                <header class="entry-header"><h1 itemprop="name" class="entry-title">Finalisation de commande</h1></header><!-- .entry-header -->
+
+                                <form enctype="multipart/form-data" action="{% url 'ecommerce:process_payment' %}" class="checkout woocommerce-checkout" method="post" name="checkout">
+                                {% csrf_token %}
+                                    <div id="customer_details" class="col2-set">
+                                        <div class="col-1">
+                                            <div class="woocommerce-billing-fields">
+
+                                                <h3>Details de livraison</h3>
+
+                                                <p id="billing_first_name_field" class="form-row form-row form-row-first validate-required"><label class="" for="billing_first_name">First Name <abbr title="required" class="required">*</abbr></label>
+                                                    {% if Checkout_form.first_name.errors %}
+                                                        {% render_field Checkout_form.first_name  style='border: 1px solid red' %}
+                                                    {% else %}
+                                                        {% render_field Checkout_form.first_name  %}
+                                                    {% endif %}
+                                                    {% for error in Checkout_form.first_name.errors %}
+                                                        <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                            <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                        </small>
+                                                    {% endfor %}
+                                                </p>
+
+                                                <p id="billing_last_name_field" class="form-row form-row form-row-last validate-required"><label class="" for="billing_last_name">Last Name <abbr title="required" class="required">*</abbr></label>
+                                                    {% if Checkout_form.last_name.errors %}
+                                                        {% render_field Checkout_form.last_name  style='border: 1px solid red' %}
+                                                    {% else %}
+                                                        {% render_field Checkout_form.last_name  %}
+                                                    {% endif %}
+                                                    {% for error in Checkout_form.last_name.errors %}
+                                                        <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                            <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                        </small>
+                                                    {% endfor %}
+                                                </p><div class="clear"></div>
+
+                                                <p id="billing_company_field" class="form-row form-row form-row-wide"><label class="" for="billing_company">Societe </label>
+                                                    {% if Checkout_form.company_name.errors %}
+                                                        {% render_field Checkout_form.company_name  style='border: 1px solid red' %}
+                                                    {% else %}
+                                                        {% render_field Checkout_form.company_name  %}
+                                                    {% endif %}
+                                                    {% for error in Checkout_form.company_name.errors %}
+                                                        <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                            <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                        </small>
+                                                    {% endfor %}
+                                                </p>
+
+                                                <p id="billing_email_field" class="form-row form-row form-row-first validate-required validate-email"><label class="" for="billing_email">Email <abbr title="required" class="required">*</abbr></label>
+                                                    {% if Checkout_form.email.errors %}
+                                                        {% render_field Checkout_form.email  style='border: 1px solid red' %}
+                                                    {% else %}
+                                                        {% render_field Checkout_form.email  %}
+                                                    {% endif %}
+                                                    {% for error in Checkout_form.email.errors %}
+                                                        <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                            <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                        </small>
+                                                    {% endfor %}
+                                                </p>
+
+                                                <p id="billing_phone_field" class="form-row form-row form-row-last validate-required validate-phone"><label class="" for="billing_phone">Telephone <abbr title="required" class="required">*</abbr></label>
+                                                    {% if Checkout_form.phone.errors %}
+                                                        {% render_field Checkout_form.phone  style='border: 1px solid red' %}
+                                                    {% else %}
+                                                        {% render_field Checkout_form.phone  %}
+                                                    {% endif %}
+                                                    {% for error in Checkout_form.phone.errors %}
+                                                        <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                            <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                        </small>
+                                                    {% endfor %}
+                                                </p><div class="clear"></div>
+
+                                                <p id="billing_address_1_field" class="form-row form-row form-row-wide address-field validate-required"><label class="" for="billing_address_1">Adresse <abbr title="required" class="required">*</abbr></label>
+                                                    {% if Checkout_form.address.errors %}
+                                                        {% render_field Checkout_form.address  style='border: 1px solid red' %}
+                                                    {% else %}
+                                                        {% render_field Checkout_form.address  %}
+                                                    {% endif %}
+                                                    {% for error in Checkout_form.address.errors %}
+                                                        <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                            <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                        </small>
+                                                    {% endfor %}
+                                                </p>
+
+                                                <p id="billing_state_field" class="form-row form-row form-row-first validate-required validate-email"><label class="" for="billing_state">Region <abbr title="required" class="required">*</abbr></label>
+                                                    {% if Checkout_form.state.errors %}
+                                                        {% render_field Checkout_form.state  style='border: 1px solid red' %}
+                                                    {% else %}
+                                                        {% render_field Checkout_form.state  %}
+                                                    {% endif %}
+                                                    {% for error in Checkout_form.state.errors %}
+                                                        <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                            <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                        </small>
+                                                    {% endfor %}
+                                                </p>
+
+                                                <p id="billing_city_field" class="form-row form-row form-row-wide address-field validate-required" data-o_class="form-row form-row form-row-wide address-field validate-required"><label class="" for="billing_city">Ville <abbr title="required" class="required">*</abbr></label>
+                                                    {% if Checkout_form.city.errors %}
+                                                        {% render_field Checkout_form.city  style='border: 1px solid red' %}
+                                                    {% else %}
+                                                        {% render_field Checkout_form.city  %}
+                                                    {% endif %}
+                                                    {% for error in Checkout_form.city.errors %}
+                                                        <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                            <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                        </small>
+                                                    {% endfor %}
+                                                </p>
+
+
+                                                <p id="billing_postcode_field" class="form-row form-row form-row-wide address-field validate-postcode validate-required" data-o_class="form-row form-row form-row-wide address-field validate-required validate-postcode"><label class="" for="billing_postcode">Postcode <abbr title="required" class="required">*</abbr></label>
+                                                    {% if Checkout_form.zipcode.errors %}
+                                                        {% render_field Checkout_form.zipcode  style='border: 1px solid red' %}
+                                                    {% else %}
+                                                        {% render_field Checkout_form.zipcode  %}
+                                                    {% endif %}
+                                                    {% for error in Checkout_form.zipcode.errors %}
+                                                        <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                            <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                        </small>
+                                                    {% endfor %}
+                                                </p>
+
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-2">
+                                            <h3>Details de la commande</h3>
+                                            <div class="woocommerce-shipping-fields">
+                                                <p id="order_comments_field" class="form-row form-row notes"><label class="" for="order_comments">Commentaire </label>
+                                                    {% if Checkout_form.order_note.errors %}
+                                                        {% render_field Checkout_form.order_note  style='border: 1px solid red' %}
+                                                    {% else %}
+                                                        {% render_field Checkout_form.order_note  %}
+                                                    {% endif %}
+                                                    {% for error in Checkout_form.order_note.errors %}
+                                                        <small class="form-text text-muted text-danger" id="news_letter_helper" style="">
+                                                            <i class="fas fa-exclamation-triangle"></i> {{ error }}<br>
+                                                        </small>
+                                                    {% endfor %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h3 id="order_review_heading">Votre commande:</h3>
+
+                                    <div class="woocommerce-checkout-review-order" id="order_review">
+                                        <table class="shop_table woocommerce-checkout-review-order-table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="product-name">Produit x Quantité</th>
+                                                    <th class="product-total">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for cart in carts %}
+                                                    <tr class="cart_item">
+                                                        <td class="product-name">
+                                                            {{ cart.product.name }}
+                                                            <strong class="product-quantity">× {{ cart.quantity }}</strong>
+                                                        </td>
+                                                        <td class="product-total">
+                                                            <span class="amount">{{ cart.total }} Dhs</span>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                            <tfoot>
+
+                                                <!--<tr class="cart-subtotal">
+                                                    <th>Subtotal</th>
+                                                    <td><span class="amount">$3,299.00</span></td>
+                                                </tr>
+
+                                                <tr class="shipping">
+                                                    <th>Shipping</th>
+                                                    <td data-title="Shipping">Flat Rate: <span class="amount">$300.00</span> <input type="hidden" class="shipping_method" value="international_delivery" id="shipping_method_0" data-index="0" name="shipping_method[0]"></td>
+                                                </tr>-->
+
+                                                <tr class="order-total">
+                                                    <th>Total</th>
+                                                    <td><strong><span class="amount">{{ total_price_in_cart }} Dhs</span></strong> </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+
+                                        <div class="woocommerce-checkout-payment" id="payment">
+                                            <ul class="wc_payment_methods payment_methods methods">
+                                                <li class="wc_payment_method payment_method_cod">
+                                                    <input type="radio" data-order_button_text="" value="1" required name="payment_method" class="input-radio" id="payment_method_cod">
+                                                    <label for="payment_method_cod">Paiement à la livraison</label>
+                                                    <div style="display:none;" class="payment_box payment_method_cod">
+                                                        <p>Payer en cache à la livraison</p>
+                                                    </div>
+                                                </li>
+                                                <li class="wc_payment_method payment_method_paypal">
+                                                    <input type="radio" data-order_button_text="Proceder vers paypal" required value="2" name="payment_method" class="input-radio" id="payment_method_paypal">
+
+                                                    <label for="payment_method_paypal">PayPal <img alt="PayPal Acceptance Mark" src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg"><a title="Qu'est-ce que PayPal ?" onclick="javascript:window.open('https://www.paypal.com/fr/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;" class="about_paypal" href="https://www.paypal.com/fr/webapps/mpp/paypal-popup">Qu'est-ce que PayPal ?</a></label>
+                                                    <div style="display:none;" class="payment_box payment_method_paypal">
+                                                        <p>Payer à travers PayPal; vous pouvez payer avec une carte crédit si vous n'avez pas un compte paypal.</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <div class="form-row place-order">
+                                                <input type="submit" data-value="Place order" value="Proceder vers paiement" class="button alt">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </article>
+                        </main><!-- #main -->
+                    </div><!-- #primary -->
+                </div><!-- .container -->
+            </div>
+
+
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+
+    <script>
+
+        $("body").attr('class','page home page-template-default');
+        $('img[product="wishlist-product"]').css({'height': '100', 'height': '100'});
+    </script>
+
+{% endblock %}

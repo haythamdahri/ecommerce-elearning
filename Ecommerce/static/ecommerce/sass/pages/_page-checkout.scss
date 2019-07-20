@@ -1,0 +1,248 @@
+/*===================================================================================*/
+/*  CHECKOUT-PAGE
+/*===================================================================================*/
+.woocommerce-checkout-review-order-table {
+	@include make-table();
+}
+
+#payment {
+	@include clearfix;
+	border-top: 3px solid #ddd;
+
+	.create-account {
+		clear: both;
+	}
+
+	.payment_methods {
+		margin: 0 !important;
+		border-bottom: 1px dotted #ddd;
+		padding: 0 !important;
+
+		li {
+			list-style: none !important;
+			padding: 1.387em !important;
+			border-bottom: 1px dotted #ddd;
+			margin-#{$start}: 0;
+
+			img {
+				float: $end;
+				border: 0;
+				padding: 0;
+				max-height: 1.618em;
+			}
+
+			&:last-child {
+				padding-bottom: 0;
+				border-bottom: 0;
+			}
+
+			label {
+				width: 92%;
+				padding-top: 0 !important;
+				margin-#{$start}: .618em;
+				font-weight: bold;
+				margin-bottom: 0;
+			}
+
+			p {
+				margin: 0;
+			}
+
+			.payment_box {
+				padding: 1.387em;
+				margin: 1.387em -1.387em -1.387em -1.387em;
+				background: rgba(0,0,0,0.035);
+				border-top: 1px dotted #ddd;
+
+				fieldset {
+					border: 0;
+					margin: 0;
+					padding: 1em 0 0 0;
+					font-size: .857em;
+
+					label {
+						width: auto;
+						margin-#{$start}: 0;
+					}
+
+					.form-row {
+						margin-bottom: 1em;
+					}
+
+					.form-row-first {
+						select {
+							width: 48%;
+
+							&:nth-child(2n) {
+								float: $end;
+							}
+						}
+					}
+
+					#cvv {
+						width: 22% !important;
+					}
+
+					.help {
+						width: 75%;
+						float: $end;
+					}
+				}
+
+				.wc-credit-card-form-card-number,
+				.wc-credit-card-form-card-expiry,
+				.wc-credit-card-form-card-cvc {
+					font-size: 1.387em;
+				}
+
+				.wc-credit-card-form-card-number {
+					background-repeat: no-repeat;
+					background-position: $end .618em center;
+					background-size: 31px 20px;
+					background-image: url(assets/images/credit-cards/unknown.svg);
+
+					&.visa {
+						background-image: url(assets/images/credit-cards/visa.svg);
+					}
+
+					&.mastercard {
+						background-image: url(assets/images/credit-cards/mastercard.svg);
+					}
+
+					&.laser {
+						background-image: url(assets/images/credit-cards/laser.svg);
+					}
+
+					&.dinersclub {
+						background-image: url(assets/images/credit-cards/diners.svg);
+					}
+
+					&.maestro {
+						background-image: url(assets/images/credit-cards/maestro.svg);
+					}
+
+					&.jcb {
+						background-image: url(assets/images/credit-cards/jcb.svg);
+					}
+
+					&.amex {
+						background-image: url(assets/images/credit-cards/amex.svg);
+					}
+
+					&.discover {
+						background-image: url(assets/images/credit-cards/discover.svg);
+					}
+				}
+			}
+		}
+	}
+
+	.terms {
+		width: 100%;
+		clear: both;
+		float: none;
+		margin-bottom: 0;
+		margin-bottom: 1em;
+
+		label {
+			display: inline-block;
+			margin-#{$start}: .618em;
+		}
+
+		input {
+			display: inline-block;
+			width: auto;
+			float: $start;
+			margin: .327em .53em 0 0;
+		}
+	}
+
+	.place-order {
+		padding: 1.387em;
+		margin-bottom: 0;
+		float: none;
+		width: 100%;
+
+		.button {
+			font-size: 1.387em;
+			width: 100%;
+			white-space: pre-wrap;
+		}
+	}
+}
+
+.woocommerce-checkout {
+	.payment-fixed {
+		position: fixed;
+		top: 0;
+		z-index: 9;
+	}
+}
+
+.admin-bar {
+	.woocommerce-checkout {
+		.payment-fixed {
+			top: 32px;
+		}
+	}
+}
+
+/**
+ * Password strength meter
+ */
+.woocommerce-password-strength {
+	text-align: $start;
+	font-weight: 600;
+	padding: .53em 0;
+	text-align: $end;
+	font-size: .857em;
+
+	&:after {
+		content: "\f119";
+		font-family: 'FontAwesome';
+		display: inline-block;
+		font-weight: 400;
+		margin-#{$start}: .53em;
+	}
+
+	&.strong {
+		color: $brand-success;
+
+		&:after {
+			content: "\f118";
+		}
+	}
+
+	&.short {
+		color: $brand-danger;
+	}
+
+	&.bad {
+		color: $brand-danger;
+	}
+
+	&.good {
+		color: $brand-info;
+
+		&:after {
+			content: "\f11a";
+		}
+	}
+}
+
+.woocommerce-info + .login,
+.woocommerce-info + .checkout_coupon {
+	margin-bottom: 2.618em;
+}
+
+.create-account {
+	.checkbox {
+		display: inline-block;
+		margin-#{$start}: 0.25em;
+	}
+}
+
+#shipping_method {
+	list-style: none;
+	padding: 0;
+}

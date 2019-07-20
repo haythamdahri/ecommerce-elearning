@@ -1,0 +1,131 @@
+{% extends 'ecommerce/base.html' %}
+{% load staticfiles %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block title %}ACCEUIL{% endblock %}
+
+{% block content %}
+
+    <div id="content" class="site-content" tabindex="-1">
+                <div class="container">
+
+                    <nav class="woocommerce-breadcrumb"><a href="{% url 'ecommerce:home' %}">Acceuil</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Contactez nous</nav>
+
+                    <div id="primary" class="content-area">
+                        <main id="main" class="site-main">
+                            <article class="post-2508 page type-page status-publish hentry" id="post-2508">
+                                <div itemprop="mainContentOfPage" class="entry-content">
+
+                    {% include 'ecommerce/messages.html' %}
+                            <!-- BACK LATER
+                                    <div class="map" style="width: 100vw; position: relative; margin-left: -50vw; left: 50%; margin-bottom: 3em;">
+                                        <iframe  height="514" allowfullscreen="" style="border: 0px none; pointer-events: none;" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAE9YIhhRyh-QJ_w0AXduUSJpirEj1duPI&q=Avenue+Al+Abtal,+Rabat" allowfullscreen ></iframe>
+                                    </div>
+                             -->
+                                    <div class="vc_row-full-width vc_clearfix"></div>
+                                    <div class="vc_row wpb_row vc_row-fluid">
+                                        <div class="contact-form wpb_column vc_column_container vc_col-sm-9 col-sm-9">
+                                            <div class="vc_column-inner ">
+                                                <div class="wpb_wrapper">
+                                                    <div class="wpb_text_column wpb_content_element ">
+                                                        <div class="wpb_wrapper">
+                                                            <h2 class="contact-page-title">Laisser nous un message:</h2>
+                                                            <p>Si vous rencontrez des difficultés à passer votre commande merci de nous appeler.</p>
+                                                        </div>
+                                                    </div>
+                                                    <div lang="en-US" dir="ltr" id="wpcf7-f2507-p2508-o1" class="wpcf7" role="form">
+                                                        <div class="screen-reader-response"></div>
+                                                        <form class="wpcf7-form" method="post" action="{% url 'ecommerce:contact_us' %}">
+                                                        {% csrf_token %}
+                                                            <div style="display: none;">
+                                                                <input type="hidden" value="2507" name="_wpcf7">
+                                                                <input type="hidden" value="4.4.1" name="_wpcf7_version">
+                                                                <input type="hidden" value="en_US" name="_wpcf7_locale">
+                                                                <input type="hidden" value="wpcf7-f2507-p2508-o1" name="_wpcf7_unit_tag">
+                                                                <input type="hidden" value="47d6f1c9ce" name="_wpnonce">
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-xs-12 col-md-6">
+                                                                    <label>Nom:</label><br>
+                                                                    <span class="wpcf7-form-control-wrap first-name">
+                                                                        {% render_field contact_from.first_name aria-invalid='false' aria-required='true' class='wpcf7-form-control wpcf7-text wpcf7-validates-as-required input-text' %}
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-xs-12 col-md-6">
+                                                                    <label>Prenom:</label><br>
+                                                                    <span class="wpcf7-form-control-wrap last-name">
+                                                                        {% render_field contact_from.last_name aria-invalid='false' aria-required='true' class='wpcf7-form-control wpcf7-text wpcf7-validates-as-required input-text' %}
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-xs-12 col-md-12">
+                                                                    <label>Email:</label><br>
+                                                                    <span class="wpcf7-form-control-wrap last-name">
+                                                                        {% render_field contact_from.email aria-invalid='false' aria-required='true' class='wpcf7-form-control wpcf7-text wpcf7-validates-as-required input-text' %}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Sujet:</label><br>
+                                                                    <span class="wpcf7-form-control-wrap last-name">
+                                                                        {% render_field contact_from.subject aria-invalid='false' aria-required='true' class='wpcf7-form-control wpcf7-text wpcf7-validates-as-required input-text' %}
+                                                                    </span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Votre message:</label><br>
+                                                                    <span class="wpcf7-form-control-wrap last-name">
+                                                                        {% render_field contact_from.message aria-invalid='false'  style='resize: none;' aria-required='true' class='wpcf7-form-control wpcf7-text wpcf7-validates-as-required input-text' %}
+                                                                    </span>
+                                                            </div>
+                                                            <div class="form-group clearfix">
+
+                                                                <p><button type="submit" class="button btn-primary"><i class="fas fa-paper-plane"></i> Envoyer message</button></p>
+
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="store-info wpb_column vc_column_container vc_col-sm-3 col-sm-3">
+                                            <div class="vc_column-inner ">
+                                                <div class="wpb_wrapper">
+                                                    <div class="wpb_text_column wpb_content_element ">
+                                                        <div class="wpb_wrapper">
+                                                            <h2 class="contact-page-title">Our Store</h2>
+                                                            <address>Casablanca, Maroc</address>
+                                                            <h3>Disponiblité</h3>
+                                                            <ul class="list-unstyled operation-hours inner-right-md">
+                                                                <li class="clearfix"><span class="day">Lundi:</span><span class="pull-right flip hours">09-6 PM</span></li>
+                                                                <li class="clearfix"><span class="day">Mardin:</span><span class="pull-right flip hours">09-6 PM</span></li>
+                                                                <li class="clearfix"><span class="day">Mercredi:</span><span class="pull-right flip hours">09-6 PM</span></li>
+                                                                <li class="clearfix"><span class="day">Jeudi:</span><span class="pull-right flip hours">09-6 PM</span></li>
+                                                                <li class="clearfix"><span class="day">Vendredi:</span><span class="pull-right flip hours">09-6 PM</span></li>
+                                                                <li class="clearfix"><span class="day">Samedi:</span><span class="pull-right flip hours">09-3 PM</span></li>
+                                                                <li class="clearfix"><span class="day">Dimanche</span><span class="pull-right flip hours">Fermé</span></li>
+                                                            </ul>
+                                                            <h3>Note</h3>
+                                                            <p class="inner-right-md">Si vous ếtes interesé par une offre spécialise, contacter nous: <a href="mailto:haytham.dahri@gmail.com">haytham.dahri@gmail.com</a></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </main><!-- #main -->
+                    </div><!-- #primary -->
+                </div><!-- .container -->
+            </div><!-- #content -->
+
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script>
+
+    $("body").attr('class','page-template-default contact-v1');
+
+    </script>
+{% endblock %}

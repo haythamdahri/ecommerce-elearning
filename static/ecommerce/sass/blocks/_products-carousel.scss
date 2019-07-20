@@ -1,0 +1,96 @@
+/*===================================================================================*/
+/*  Products Carousel
+/*===================================================================================*/
+
+section.section-products-carousel,
+section.section-posts-carousel {
+	header {
+		margin-bottom: 0.857em;
+
+		.owl-nav {
+			float: $end;
+			line-height: 3.607em;
+		}
+
+		a {
+			color: #aeaeae;
+			font-size: 1.429em;
+
+			@include hover-focus {
+				color: $color-body;
+				text-decoration: none;
+			}
+
+			& + a {
+				margin-#{$start}: 0.400em;
+			}
+		}
+	}
+}
+
+.products-carousel {
+
+	.owl-stage-outer {
+		width: 100.3%;
+		padding: 0 0 25px 0;
+		margin-bottom: 0;
+	}
+
+	.owl-item {
+		.product {
+			position: relative;
+			min-height: 1px;
+			margin: 0.857em 0;
+			padding: 0;
+			@extend li.product;
+
+			&::after {
+				content: '';
+				border-#{$end}: 1px solid #eaeaea;
+				display: block;
+				position: absolute;
+				top: 50%;
+				#{$end}: 0;
+				height: 80%;
+				@include transform( translateY(-50%) );
+			}
+
+			&:hover, &.hover {
+				&::after {
+					content: none;
+				}
+			}
+		}
+	}
+
+	.owl-stage {
+		.owl-item:not(.active) + .owl-item.active,
+		.owl-item.active:first-child {
+			.product {
+				margin-#{$start}: 3px;
+
+				.product-inner {
+					padding-#{$start}: calc( 1.714em - 10px );
+				}
+			}
+		}
+
+		.owl-item.last-active {
+			.product {
+				&::after {
+					content: none;
+				}
+			}
+		}
+	}
+}
+
+.columns-6,
+.columns-5,
+.page-template-template-homepage-v2 .columns-4 {
+	.owl-item {
+		.product {
+			@include make-product-small();
+		}
+	}
+}
