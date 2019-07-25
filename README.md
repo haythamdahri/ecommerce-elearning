@@ -1,6 +1,6 @@
 ECOMMERCE PLATFORM RELEASED WITH DJANGO WEB FRAMEWORK
 # Welcome Ecommerce Django-Based Application
-This application is created using **Django Web Framework ** as an ecommerce platofrm supporting the following technologies:
+This application is created using **Django Web Framework ** as an ecommerce platofrm supporting the following features:
 - User account: a new user can create a new account and activate it through received activation link.
 - Password reset: forgetting password does not mean anything, ay user can reset his password using the provided link in the login page.
 - Paypal Payment: Authenticated users can purshase their products using paypal as a trusted payment party.
