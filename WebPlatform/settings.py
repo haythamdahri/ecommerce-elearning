@@ -161,7 +161,7 @@ MARKDOWNX_EDITOR_RESIZABLE = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'haytham.dahri@gmail.com'
-EMAIL_HOST_PASSWORD = 'Haytham2020'
+EMAIL_HOST_PASSWORD = 'XXX'
 EMAIL_USE_TLS = True
 
 LOGIN_URL = "/ecommerce/account"
